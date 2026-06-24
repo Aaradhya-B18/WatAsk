@@ -3,24 +3,28 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from google import genai
 from sentence_transformers import SentenceTransformer, util
-from data import courses
+from supabase import create_client
 
 load_dotenv()
 client=genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-snippets = [course["text"] for course in courses]
-
-snippet_vectors = model.encode(snippets)
+supabase = create_client(
+    os.getenv("SUPABASE_URL"),
+    os.getenv("SUPABASE_KEY")
+)
 
 app = FastAPI()
 
 @app.post("/ask")
 def ask(question: str):
-    question_vector = model.encode(question)
-    scores = util.cos_sim(question_vector, snippet_vectors)[0]
-    top_indices = scores.argsort(descending=True)[:2]
-    retrieved = [snippets[i] for i in top_indices]
+    question_vector = model.encode(question).tolist()
+    result = supabase.rpc("match_courses", {
+        "query_embedding" : question_vector,
+        "match_count":2
+    }).execute()
+
+    retrieved = [row["text"] for row in result.data]
 
     context = "\n".join(retrieved)
     prompt = f"""use the following information to answer the student's question.
