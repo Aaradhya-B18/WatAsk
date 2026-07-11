@@ -1,8 +1,16 @@
+"""
+Clean waterloo_data.json into planner_courses.json.
+Deduplicates by course code and collects terms offered.
+Run after fetch_uw_courses.py.
+"""
+import os
 import json
 
-data = json.load(open("waterloo_data.json"))
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# dedupe by subject+catalogNumber, collect terms offered
+with open(os.path.join(ROOT, "waterloo_data.json")) as f:
+    data = json.load(f)
+
 courses = {}
 for c in data["courses"]:
     key = f"{c['subjectCode']} {c['catalogNumber']}"
@@ -21,8 +29,9 @@ for c in data["courses"]:
         courses[key]["termsOffered"].append(t)
 
 clean = sorted(courses.values(), key=lambda x: x["code"])
-with open("planner_courses.json", "w") as f:
+out = os.path.join(ROOT, "planner_courses.json")
+with open(out, "w") as f:
     json.dump(clean, f, indent=2)
 
-print(f"Cleaned: {len(clean)} unique courses")
+print(f"Cleaned: {len(clean)} unique courses → {out}")
 print("Example:", json.dumps(clean[0], indent=2))

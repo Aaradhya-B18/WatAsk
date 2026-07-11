@@ -8,6 +8,8 @@ from google import genai
 from supabase import create_client
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+import json
+
 
 load_dotenv()
 
@@ -47,6 +49,15 @@ class Turn(BaseModel):
 class AskRequest(BaseModel):
     question: str
     history: Optional[List[Turn]] = None
+    student_context: Optional[str] = None
+
+class PlanRequest(BaseModel):
+    program: str
+    terms: List[str]
+    taken: List[str]
+    groups: List[dict]          # [{name, courses}]
+    placed: Optional[dict] = None  # {termId: [codes]} already in the grid
+    current_term: Optional[str] = None
 
 
 GREETING_TRIGGERS = [
@@ -61,8 +72,9 @@ COURSE_WORDS = re.compile(
     r'\b(course|courses|class|classes|hard|easy|harder|easier|difficult|difficulty|'
     r'take|taking|took|prereq|prerequisite|prof|professor|exam|exams|midterm|final|'
     r'assignment|workload|enroll|stream|advanced|enriched|recommend|worth|'
+    r'plan|schedule|sequence|next|skip|avoid|instead|option|alternative|'
     r'math|cs|stat|stats|calc|calculus|algebra|combinatorics|probability|logic|'
-    r'linear|compiler|proof|proofs)\b',
+    r'linear|compiler|proof|proofs|generate|suggest|advice)\b',
     re.IGNORECASE
 )
 
@@ -87,6 +99,82 @@ def find_codes(q: str):
 def looks_like_course_question(q: str) -> bool:
     return bool(find_codes(normalize_query(q)) or COURSE_WORDS.search(q))
 
+@app.post("/plan")
+def suggest_plan(req: PlanRequest):
+    taken_str = ", ".join(req.taken) if req.taken else "none yet"
+
+    # Flatten all required courses across groups
+    all_required = []
+    for g in req.groups:
+        if not g["name"].startswith("Advanced"):
+            all_required.extend(g["courses"])
+    # Remove already taken or placed
+    placed_flat = set()
+    if req.placed:
+        for codes in req.placed.values():
+            placed_flat.update(codes)
+    already_done = set(req.taken) | placed_flat
+    to_schedule = [c for c in all_required if c not in already_done]
+
+    terms_str = ", ".join(req.terms)
+
+    placed_str = ""
+    if req.placed:
+        placed_str = "; ".join(
+            f"{t}: {', '.join(codes)}" for t, codes in req.placed.items() if codes
+        ) or "none"
+    else:
+        placed_str = "none"
+
+    prompt = f"""You are a UW academic advisor generating a term-by-term course plan.
+
+STUDENT: {req.program}
+Already completed: {taken_str}
+Already placed in grid: {placed_str}
+Study terms in order: {terms_str}
+Required courses still to schedule: {', '.join(to_schedule) if to_schedule else 'none — all done!'}
+
+STRICT RULES (follow every one):
+1. CO-REQUISITES — these MUST appear in the exact same term:
+   - CS 136 and CS 136L always together
+2. PREREQUISITES — determine the CS path from the required course list, then respect ordering:
+   PATH A (non-CS programs): CS 115 in 1A → CS 116 in 1B → CS 234 in 2A (if in required list)
+   PATH B (CS-heavy programs): CS 135 or CS 145 in 1A → CS 136 + CS 136L in 1B
+   Do NOT mix paths. Use whichever path appears in the required course list.
+   - MATH 135, MATH 137 (or MATH 145/147) go in 1A; MATH 136, MATH 138 go in 1B
+   - MATH 235 and MATH 239 require MATH 136 → earliest 2A
+   - STAT 230 before STAT 231; STAT 240 before STAT 241
+   - AMATH 231, AMATH 250 require MATH 138 → earliest 2A
+   - AMATH 271 requires MATH 138 → earliest 2B or 3A
+   - AMATH 331 requires MATH 237 → earliest 3A
+   - AMATH 342, AMATH 353 require AMATH 231 and AMATH 250 → earliest 3B/4A
+   - ACTSC 231 requires MATH 128/138 → earliest 2A
+   - CO 250 requires MATH 136 → earliest 2A
+   - CS 240, CS 241, CS 245, CS 246 require CS 136 (PATH B) → earliest 2A or 2B
+   - 300-level courses require their 200-level prereqs done first
+   - 400-level courses require their 300-level prereqs done first
+3. COURSE LOAD — list only required courses per term (students fill with electives to reach 5/term)
+4. DISTRIBUTION — spread required courses across ALL study terms given above, working in order
+   - 4A and 4B are normal study terms; include them whenever required courses remain
+   - Max 4 required courses per study term
+   - Output all terms that have at least 1 required course; skip only genuinely empty terms
+
+Output format — ONLY the schedule, one term per line, no preamble:
+[term]: [code1], [code2], ..."""
+
+    try:
+        response = client.models.generate_content(model="gemini-3.1-flash-lite", contents=prompt)
+        return {"answer": response.text}
+    except Exception as e:
+        return {"answer": f"Error generating plan: {e}", "error": True}
+
+
+@app.get("/courses")
+def get_courses():
+    with open("planner_courses.json") as f:
+        return json.load(f)
+    
+    
 @app.get("/")
 def home():
     return FileResponse("index.html")
@@ -98,15 +186,15 @@ def ask(req: AskRequest):
 
     if is_greeting(question):
         intro = (
-            "Hey there, Warrior! \U0001FAE1 I'm WatAsk \u2014 I give straight answers about "
-            "Waterloo courses: how hard they are, what they cover, and what students "
-            "actually say on UWFlow.\n\n"
-            "Right now I know about 33 core first- and second-year courses:\n"
-            "\u2022 MATH \u2014 135, 136, 137, 138, 127, 128, 145, 146, 147, 148, 235, 245, 237, 247, 239\n"
-            "\u2022 CS \u2014 115, 116, 135, 145, 136, 136L, 146, 240, 241, 241E, 245, 245E, 246, 246E\n"
-            "\u2022 STAT \u2014 230, 231, 240, 241\n\n"
-            "Try asking things like \"is MATH 239 hard?\", \"should I take CS 245 or 245E?\", "
-            "or \"which Calc 3 should I take?\""
+            "Hey there, Warrior! \U0001FAE1 I'm WatAsk \u2014 your UW course advisor. "
+            "I can answer questions about any CS, MATH, STAT, PMATH, AMATH, ACTSC, or CO course \u2014 "
+            "difficulty, prereqs, what students say, and how it fits your plan.\n\n"
+            "I also know your current program, completed courses, and term sequence, "
+            "so ask me things like:\n"
+            "\u2022 \"Should I take CS 245 or 245E?\"\n"
+            "\u2022 \"I'm skipping CS 136 \u2014 what are my options?\"\n"
+            "\u2022 \"Generate a plan for my remaining terms\"\n"
+            "\u2022 \"Is STAT 330 hard after STAT 231?\""
         )
         return {"question": question, "answer": intro, "source_codes": [], "sources": []}
 
@@ -157,32 +245,40 @@ def ask(req: AskRequest):
     for turn in history:
         convo += f"Student: {turn.question}\nWatAsk: {turn.answer}\n\n"
 
-    prompt = f"""You are WatAsk, answering a University of Waterloo student's question about courses.
-Use ONLY the course information provided below. If it doesn't contain the answer, say so plainly.
-Use the conversation so far to understand follow-up questions (e.g. "what about the advanced version?").
+    student_section = f"\nStudent profile: {req.student_context}" if req.student_context else ""
 
-When you mention difficulty ratings, translate them into plain language instead of just quoting a percentage.
-For an "easy" rating, phrase it as how students experienced it. For example:
-- around 30% easy -> "most students found it quite hard"
-- around 45-55% easy -> "students were split; many found it moderately challenging"
-- around 70%+ easy -> "most students found it manageable"
-Do the same for "liked" (how well-liked it is) and "useful" (how useful students found it).
+    prompt = f"""You are WatAsk, a knowledgeable UW academic advisor chatbot.
+You know this student's program, completed courses, and current plan — use that context to give tailored advice.{student_section}
 
-Keep the answer to 2-4 sentences, direct and conversational, like a senior student giving honest advice.
+Primary source: use the course information retrieved below.
+If the retrieved info doesn't fully cover the question (e.g. a planning question, an edge case, or a course comparison), draw on your general knowledge of UW programs to give a helpful answer — but flag if you're less certain.
 
-Course information:
-{context}
+When you mention difficulty ratings, translate them into plain language:
+- ~30% easy → "most students found it quite hard"
+- ~45-55% easy → "students were split on difficulty"
+- ~70%+ easy → "most students found it manageable"
+Same for "liked" and "useful" ratings.
+
+For planning questions ("generate a plan", "what should I take next"), produce a concrete term-by-term suggestion based on the student's profile above and prereqs — don't refuse or deflect.
+
+Keep answers to 2-5 sentences, direct and conversational like a senior student. Use the conversation history to understand follow-up context.
+
+Retrieved course information:
+{context if context else "(no specific course data retrieved — use general knowledge)"}
 
 Conversation so far:
 {convo if convo else "(none yet)"}
 Current question: {clean_question}
 """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
-    )
-    answer_text = response.text
+    try:
+        response = client.models.generate_content(
+            model="gemini-3.1-flash-lite",
+            contents=prompt
+        )
+        answer_text = response.text
+    except Exception as e:
+        return {"question": question, "answer": f"API error: {e}", "source_codes": [], "sources": []}
 
     answer_upper = answer_text.upper()
     mentioned = [s["code"] for s in sources if s["code"].upper() in answer_upper]

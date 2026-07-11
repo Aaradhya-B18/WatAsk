@@ -1,0 +1,1160 @@
+{
+  "actuarial-science": {
+    "pid": "HkeH1JRCjh",
+    "name": "Actuarial Science (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "ACTSC 231",
+      "ACTSC 232",
+      "ACTSC 331",
+      "ACTSC 363",
+      "ACTSC 372",
+      "ACTSC 431",
+      "ACTSC 446",
+      "STAT 330",
+      "STAT 331",
+      "STAT 333",
+      "STAT 341"
+    ],
+    "one_of_groups": [
+      [
+        "AMATH 250",
+        "AMATH 251",
+        "AMATH 350"
+      ],
+      [
+        "MATH 237",
+        "MATH 247"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {
+      "math courses": 13.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 70.0%: all ACTSC231, ACTSC232, STAT230 or STAT240, STAT231 or STAT241, and all math courses at the 300- or 400-level."
+    ],
+    "declaration": "To declare Actuarial Science as a major, students are required to have: Completed MTHEL131 with a minimum grade of 60.0%; or, for Business Administration and Mathematics double degree students, a minimum grade of C- in BUS121W. A minimum major average (MAV) of 70.0%; or, if a MAV does not yet exist, a minimum cumulative average of 70.0% with at least 10 passed courses. Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "applied-math": {
+    "pid": "r1lByy00sh",
+    "name": "Applied Mathematics (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "AMATH 231",
+      "AMATH 342",
+      "AMATH 353",
+      "AMATH 250",
+      "AMATH 251",
+      "AMATH 271"
+    ],
+    "one_of_groups": [
+      [
+        "AMATH 242",
+        "CS 371"
+      ],
+      [
+        "AMATH 333",
+        "AMATH 343",
+        "AMATH 345",
+        "AMATH 361",
+        "AMATH 362",
+        "AMATH 373",
+        "AMATH 382",
+        "AMATH 383",
+        "AMATH 390",
+        "AMATH 391",
+        "PMATH 343",
+        "AMATH 331",
+        "AMATH 332",
+        "PMATH 331",
+        "PMATH 332",
+        "PMATH 333",
+        "PMATH 351",
+        "PMATH 352"
+      ],
+      [
+        "MATH 237",
+        "MATH 247"
+      ]
+    ],
+    "n_of_groups": [
+      {
+        "n": 3,
+        "courses": [
+          "AMATH 442",
+          "AMATH 445",
+          "AMATH 446",
+          "AMATH 449",
+          "AMATH 451",
+          "AMATH 453",
+          "AMATH 455",
+          "AMATH 456",
+          "AMATH 462",
+          "AMATH 463",
+          "AMATH 473",
+          "AMATH 474",
+          "AMATH 475",
+          "AMATH 477",
+          "AMATH 490",
+          "AMATH 495",
+          "AMATH 499",
+          "CS 479"
+        ]
+      }
+    ],
+    "units": {
+      "math courses": 13.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 65.0%: all math courses."
+    ],
+    "declaration": "Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "applied-math-sci-comp": {
+    "pid": "ByBkJCRs2",
+    "name": "Applied Mathematics with Scientific Computing and Scientific Machine Learning (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "AMATH 231",
+      "AMATH 445",
+      "CS 234"
+    ],
+    "one_of_groups": [
+      [
+        "AMATH 242",
+        "CS 371"
+      ],
+      [
+        "AMATH 250",
+        "AMATH 251"
+      ],
+      [
+        "AMATH 342",
+        "AMATH 345",
+        "AMATH 449",
+        "CS 479"
+      ],
+      [
+        "CO 250",
+        "CO 255"
+      ],
+      [
+        "MATH 237",
+        "MATH 247"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {
+      "math courses": 13.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 65.0%: all math courses."
+    ],
+    "declaration": "Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "biostatistics": {
+    "pid": "SkUkJR0oh",
+    "name": "Biostatistics (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "STAT 330",
+      "STAT 331",
+      "STAT 332",
+      "STAT 333",
+      "STAT 337",
+      "STAT 431",
+      "STAT 437",
+      "STAT 438"
+    ],
+    "one_of_groups": [
+      [
+        "AMATH 231",
+        "AMATH 242",
+        "AMATH 250",
+        "AMATH 251",
+        "AMATH 350",
+        "CS 371",
+        "MATH 239",
+        "MATH 249"
+      ],
+      [
+        "MATH 237",
+        "MATH 247"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {
+      "math courses": 13.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 65.0%: all math courses."
+    ],
+    "declaration": "Biostatistics is a restricted-enrolment plan. Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "combinatorics-opt": {
+    "pid": "SyeD110Co2",
+    "name": "Combinatorics and Optimization (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "CO 330",
+      "CO 342",
+      "CO 351",
+      "CO 353",
+      "CO 367",
+      "CS 462",
+      "CS 466",
+      "CS 487",
+      "AMATH 331",
+      "PMATH 331",
+      "PMATH 333",
+      "PMATH 351",
+      "AMATH 332",
+      "PMATH 332",
+      "PMATH 352",
+      "MATH 237",
+      "MATH 247",
+      "PMATH 334",
+      "PMATH 348"
+    ],
+    "one_of_groups": [
+      [
+        "CO 250",
+        "CO 255"
+      ],
+      [
+        "CO 450",
+        "CO 452",
+        "CO 454",
+        "CO 456",
+        "CO 459",
+        "CO 463",
+        "CO 466",
+        "CO 471",
+        "MATH 239",
+        "MATH 249"
+      ],
+      [
+        "PMATH 336",
+        "PMATH 347"
+      ]
+    ],
+    "n_of_groups": [
+      {
+        "n": 3,
+        "courses": [
+          "CO 330",
+          "CO 331",
+          "CO 342",
+          "CO 351",
+          "CO 353",
+          "CO 367",
+          "CO 430",
+          "CO 431",
+          "CO 432",
+          "CO 434",
+          "CO 439",
+          "CO 440",
+          "CO 442",
+          "CO 444",
+          "CO 446",
+          "CO 450",
+          "CO 452",
+          "CO 454",
+          "CO 456",
+          "CO 459",
+          "CO 463",
+          "CO 466",
+          "CO 471",
+          "CO 481",
+          "CO 485",
+          "CO 486",
+          "CO 487",
+          "CS 467"
+        ]
+      }
+    ],
+    "units": {
+      "math courses": 13.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 65.0%: all math courses."
+    ],
+    "declaration": ""
+  },
+  "comp-math": {
+    "pid": "rkDkJCAj2",
+    "name": "Computational Mathematics (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "CS 230",
+      "CS 234",
+      "CS 246",
+      "CS 246E",
+      "AMATH 342",
+      "CS 475",
+      "PMATH 370",
+      "CO 353",
+      "CO 367"
+    ],
+    "one_of_groups": [
+      [
+        "AMATH 242",
+        "CS 371"
+      ],
+      [
+        "MATH 237",
+        "MATH 247"
+      ],
+      [
+        "MATH 239",
+        "MATH 249"
+      ],
+      [
+        "CO 250",
+        "CO 255"
+      ],
+      [
+        "CS 245",
+        "CS 245E",
+        "PMATH 330",
+        "PMATH 432"
+      ]
+    ],
+    "n_of_groups": [
+      {
+        "n": 2,
+        "courses": [
+          "AMATH 250",
+          "AMATH 251",
+          "AMATH 350"
+        ]
+      }
+    ],
+    "units": {
+      "math courses": 13.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 60.0%: all math courses."
+    ],
+    "declaration": ""
+  },
+  "data-science-bmath": {
+    "pid": "HymD11R0j3",
+    "name": "Data Science (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "CS 136L",
+      "CS 230",
+      "CS 231",
+      "CS 234",
+      "CS 338",
+      "CS 431",
+      "STAT 331",
+      "STAT 341",
+      "STAT 442",
+      "AMATH 445",
+      "STAT 441",
+      "STAT 443",
+      "STAT 444",
+      "AMATH 242",
+      "CS 335",
+      "CS 370",
+      "CS 371",
+      "AMATH 449",
+      "CS 479",
+      "STAT 330",
+      "STAT 431",
+      "STAT 440",
+      "STAT 332"
+    ],
+    "one_of_groups": [
+      [
+        "AMATH 231",
+        "AMATH 250",
+        "AMATH 251"
+      ],
+      [
+        "CO 250",
+        "CO 255"
+      ],
+      [
+        "CS 136",
+        "CS 146"
+      ],
+      [
+        "MATH 237",
+        "MATH 247"
+      ]
+    ],
+    "n_of_groups": [
+      {
+        "n": 2,
+        "courses": [
+          "AMATH 345",
+          "AMATH 391",
+          "CO 353",
+          "CO 365",
+          "CO 367",
+          "CO 370"
+        ]
+      }
+    ],
+    "units": {
+      "math courses": 14.25,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 60.0%: CS136, CS138, CS146, all subsequent CS major courses, as well as CS courses numbered 600 and higher, CO487, ECE222, ECE429, SE212, SE240, SE382, SE463, SE464, SE465, and STAT 440. A minimum cumulative special major average of 65%: all math courses."
+    ],
+    "declaration": "Admission to the Data Science (Bachelor of Mathematics) academic plan normally happens in second year. Students from within the Faculty of Mathematics with advanced standing may apply for admission to the Data Science major if they: Have completed at least one term in the Faculty of Mathematics with a typical course load for a Computer Science major. For students taking a first-year CS course: one CS course, two math courses, and two non-math electives. For students taking second-year CS courses: two CS courses, two math courses, and one non-math elective. Have credit for CS136 or CS146. Have a minimum cumulative math major average of 65% (calculated over all math and computer science courses) and a minimum cumulative CS major average of 70%. Notes The Data Science major is a limited-enrolment academic plan and successful completion of the above conditions will not guarantee admission; applicants without some of these conditions will be considered on an individual basis. Students are normally not considered for admission beyond the 2B level. Transfer into the BMath (Data Science) academic plan from other academic plans in the Faculty of Mathematics outside of Computer Science is subject to enrolment limits. Transfer into BMath (Data Science) does not allow a student to then transfer automatically into Computer Science academic plans. Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "math-finance": {
+    "pid": "ryAkJARjn",
+    "name": "Mathematical Finance (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "ACTSC 231",
+      "ACTSC 372",
+      "ACTSC 445",
+      "ACTSC 446",
+      "PMATH 351",
+      "PMATH 450",
+      "STAT 330",
+      "STAT 331",
+      "STAT 333",
+      "STAT 443",
+      "AMATH 242",
+      "CS 335",
+      "CS 371",
+      "ACTSC 447",
+      "AMATH 353",
+      "CO 372",
+      "CS 476",
+      "PMATH 453",
+      "MATH 247"
+    ],
+    "one_of_groups": [
+      [
+        "AMATH 250",
+        "AMATH 251",
+        "AMATH 350"
+      ],
+      [
+        "AMATH 351",
+        "CO 250",
+        "CO 255",
+        "PMATH 352"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {
+      "math courses": 13.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 70.0%: all math courses."
+    ],
+    "declaration": ""
+  },
+  "math-studies": {
+    "pid": "H1z0kJR0in",
+    "name": "Mathematical Studies (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [],
+    "one_of_groups": [
+      [
+        "CS 115",
+        "CS 135",
+        "CS 145"
+      ],
+      [
+        "CS 116",
+        "CS 136",
+        "CS 146"
+      ],
+      [
+        "MATH 106",
+        "MATH 136",
+        "MATH 146"
+      ],
+      [
+        "MATH 127",
+        "MATH 137",
+        "MATH 147"
+      ],
+      [
+        "MATH 128",
+        "MATH 138",
+        "MATH 148"
+      ],
+      [
+        "MATH 135",
+        "MATH 145"
+      ],
+      [
+        "MATH 207",
+        "MATH 229",
+        "MATH 237",
+        "MATH 239",
+        "MATH 247",
+        "MATH 249"
+      ],
+      [
+        "MATH 225",
+        "MATH 235",
+        "MATH 245"
+      ],
+      [
+        "STAT 220",
+        "STAT 230",
+        "STAT 240"
+      ],
+      [
+        "STAT 221",
+        "STAT 231",
+        "STAT 241"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {
+      "math courses": 13.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 60.0%: all math courses."
+    ],
+    "declaration": "Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "pure-math-minor": {
+    "pid": "S1eexkCAo2",
+    "name": "Pure Mathematics (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "PMATH 347",
+      "PMATH 348",
+      "PMATH 351",
+      "PMATH 352",
+      "PMATH 450"
+    ],
+    "one_of_groups": [
+      [
+        "MATH 237",
+        "MATH 247"
+      ],
+      [
+        "MATH 239",
+        "MATH 249"
+      ],
+      [
+        "PMATH 365",
+        "PMATH 367"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {
+      "math courses": 13.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 65.0%: all math courses."
+    ],
+    "declaration": ""
+  },
+  "statistics": {
+    "pid": "H1XegyCAin",
+    "name": "Statistics (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "STAT 330",
+      "STAT 331",
+      "STAT 332",
+      "STAT 333"
+    ],
+    "one_of_groups": [
+      [
+        "AMATH 231",
+        "AMATH 242",
+        "AMATH 250",
+        "AMATH 251",
+        "AMATH 350",
+        "CS 371",
+        "MATH 239",
+        "MATH 249"
+      ],
+      [
+        "MATH 237",
+        "MATH 247"
+      ],
+      [
+        "CS 457",
+        "CS 485",
+        "CS 486"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {
+      "math courses": 13.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 65.0%: all math courses."
+    ],
+    "declaration": ""
+  },
+  "math-teaching": {
+    "pid": "Byl0k1ACin",
+    "name": "Mathematics/Teaching (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": false,
+    "required_courses": [
+      "ACTSC 221",
+      "CS 234"
+    ],
+    "one_of_groups": [
+      [
+        "AMATH 250",
+        "AMATH 251",
+        "AMATH 343"
+      ],
+      [
+        "AMATH 331",
+        "AMATH 332",
+        "PMATH 331",
+        "PMATH 332",
+        "PMATH 333",
+        "PMATH 351",
+        "PMATH 352"
+      ],
+      [
+        "CO 250",
+        "CO 255"
+      ],
+      [
+        "CO 380",
+        "CO 480"
+      ],
+      [
+        "CS 230",
+        "CS 330",
+        "CS 338",
+        "CS 370",
+        "CS 371",
+        "CS 430",
+        "CS 436"
+      ],
+      [
+        "MATH 237",
+        "MATH 247"
+      ],
+      [
+        "MATH 239",
+        "MATH 249"
+      ],
+      [
+        "PMATH 320",
+        "PMATH 321",
+        "PMATH 330",
+        "PMATH 340",
+        "PMATH 432",
+        "PMATH 440"
+      ],
+      [
+        "PMATH 334",
+        "PMATH 336",
+        "PMATH 347",
+        "PMATH 348"
+      ],
+      [
+        "STAT 331",
+        "STAT 332",
+        "STAT 333"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {
+      "math courses (see additional constraints)": 12.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative special major average of 60.0%: all math courses."
+    ],
+    "declaration": "Students interested in this restricted-enrolment academic plan should enrol in the Honours Mathematics co-operative plan in Year One, and will be considered for admission to Teaching in Year Two on the basis of an interview, satisfactory academic standing, and good standing in co-op."
+  },
+  "math-economics-bmath": {
+    "pid": "r1gAJJ0Cin",
+    "name": "Mathematical Economics (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "AMATH 350",
+      "STAT 331",
+      "STAT 443"
+    ],
+    "one_of_groups": [
+      [
+        "AMATH 331",
+        "PMATH 331",
+        "PMATH 333",
+        "PMATH 351"
+      ],
+      [
+        "CO 250",
+        "CO 255"
+      ],
+      [
+        "MATH 237",
+        "MATH 247"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {
+      "math courses": 11.0,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative Mathematics average of 60.0%. A minimum cumulative Economics average of 70.0%."
+    ],
+    "declaration": "Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "applied-math-minor": {
+    "pid": "rkGHJk0Ci2",
+    "name": "Applied Mathematics Minor",
+    "coop": false,
+    "regular": false,
+    "required_courses": [],
+    "one_of_groups": [
+      [
+        "MATH 103",
+        "MATH 106",
+        "MATH 114",
+        "MATH 115",
+        "MATH 136",
+        "MATH 146"
+      ],
+      [
+        "MATH 104",
+        "MATH 116",
+        "MATH 117",
+        "MATH 127",
+        "MATH 137",
+        "MATH 147"
+      ],
+      [
+        "MATH 118",
+        "MATH 119",
+        "MATH 128",
+        "MATH 138",
+        "MATH 148"
+      ],
+      [
+        "MATH 212",
+        "MATH 217",
+        "MATH 227",
+        "MATH 237",
+        "MATH 247"
+      ],
+      [
+        "AMATH 250",
+        "AMATH 251",
+        "MATH 211",
+        "MATH 213",
+        "MATH 218",
+        "MATH 228"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {},
+    "min_averages": [],
+    "declaration": "Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "co-minor": {
+    "pid": "H1D1JR0s2",
+    "name": "Combinatorics and Optimization Minor",
+    "coop": false,
+    "regular": false,
+    "required_courses": [],
+    "one_of_groups": [],
+    "n_of_groups": [],
+    "units": {},
+    "min_averages": [],
+    "declaration": "Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "comp-math-minor": {
+    "pid": "SkZPkyCAjh",
+    "name": "Computational Mathematics Minor",
+    "coop": false,
+    "regular": false,
+    "required_courses": [
+      "AMATH 242",
+      "CS 370",
+      "CS 371",
+      "AMATH 342",
+      "CS 475",
+      "CO 250",
+      "CO 255",
+      "CS 245",
+      "CS 245E",
+      "PMATH 330",
+      "PMATH 432",
+      "CS 246",
+      "CS 246E",
+      "CS 247"
+    ],
+    "one_of_groups": [],
+    "n_of_groups": [],
+    "units": {},
+    "min_averages": [],
+    "declaration": "This credential is only open to students enrolled in a Faculty of Mathematics academic plan."
+  },
+  "cs-minor": {
+    "pid": "SyPykARoh",
+    "name": "Computer Science Minor",
+    "coop": false,
+    "regular": false,
+    "required_courses": [
+      "CS 115",
+      "CS 135",
+      "CS 145",
+      "CS 136",
+      "CS 136L",
+      "CS 146",
+      "MATH 239",
+      "MATH 249"
+    ],
+    "one_of_groups": [],
+    "n_of_groups": [],
+    "units": {},
+    "min_averages": [
+      "A minimum cumulative Computer Science average of 60.0%."
+    ],
+    "declaration": "This credential is open to all Honours students and is generally not available to students outside the Faculty of Mathematics because it includes several restricted courses. Students inside the Faculty of Mathematics may need to register as a Computer Science major for one or more terms to complete the Computer Science Minor. Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "stats-minor": {
+    "pid": "rJbgx1RAs3",
+    "name": "Statistics Minor",
+    "coop": false,
+    "regular": false,
+    "required_courses": [],
+    "one_of_groups": [
+      [
+        "MATH 237",
+        "MATH 247"
+      ]
+    ],
+    "n_of_groups": [
+      {
+        "n": 3,
+        "courses": [
+          "STAT 330",
+          "STAT 331",
+          "STAT 332",
+          "STAT 333"
+        ]
+      }
+    ],
+    "units": {},
+    "min_averages": [],
+    "declaration": "This credential is only open to students enrolled in a Faculty of Mathematics academic plan."
+  },
+  "cs-bcs": {
+    "pid": "SJPJkCAih",
+    "name": "Computer Science (Bachelor of Computer Science - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "CS 136L",
+      "CS 341",
+      "CS 350",
+      "CO 487",
+      "CS 499T",
+      "STAT 440"
+    ],
+    "one_of_groups": [
+      [
+        "CS 115",
+        "CS 135",
+        "CS 145"
+      ],
+      [
+        "CS 136",
+        "CS 146"
+      ],
+      [
+        "CS 240",
+        "CS 240E"
+      ],
+      [
+        "CS 241",
+        "CS 241E"
+      ],
+      [
+        "CS 245",
+        "CS 245E"
+      ],
+      [
+        "CS 246",
+        "CS 246E"
+      ],
+      [
+        "CS 251",
+        "CS 251E"
+      ],
+      [
+        "MATH 127",
+        "MATH 137",
+        "MATH 147"
+      ],
+      [
+        "MATH 128",
+        "MATH 138",
+        "MATH 148"
+      ],
+      [
+        "MATH 135",
+        "MATH 145"
+      ],
+      [
+        "MATH 136",
+        "MATH 146"
+      ],
+      [
+        "MATH 239",
+        "MATH 249"
+      ],
+      [
+        "STAT 230",
+        "STAT 240"
+      ],
+      [
+        "STAT 231",
+        "STAT 241"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 60.0% in two or more of the following courses: CS136, CS138, CS146 CS240-299, CS340-399, CS440-499"
+    ],
+    "declaration": "Students from within the Faculty of Mathematics with advanced standing may apply for admission to the Computer Science major if they: Have completed at least one term in the Faculty of Mathematics with a typical course load for a Computer Science major. For students taking a first-year CS course: one CS course, two math courses, and two non-math electives. For students taking second-year CS courses: two CS courses, two math courses, and one non-math elective. Have credit for CS136 or CS146; and CS136L. Have a minimum cumulative math major average of 65% (calculated over all math and computer science courses) and a minimum cumulative CS major average of 70%. The Computer Science major is a limited-enrolment academic plan and successful completion of the above conditions will not guarantee admission; applicants without some of these conditions will be considered on an individual basis. Students are normally not considered for admission beyond the 2B level. Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "cs-bmath": {
+    "pid": "HkxPJk0Cj3",
+    "name": "Computer Science (Bachelor of Mathematics - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "CS 136L",
+      "CS 341",
+      "CS 350",
+      "ACTSC 221",
+      "CO 353",
+      "CO 380",
+      "CO 480"
+    ],
+    "one_of_groups": [
+      [
+        "AMATH 242",
+        "CS 370",
+        "CS 371"
+      ],
+      [
+        "CS 240",
+        "CS 240E"
+      ],
+      [
+        "CS 241",
+        "CS 241E"
+      ],
+      [
+        "CS 245",
+        "CS 245E"
+      ],
+      [
+        "CS 246",
+        "CS 246E"
+      ],
+      [
+        "CS 251",
+        "CS 251E"
+      ],
+      [
+        "CS 360",
+        "CS 365"
+      ],
+      [
+        "MATH 237",
+        "MATH 247"
+      ],
+      [
+        "MATH 239",
+        "MATH 249"
+      ],
+      [
+        "CO 487",
+        "CS 499T",
+        "STAT 440"
+      ]
+    ],
+    "n_of_groups": [],
+    "units": {
+      "math courses": 13.75,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 60.0% in two or more of the following courses: CS136, CS138, CS146"
+    ],
+    "declaration": "Students from within the Faculty of Mathematics with advanced standing may apply for admission to the Computer Science major if they: Have completed at least one term in the Faculty of Mathematics with a typical course load for a Computer Science major. For students taking a first-year CS course: one CS course, two math courses, and two non-math electives. For students taking second-year CS courses: two CS courses, two math courses, and one non-math elective. Have credit for CS136 or CS146; and CS136L. Have a minimum cumulative math major average of 65% (calculated over all math and computer science courses) and a minimum cumulative CS major average of 70%. The Computer Science major is a limited-enrolment academic plan and successful completion of the above conditions will not guarantee admission; applicants without some of these conditions will be considered on an individual basis. Students are normally not considered for admission beyond the 2B level. Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "data-science-bcs": {
+    "pid": "rkgPyyC0o2",
+    "name": "Data Science (Bachelor of Computer Science - Honours)",
+    "coop": true,
+    "regular": true,
+    "required_courses": [
+      "CS 136L",
+      "CS 341",
+      "CS 348",
+      "CS 350",
+      "CS 451",
+      "STAT 330",
+      "STAT 331",
+      "STAT 341",
+      "CS 251",
+      "CS 251E",
+      "CS 480",
+      "CS 448",
+      "CS 454",
+      "CS 484",
+      "CS 485",
+      "CS 486",
+      "CO 487",
+      "CS 499T",
+      "STAT 440"
+    ],
+    "one_of_groups": [
+      [
+        "CS 115",
+        "CS 135",
+        "CS 145"
+      ],
+      [
+        "CS 136",
+        "CS 146"
+      ],
+      [
+        "CS 240",
+        "CS 240E"
+      ],
+      [
+        "CS 241",
+        "CS 241E"
+      ],
+      [
+        "CS 245",
+        "CS 245E"
+      ],
+      [
+        "CS 246",
+        "CS 246E"
+      ],
+      [
+        "CS 448",
+        "CS 454",
+        "CS 480",
+        "CS 484",
+        "CS 485",
+        "MATH 127",
+        "MATH 137",
+        "MATH 147"
+      ],
+      [
+        "MATH 128",
+        "MATH 138",
+        "MATH 148"
+      ],
+      [
+        "MATH 135",
+        "MATH 145"
+      ],
+      [
+        "MATH 136",
+        "MATH 146"
+      ],
+      [
+        "MATH 235",
+        "MATH 245"
+      ],
+      [
+        "MATH 237",
+        "MATH 247"
+      ],
+      [
+        "MATH 239",
+        "MATH 249"
+      ],
+      [
+        "STAT 230",
+        "STAT 240"
+      ],
+      [
+        "STAT 231",
+        "STAT 241"
+      ]
+    ],
+    "n_of_groups": [
+      {
+        "n": 2,
+        "courses": [
+          "STAT 431",
+          "STAT 440",
+          "STAT 441",
+          "STAT 442",
+          "STAT 443",
+          "STAT 444"
+        ]
+      }
+    ],
+    "units": {
+      "math courses": 14.75,
+      "non-math courses": 5.0
+    },
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum cumulative major average of 60.0% in two or more of the following courses: CS136, CS138, CS146, all subsequent CS major courses, as well as CS courses numbered 600 and higher, CO487, ECE222, ECE429, SE212, SE240, SE382, SE463, SE464, SE465, and STAT 440. A minimum cumulative special major average of 65%: all math courses."
+    ],
+    "declaration": "Admission to the Bachelor of Computer Science (Data Science) academic plan, which is a Computer Science major academic plan, normally happens in second year. Students from within the Faculty of Mathematics with advanced standing may apply for admission to the Data Science major if they: Have completed at least one term in the Faculty of Mathematics with a typical course load for a Computer Science major. For students taking a first-year CS course: one CS course, two math courses, and two non-math electives. For students taking second-year CS courses: two CS courses, two math courses, and one non-math elective. Have credit for CS136 or CS146; and CS136L. Have a minimum cumulative math major average of 65% (calculated over all math and computer science courses) and a minimum cumulative CS major average of 70%. Notes The Data Science major is a limited-enrolment academic plan and successful completion of the above conditions will not guarantee admission; applicants without some of these conditions will be considered on an individual basis. Students are normally not considered for admission beyond the 2B level. Transfer into the BMath (Data Science) academic plan from other academic plans in the Faculty of Mathematics outside of Computer Science is subject to enrolment limits. Transfer into BMath (Data Science) does not allow a student to then transfer automatically into Computer Science academic plans. Before declaring this academic plan, see invalid credential combinations ."
+  },
+  "software-engineering": {
+    "pid": "H1zle10Cs3",
+    "name": "Software Engineering (Bachelor of Software Engineering - Honours)",
+    "coop": true,
+    "regular": false,
+    "required_courses": [],
+    "one_of_groups": [],
+    "n_of_groups": [],
+    "units": {},
+    "min_averages": [
+      "A minimum cumulative overall average of 60.0%. A minimum term average of 60.0%. See Faculty of Engineering promotion rules ."
+    ],
+    "declaration": ""
+  }
+}

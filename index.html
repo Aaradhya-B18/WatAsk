@@ -1,265 +1,1703 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WatAsk — UW course questions, answered</title>
-    <style>
-        :root {
-            --black: #111114;
-            --gold: #FFD54A;
-            --gold-deep: #C9A227;
-            --paper: #FAFAF7;
-            --ink: #1d1d1f;
-            --muted: #6b6b70;
-            --line: #e6e6e0;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: "Georgia", "Times New Roman", serif;
-            background: var(--paper);
-            color: var(--ink);
-            line-height: 1.55;
-            min-height: 100vh;
-        }
-        header {
-            background: var(--black);
-            color: white;
-            padding: 28px 24px;
-            border-bottom: 4px solid var(--gold);
-        }
-        .header-inner {
-            max-width: 680px;
-            margin: 0 auto;
-            display: flex;
-            align-items: baseline;
-            gap: 12px;
-        }
-        header h1 { font-size: 30px; letter-spacing: -0.5px; }
-        header .dot { color: var(--gold); }
-        header .tag {
-            font-family: system-ui, sans-serif;
-            font-size: 12px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-left: auto;
-        }
-        main { max-width: 680px; margin: 0 auto; padding: 48px 24px; }
-        .lede { font-size: 19px; color: var(--muted); margin-bottom: 32px; }
-        .ask-row { display: flex; gap: 10px; }
-        input {
-            flex: 1;
-            padding: 14px 16px;
-            font-size: 17px;
-            font-family: inherit;
-            border: 1.5px solid var(--line);
-            border-radius: 10px;
-            background: white;
-            transition: border-color 0.15s;
-        }
-        input:focus {
-            outline: none;
-            border-color: var(--gold-deep);
-            box-shadow: 0 0 0 3px rgba(201,162,39,0.18);
-        }
-        button.ask {
-            padding: 14px 28px;
-            font-size: 16px;
-            font-family: system-ui, sans-serif;
-            font-weight: 600;
-            color: var(--black);
-            background: var(--gold);
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.15s;
-        }
-        button.ask:hover { background: var(--gold-deep); }
-        button.ask:disabled { opacity: 0.55; cursor: default; }
-        .reset-row {
-            margin-top: 14px;
-            display: none;
-        }
-        .reset-row.show { display: block; }
-        button.reset {
-            font-family: system-ui, sans-serif;
-            font-size: 13px;
-            color: var(--muted);
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            text-decoration: underline;
-        }
-        button.reset:hover { color: var(--ink); }
-        .thread { margin-top: 24px; }
-        .turn {
-            margin-bottom: 18px;
-        }
-        .turn .q {
-            font-family: system-ui, sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--muted);
-            margin-bottom: 8px;
-        }
-        .answer-card {
-            background: white;
-            border: 1px solid var(--line);
-            border-left: 4px solid var(--gold);
-            border-radius: 12px;
-            padding: 24px;
-        }
-        .answer-text { font-size: 18px; white-space: pre-wrap; }
-        .sources {
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid var(--line);
-        }
-        .sources h3 {
-            font-family: system-ui, sans-serif;
-            font-size: 11px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 10px;
-        }
-        .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-        .chip {
-            font-family: system-ui, sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            color: var(--black);
-            background: var(--gold);
-            border: 1px solid var(--gold-deep);
-            border-radius: 999px;
-            padding: 5px 13px;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: background 0.15s, transform 0.1s;
-        }
-        .chip:hover { background: var(--gold-deep); transform: translateY(-1px); }
-        .thinking { color: var(--muted); font-style: italic; }
-        footer {
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 24px;
-            font-family: system-ui, sans-serif;
-            font-size: 13px;
-            color: var(--muted);
-        }
-        @media (prefers-reduced-motion: reduce) {
-            * { transition: none !important; }
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WatAsk — Course Planner</title>
+<style>
+:root {
+  --bg:          #000000;
+  --surface:     #0a0a0a;
+  --surface-2:   #111118;
+  --border:      #1e1e2a;
+  --gold:        #FFD54A;
+  --gold-deep:   #C9A227;
+  --gold-muted:  rgba(255,213,74,0.08);
+  --gold-border: rgba(255,213,74,0.22);
+  --text:        #f0f0f4;
+  --muted:       #606070;
+  --green:       #4ade80;
+  --green-muted: rgba(74,222,128,0.08);
+  --red:         #f87171;
+  --red-muted:   rgba(248,113,113,0.08);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); height:100vh; overflow:hidden; }
+
+/* ── Scrollbars ── */
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:99px; }
+
+/* ── Utility ── */
+.hidden { display:none !important; }
+
+/* ── Buttons ── */
+.btn-gold {
+  background:var(--gold); color:#0c0c0f; border:none; border-radius:8px;
+  font-size:13px; font-weight:700; padding:9px 20px; cursor:pointer; transition:background .15s;
+}
+.btn-gold:hover { background:var(--gold-deep); }
+.btn-gold:disabled { opacity:.5; cursor:default; }
+.btn-ghost {
+  background:transparent; color:var(--muted); border:1px solid var(--border);
+  border-radius:8px; font-size:12px; font-weight:600; padding:7px 14px; cursor:pointer; transition:all .15s;
+}
+.btn-ghost:hover { border-color:var(--muted); color:var(--text); }
+
+/* ════════════════════════════════════════
+   ONBOARDING MODAL
+════════════════════════════════════════ */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,.75);
+  backdrop-filter:blur(4px); z-index:100;
+  display:flex; align-items:center; justify-content:center;
+}
+.modal {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:16px; padding:36px; width:520px; max-width:92vw;
+}
+.modal h2 { font-size:22px; font-weight:800; color:var(--gold); margin-bottom:6px; }
+.modal .sub { color:var(--muted); font-size:14px; margin-bottom:28px; }
+.modal-step { display:none; }
+.modal-step.active { display:block; }
+
+.field-label {
+  display:block; font-size:11px; font-weight:700; letter-spacing:.9px;
+  text-transform:uppercase; color:var(--muted); margin-bottom:7px;
+}
+.modal select {
+  width:100%; background:var(--surface-2); border:1px solid var(--border);
+  border-radius:8px; color:var(--text); font-size:15px; padding:10px 14px;
+  margin-bottom:20px; appearance:none; cursor:pointer;
+}
+.modal select:focus { outline:none; border-color:var(--gold); }
+
+.check-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:7px;
+  max-height:260px; overflow-y:auto; margin-bottom:24px;
+}
+.check-item {
+  display:flex; align-items:center; gap:9px;
+  padding:8px 10px; background:var(--surface-2); border:1px solid var(--border);
+  border-radius:8px; cursor:pointer; transition:border-color .1s;
+}
+.check-item:hover { border-color:var(--gold); }
+.check-item.on { border-color:var(--green); background:var(--green-muted); }
+.check-item input { accent-color:var(--gold); width:14px; height:14px; flex-shrink:0; }
+.check-code { font-size:12px; font-weight:700; }
+.check-name { font-size:11px; color:var(--muted); line-height:1.3; }
+
+.modal-footer { display:flex; justify-content:space-between; align-items:center; margin-top:4px; }
+.step-dots { display:flex; gap:6px; }
+.step-dots .dot { width:6px; height:6px; border-radius:50%; background:var(--border); transition:background .2s; }
+.step-dots .dot.on { background:var(--gold); }
+.modal-footer .actions { display:flex; gap:8px; }
+
+.seq-btn {
+  flex:1; padding:9px 12px; background:var(--surface-2); border:1px solid var(--border);
+  border-radius:8px; color:var(--muted); font-size:12px; font-weight:600;
+  cursor:pointer; transition:all .15s; text-align:center;
+}
+.seq-btn:hover { border-color:var(--gold); color:var(--text); }
+.seq-btn.active { background:rgba(230,179,80,.12); border-color:var(--gold); color:var(--gold); }
+
+/* ════════════════════════════════════════
+   APP SHELL
+════════════════════════════════════════ */
+.app { display:flex; flex-direction:column; height:100vh; }
+
+/* Header */
+header {
+  display:flex; align-items:center; gap:16px; padding:0 20px;
+  height:54px; background:var(--surface); border-bottom:3px solid var(--gold);
+  flex-shrink:0;
+}
+.logo { font-size:19px; font-weight:800; letter-spacing:-.5px; white-space:nowrap; }
+.logo span { color:var(--gold); }
+
+.hdr-select {
+  background:var(--surface-2); border:1px solid var(--border); border-radius:8px;
+  color:var(--text); font-size:13px; padding:6px 28px 6px 10px; cursor:pointer;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888898'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 8px center;
+}
+.hdr-select:focus { outline:none; border-color:var(--gold); }
+
+.progress-wrap { flex:1; display:flex; align-items:center; gap:10px; min-width:0; }
+.progress-bar { flex:1; height:4px; background:var(--border); border-radius:99px; overflow:hidden; }
+.progress-fill { height:100%; background:var(--gold); border-radius:99px; transition:width .35s; }
+.progress-lbl { font-size:12px; color:var(--muted); white-space:nowrap; }
+
+.btn-suggest {
+  display:flex; align-items:center; gap:6px; background:var(--gold-muted);
+  border:1px solid var(--gold); color:var(--gold); border-radius:8px;
+  font-size:13px; font-weight:700; padding:7px 14px; cursor:pointer;
+  white-space:nowrap; transition:all .15s;
+}
+.btn-suggest:hover { background:var(--gold); color:#0c0c0f; }
+.btn-suggest:disabled { opacity:.5; cursor:default; }
+
+/* Layout */
+.layout { display:flex; flex:1; overflow:hidden; }
+
+/* ════════════════════════════════════════
+   SIDEBAR
+════════════════════════════════════════ */
+.sidebar {
+  width:256px; min-width:256px; background:var(--surface);
+  border-right:1px solid var(--gold-border); overflow-y:auto; display:flex; flex-direction:column;
+}
+.sidebar-hdr {
+  padding:13px 16px 10px; font-size:10px; font-weight:700; letter-spacing:1px;
+  text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); flex-shrink:0;
+}
+.req-group { border-bottom:1px solid var(--border); }
+.req-group-title {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 16px; font-size:10px; font-weight:700; letter-spacing:.9px;
+  text-transform:uppercase; color:var(--gold); opacity:.7; user-select:none;
+  cursor:pointer;
+}
+.req-group-title .chevron { transition:transform .15s; font-style:normal; }
+.req-group.collapsed .req-list { display:none; }
+.req-group.collapsed .chevron { transform:rotate(-90deg); }
+.req-count {
+  background:var(--surface-2); border-radius:99px; padding:1px 7px;
+  font-size:10px; font-weight:700; color:var(--muted);
+}
+.req-list { padding:4px 8px 8px; }
+.req-item {
+  display:flex; align-items:center; gap:8px; padding:7px 8px;
+  border-radius:8px; cursor:grab; margin-bottom:2px;
+  border:1px solid transparent; transition:border-color .12s, background .12s;
+  user-select:none;
+}
+.req-item:hover:not([data-status="taken"]):not([data-status="planned"]) {
+  background:var(--surface-2); border-color:var(--border);
+}
+.req-item[data-status="taken"]  { opacity:.5; cursor:default; }
+.req-item[data-status="planned"]{ opacity:.65; cursor:default; }
+.req-icon { font-size:11px; flex-shrink:0; width:13px; text-align:center; }
+.req-item[data-status="taken"]  .req-icon { color:var(--green); }
+.req-item[data-status="planned"] .req-icon { color:var(--gold); }
+.req-item[data-status="available"] .req-icon { color:var(--border); }
+.req-code { font-size:12px; font-weight:700; flex-shrink:0; }
+.req-name { font-size:11px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.req-prereq { font-size:10px; color:var(--gold); opacity:.55; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* ── Course browser ── */
+.browse-hdr {
+  padding:13px 16px 10px; font-size:10px; font-weight:700; letter-spacing:1px;
+  text-transform:uppercase; color:var(--muted);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.search-wrap { padding:8px 8px 4px; }
+.search-input {
+  width:100%; background:var(--surface-2); border:1px solid var(--border);
+  border-radius:8px; color:var(--text); font-size:12px; padding:7px 10px;
+}
+.search-input:focus { outline:none; border-color:var(--gold); }
+.search-results { padding:0 8px 8px; }
+.no-results { padding:10px 8px; font-size:12px; color:var(--muted); }
+
+/* ════════════════════════════════════════
+   TERM CANVAS
+════════════════════════════════════════ */
+.canvas { flex:1; overflow-x:auto; overflow-y:hidden; background:var(--bg); }
+.term-grid {
+  display:flex; height:100%; padding:16px 20px; gap:8px; align-items:flex-start;
+  min-width:max-content;
+}
+.term-col { width:168px; min-width:168px; display:flex; flex-direction:column; height:100%; }
+.term-lbl {
+  font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+  color:var(--gold); opacity:.7; padding:6px 0; text-align:center;
+  border-bottom:1px solid var(--gold-border); margin-bottom:6px; flex-shrink:0;
+}
+.term-col.coop .term-lbl { opacity:1; }
+.term-col.coop .term-lbl { color:var(--gold); border-color:var(--gold-border); }
+.term-drop {
+  flex:1; border:1.5px dashed transparent; border-radius:10px;
+  padding:6px; transition:border-color .15s, background .15s;
+  display:flex; flex-direction:column; gap:5px; overflow-y:auto;
+}
+.term-drop.drag-over { border-color:var(--gold); background:var(--gold-muted); }
+.coop-body {
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:6px; color:var(--muted); font-size:11px; opacity:.4;
+}
+.coop-icon { font-size:22px; }
+
+/* Course cards */
+.course-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-left:3px solid var(--gold); border-radius:8px; padding:8px 10px;
+  cursor:grab; position:relative; transition:box-shadow .12s;
+}
+.course-card:hover { box-shadow:0 2px 10px rgba(0,0,0,.5); }
+.course-card.bad { border-left-color:var(--red); }
+.card-code { font-size:11px; font-weight:700; }
+.card-name { font-size:10px; color:var(--muted); margin-top:2px; line-height:1.3; }
+.card-stats { display:flex; gap:8px; margin-top:5px; }
+.card-stat { font-size:10px; color:var(--muted); }
+.card-stat.g { color:var(--green); }
+.card-stat.r { color:var(--red); }
+.card-warn { font-size:10px; color:var(--red); margin-top:3px; }
+.card-hint { font-size:10px; color:var(--gold); opacity:.75; margin-top:3px; }
+.card-rm {
+  position:absolute; top:4px; right:5px; background:none; border:none;
+  color:var(--muted); font-size:13px; cursor:pointer; padding:1px 4px; border-radius:4px; line-height:1;
+}
+.card-rm:hover { color:var(--red); background:var(--red-muted); }
+
+/* ════════════════════════════════════════
+   CHAT BAR
+════════════════════════════════════════ */
+.chat-bar { background:var(--surface); border-top:1px solid var(--border); flex-shrink:0; }
+.chat-toggle {
+  display:flex; align-items:center; gap:12px; padding:0 16px;
+  height:46px; cursor:pointer; user-select:none;
+}
+.chat-toggle:hover { background:var(--surface-2); }
+.chat-tog-label { font-size:13px; color:var(--muted); flex:1; }
+.chat-chevron { color:var(--muted); font-size:11px; transition:transform .2s; }
+.chat-bar.open .chat-chevron { transform:rotate(180deg); }
+.chat-body { display:none; flex-direction:column; padding:0 16px 12px; height:240px; }
+.chat-bar.open .chat-body { display:flex; }
+.chat-thread { flex:1; overflow-y:auto; padding:8px 0; display:flex; flex-direction:column; gap:8px; }
+.chat-msg { font-size:13px; line-height:1.5; }
+.chat-msg .lbl { font-size:10px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:2px; }
+.chat-msg.u .lbl { color:var(--muted); }
+.chat-msg.b { color:var(--text); }
+.chat-row { display:flex; gap:8px; padding-top:8px; border-top:1px solid var(--border); }
+.chat-row input {
+  flex:1; background:var(--surface-2); border:1px solid var(--border); border-radius:8px;
+  color:var(--text); font-size:13px; padding:8px 12px;
+}
+.chat-row input:focus { outline:none; border-color:var(--gold); }
+.chat-row button {
+  background:var(--gold); color:#0c0c0f; border:none; border-radius:8px;
+  font-size:13px; font-weight:700; padding:8px 16px; cursor:pointer; white-space:nowrap;
+}
+.chat-row button:hover { background:var(--gold-deep); }
+.chat-row button:disabled { opacity:.5; cursor:default; }
+</style>
 </head>
 <body>
-    <header>
-        <div class="header-inner">
-            <h1>WatAsk<span class="dot">.</span></h1>
-            <span class="tag">University of Waterloo</span>
-        </div>
-    </header>
 
-    <main>
-        <p class="lede">Straight answers about Waterloo courses — difficulty, content, and what students actually say.</p>
+<!-- ════════════════════════════════════════
+     ONBOARDING
+════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="onboarding">
+  <div class="modal">
 
-        <div class="ask-row">
-            <input id="question" placeholder="e.g. is MATH 136 hard?  (or just say hi)" />
-            <button class="ask" id="askBtn" onclick="ask()">Ask</button>
-        </div>
-        <div class="reset-row" id="resetRow">
-            <button class="reset" onclick="resetThread()">＋ New question (clear conversation)</button>
-        </div>
+    <div class="modal-step active" id="step1">
+      <h2>Welcome to WatAsk</h2>
+      <p class="sub">Plan your UW degree, term by term. Let's set you up in 3 steps.</p>
+      <label class="field-label">Your program</label>
+      <select id="obProgram">
+        <option value="cs">Honours Computer Science</option>
+        <option value="math">Honours Mathematics</option>
+        <option value="se">Software Engineering</option>
+        <option value="cs-math">Double: CS &amp; Math</option>
+        <option value="stat">Statistics</option>
+        <option value="data-sci">Data Science (BMath)</option>
+        <option value="comp-math">Computational Mathematics</option>
+        <option value="pure-math">Pure Mathematics</option>
+        <option value="math-finance">Mathematical Finance</option>
+        <option value="amath">Applied Mathematics</option>
+        <option value="actsc">Actuarial Science</option>
+        <option value="co">Combinatorics &amp; Optimization</option>
+        <option value="math-phys">Mathematical Physics</option>
+        <option value="farm">Financial Analysis &amp; Risk Mgmt</option>
+        <option value="math-studies">Mathematical Studies</option>
+      </select>
+      <label class="field-label">Current term</label>
+      <select id="obTerm">
+        <option value="pre">Haven't started yet</option>
+        <option value="1A">1A</option>
+        <option value="1B">1B</option>
+        <option value="2A">2A</option>
+        <option value="2B">2B</option>
+        <option value="3A">3A</option>
+        <option value="3B">3B</option>
+        <option value="4A">4A</option>
+        <option value="4B">4B</option>
+      </select>
+      <div class="modal-footer">
+        <div class="step-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <button class="btn-gold" onclick="obStep2()">Next →</button>
+      </div>
+    </div>
 
-        <div class="thread" id="thread"></div>
+    <div class="modal-step" id="step2">
+      <h2>Study system</h2>
+      <p class="sub">Choose your co-op sequence — this sets the term order in your planner.</p>
+
+      <label class="field-label">Co-op or Regular?</label>
+      <div style="display:flex;gap:8px;margin-bottom:16px" id="coopToggle">
+        <button class="seq-btn active" onclick="selectCoop('coop', this)">Co-op</button>
+        <button class="seq-btn" onclick="selectCoop('regular', this)">Regular</button>
+      </div>
+
+      <div id="seqSection">
+        <label class="field-label">Co-op Sequence</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="seqToggle">
+          <button class="seq-btn active" onclick="selectSeq('1', this)">
+            SEQ 1<div style="font-size:10px;font-weight:400;margin-top:3px;color:var(--muted)">WT1 Spring after 1B<br>alternates every term</div>
+          </button>
+          <button class="seq-btn" onclick="selectSeq('2', this)">
+            SEQ 2<div style="font-size:10px;font-weight:400;margin-top:3px;color:var(--muted)">WT1 Spring after 1B<br>2A &amp; 2B back-to-back</div>
+          </button>
+          <button class="seq-btn" onclick="selectSeq('3', this)">
+            SEQ 3<div style="font-size:10px;font-weight:400;margin-top:3px;color:var(--muted)">Spring Y1 off<br>WT1 Winter of 2nd year</div>
+          </button>
+          <button class="seq-btn" onclick="selectSeq('4', this)">
+            SEQ 4<div style="font-size:10px;font-weight:400;margin-top:3px;color:var(--muted)">2A in Spring of 1st year<br>WT1 Fall of 2nd year</div>
+          </button>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;padding:12px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--muted);line-height:1.7" id="seqPreview"></div>
+
+      <div class="modal-footer">
+        <div class="step-dots"><div class="dot"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="actions">
+          <button class="btn-ghost" onclick="showStep(1)">← Back</button>
+          <button class="btn-gold" onclick="obStep3()">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-step" id="step3">
+      <h2>Courses completed</h2>
+      <p class="sub">Check off courses you've already finished — they'll be marked done in your plan.</p>
+      <div class="check-grid" id="obCourses"></div>
+      <div class="modal-footer">
+        <div class="step-dots"><div class="dot"></div><div class="dot"></div><div class="dot on"></div><div class="dot"></div></div>
+        <div class="actions">
+          <button class="btn-ghost" onclick="showStep(2)">← Back</button>
+          <button class="btn-gold" onclick="obStep4()">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-step" id="step4">
+      <h2>You're all set!</h2>
+      <p class="sub">Drag courses from the sidebar into terms. WatAsk flags prereq issues in real time. Use the chat bar to ask about any course.</p>
+      <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:24px">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase">Quick tips</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.8">
+          ✦ Drag a course from the sidebar into a term<br>
+          ✦ Click a course card to ask WatAsk about it<br>
+          ✦ Red border = prereq not satisfied yet<br>
+          ✦ Hit "Suggest my plan" for an AI-generated schedule
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="step-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div></div>
+        <button class="btn-gold" onclick="launchApp()">Open planner →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     APP
+════════════════════════════════════════ -->
+<div class="app hidden" id="app">
+
+  <header>
+    <div class="logo">WatAsk<span>.</span></div>
+    <select class="hdr-select" id="programSelect" onchange="changeProgram(this.value)">
+      <option value="cs">Honours CS</option>
+      <option value="math">Honours Math</option>
+      <option value="se">Software Eng.</option>
+      <option value="cs-math">CS &amp; Math</option>
+      <option value="stat">Statistics</option>
+      <option value="data-sci">Data Science</option>
+      <option value="comp-math">Comp. Math</option>
+      <option value="pure-math">Pure Math</option>
+      <option value="math-finance">Math Finance</option>
+      <option value="amath">Applied Math</option>
+      <option value="actsc">Actuarial Sci.</option>
+      <option value="co">Comb. &amp; Opt.</option>
+      <option value="math-phys">Math Physics</option>
+      <option value="farm">FARM</option>
+      <option value="math-studies">Math Studies</option>
+    </select>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-lbl" id="progressLbl">0 / 0</div>
+    </div>
+    <button class="btn-suggest" id="suggestBtn" onclick="suggestPlan()">✦ Suggest my plan</button>
+    <button class="btn-ghost" onclick="resetApp()">Reset</button>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-hdr">Required Courses</div>
+      <div id="sidebarContent"></div>
+      <div class="browse-hdr">Browse All Courses</div>
+      <div class="search-wrap">
+        <input class="search-input" id="courseSearch" placeholder="Search by code or name…" autocomplete="off" />
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    </aside>
+    <main class="canvas">
+      <div class="term-grid" id="termGrid"></div>
     </main>
+  </div>
 
-    <footer>
-        WatAsk is a student project and not affiliated with the University of Waterloo.
-    </footer>
+  <div class="chat-bar" id="chatBar">
+    <div class="chat-toggle" onclick="toggleChat()">
+      <span style="color:var(--gold);font-size:14px">✦</span>
+      <span class="chat-tog-label">Ask WatAsk about your plan…</span>
+      <span class="chat-chevron">▲</span>
+    </div>
+    <div class="chat-body">
+      <div class="chat-thread" id="chatThread"></div>
+      <div class="chat-row">
+        <input id="chatInput" placeholder="e.g. should I take CS 245 or 245E?" />
+        <button id="chatBtn" onclick="sendChat()">Ask</button>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        const API = "";
-        let history = [];   // [{question, answer}, ...] for the current thread
+</div>
 
-        function resetThread() {
-            history = [];
-            document.getElementById("thread").innerHTML = "";
-            document.getElementById("resetRow").classList.remove("show");
-            document.getElementById("question").value = "";
-            document.getElementById("question").focus();
-        }
+<script>
+// ══════════════════════════════════════════════════════
+//  COURSE DATA
+// ══════════════════════════════════════════════════════
+const COURSES = {
+  "CS 115":  { name:"Intro CS 1",                       liked:27, easy:12 },
+  "CS 116":  { name:"Intro CS 2",                       liked:79, easy:75 },
+  "CS 135":  { name:"Designing Functional Programs",    liked:86, easy:67 },
+  "CS 145":  { name:"Designing Functional Programs Adv",liked:80, easy:59 },
+  "CS 136":  { name:"Elementary Algorithm Design",      liked:80, easy:57 },
+  "CS 136L": { name:"Software Dev Tools",               liked:73, easy:74 },
+  "CS 146":  { name:"Algorithm Design Adv",             liked:91, easy:44 },
+  "CS 240":  { name:"Data Structures",                  liked:59, easy:56 },
+  "CS 241":  { name:"Sequential Programs",              liked:87, easy:54 },
+  "CS 241E": { name:"Sequential Programs Enriched",     liked:94, easy:46 },
+  "CS 245":  { name:"Logic and Computation",            liked:30, easy:54 },
+  "CS 245E": { name:"Logic and Computation Enriched",   liked:78, easy:56 },
+  "CS 246":  { name:"Object-Oriented Software Dev",     liked:66, easy:57 },
+  "CS 246E": { name:"OO Software Dev Enriched",         liked:94, easy:32 },
+  "MATH 127":{ name:"Calculus 1 for Sciences",          liked:53, easy:50 },
+  "MATH 128":{ name:"Calculus 2 for Sciences",          liked:58, easy:53 },
+  "MATH 135":{ name:"Algebra",                          liked:79, easy:44 },
+  "MATH 136":{ name:"Linear Algebra 1",                 liked:64, easy:45 },
+  "MATH 137":{ name:"Calculus 1",                       liked:68, easy:56 },
+  "MATH 138":{ name:"Calculus 2",                       liked:68, easy:46 },
+  "MATH 145":{ name:"Algebra Advanced",                 liked:95, easy:27 },
+  "MATH 146":{ name:"Linear Algebra 1 Adv",             liked:92, easy:52 },
+  "MATH 147":{ name:"Calculus 1 Advanced",              liked:93, easy:44 },
+  "MATH 148":{ name:"Calculus 2 Advanced",              liked:87, easy:40 },
+  "MATH 235":{ name:"Linear Algebra 2",                 liked:69, easy:44 },
+  "MATH 237":{ name:"Calculus 3",                       liked:81, easy:55 },
+  "MATH 239":{ name:"Intro Combinatorics",              liked:77, easy:30 },
+  "MATH 245":{ name:"Linear Algebra 2 Adv",             liked:88, easy:40 },
+  "MATH 247":{ name:"Calculus 3 Advanced",              liked:94, easy:40 },
+  "STAT 230":{ name:"Probability",                      liked:59, easy:57 },
+  "STAT 231":{ name:"Statistics",                       liked:40, easy:49 },
+  "STAT 240":{ name:"Probability Advanced",             liked:78, easy:52 },
+  "STAT 241":{ name:"Statistics Advanced",              liked:89, easy:43 },
+};
 
-        async function ask(preset) {
-            const input = document.getElementById("question");
-            if (preset) input.value = preset;
-            const question = input.value.trim();
-            if (!question) return;
+// Returns the typical term for a course in the current program, or null
+function typicalTermFor(code) {
+  for (const g of PROGRAMS[S.program].groups) {
+    if (g.typical && g.typical[code]) return g.typical[code];
+  }
+  return null;
+}
 
-            const btn = document.getElementById("askBtn");
-            const thread = document.getElementById("thread");
+// Each inner array = "need at least one of these completed before"
+const PREREQS = {
+  "CS 116":  [["CS 115"]],
+  "CS 136":  [["CS 135","CS 145"]],
+  "CS 136L": [["CS 135","CS 145"]],
+  "CS 146":  [["CS 145"]],
+  "CS 234":  [["CS 116"]],
+  "CS 240":  [["CS 245"],["CS 241","CS 246"],["STAT 230","STAT 240"]],
+  "CS 241":  [["CS 136","CS 146"]],
+  "CS 241E": [["CS 136","CS 146"]],
+  "CS 245":  [["CS 136","CS 146"],["MATH 135","MATH 145"]],
+  "CS 245E": [["CS 136","CS 146"],["MATH 135","MATH 145"]],
+  "CS 246":  [["CS 136","CS 146"]],
+  "CS 246E": [["CS 136","CS 146"]],
+  "MATH 136":[["MATH 135","MATH 145"]],
+  "MATH 138":[["MATH 137","MATH 147"]],
+  "MATH 146":[["MATH 145"]],
+  "MATH 148":[["MATH 147"]],
+  "MATH 235":[["MATH 136","MATH 146"]],
+  "MATH 245":[["MATH 146"]],
+  "MATH 237":[["MATH 136","MATH 146"],["MATH 128","MATH 138","MATH 148"]],
+  "MATH 247":[["MATH 146"],["MATH 148"]],
+  "MATH 239":[["MATH 136","MATH 146"]],
+  // STAT prereqs (grade thresholds not tracked — just ordering)
+  "STAT 230":[["MATH 137","MATH 147","MATH 128","MATH 138","MATH 148"]],
+  "STAT 240":[["MATH 137","MATH 147","MATH 138","MATH 148"]],
+  "STAT 231":[["STAT 230","STAT 240"]],
+  "STAT 241":[["STAT 230","STAT 240"]],
+};
 
-            // Build this turn's card with a "thinking" placeholder.
-            const turn = document.createElement("div");
-            turn.className = "turn";
-            turn.innerHTML =
-                '<div class="q">' + escapeHtml(question) + '</div>' +
-                '<div class="answer-card">' +
-                    '<div class="answer-text"><span class="thinking">Thinking…</span></div>' +
-                    '<div class="sources" style="display:none;"><h3>Based on</h3><div class="chips"></div></div>' +
-                '</div>';
-            thread.appendChild(turn);
-            input.value = "";
-            btn.disabled = true;
+// "COOP" appears multiple times intentionally — each occurrence is a work term slot
+const PROGRAMS = {
+  cs: {
+    name:"Honours Computer Science",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core CS",
+        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 245":"2A","CS 241":"2A","CS 246":"2B","CS 240":"3A" },
+      },
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 239","STAT 230","STAT 231"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","STAT 230":"2A","MATH 239":"2B","STAT 231":"2B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["CS 145","CS 146","CS 241E","CS 245E","CS 246E","MATH 145","MATH 146","MATH 147","MATH 148","MATH 245","MATH 247","STAT 240","STAT 241"],
+        typical:{ "CS 145":"1A","CS 146":"1B","CS 241E":"2A","CS 245E":"2A","CS 246E":"2B","MATH 145":"1A","MATH 147":"1A","MATH 146":"1B","MATH 148":"1B","MATH 245":"2A","MATH 247":"2B","STAT 240":"2A","STAT 241":"2B" },
+      },
+    ],
+  },
+  math: {
+    name:"Honours Mathematics",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+      },
+      {
+        name:"Statistics",
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["MATH 145","MATH 146","MATH 147","MATH 148","MATH 245","MATH 247","STAT 240","STAT 241"],
+        typical:{ "MATH 145":"1A","MATH 147":"1A","MATH 146":"1B","MATH 148":"1B","MATH 245":"2A","MATH 247":"2B","STAT 240":"2A","STAT 241":"2B" },
+      },
+    ],
+  },
+  se: {
+    name:"Software Engineering",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core CS",
+        courses:["CS 241","CS 245","CS 246"],
+        typical:{ "CS 241":"2A","CS 245":"2B","CS 246":"2B" },
+      },
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 137","MATH 138","MATH 239","STAT 230"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 138":"1B","STAT 230":"2A","MATH 239":"2B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["CS 241E","CS 245E","CS 246E","MATH 145","MATH 147","MATH 148","STAT 240"],
+        typical:{ "CS 241E":"2A","CS 245E":"2B","CS 246E":"2B","MATH 145":"1A","MATH 147":"1A","MATH 148":"1B","STAT 240":"2A" },
+      },
+    ],
+  },
+  "cs-math": {
+    name:"CS & Math",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core CS",
+        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 245":"2A","CS 241":"2A","CS 246":"2B","CS 240":"3A" },
+      },
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+      },
+      {
+        name:"Statistics",
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["CS 145","CS 146","CS 241E","CS 245E","CS 246E","MATH 145","MATH 146","MATH 147","MATH 148","MATH 245","MATH 247","STAT 240","STAT 241"],
+        typical:{ "CS 145":"1A","CS 146":"1B","CS 241E":"2A","CS 245E":"2A","CS 246E":"2B","MATH 145":"1A","MATH 147":"1A","MATH 146":"1B","MATH 148":"1B","MATH 245":"2A","MATH 247":"2B","STAT 240":"2A","STAT 241":"2B" },
+      },
+    ],
+  },
 
-            try {
-                const res = await fetch(API + "/ask", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ question: question, history: history })
-                });
-                const data = await res.json();
+  stat: {
+    name:"Statistics",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 239":"2B" },
+      },
+      {
+        name:"Core Statistics",
+        courses:["STAT 230","STAT 231","STAT 240","STAT 241","STAT 330","STAT 331","STAT 332","STAT 333","STAT 334","STAT 340"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 240":"2A","STAT 241":"2B","STAT 330":"3A","STAT 331":"3A","STAT 332":"3B","STAT 333":"3A","STAT 334":"3B","STAT 340":"3B" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Upper Year Statistics",
+        courses:["STAT 430","STAT 431","STAT 433","STAT 440","STAT 441","STAT 442","STAT 443","STAT 444"],
+        typical:{ "STAT 430":"4A","STAT 431":"4A","STAT 433":"4B","STAT 440":"4A","STAT 441":"4B","STAT 442":"4A","STAT 443":"4B","STAT 444":"4B" },
+      },
+    ],
+  },
 
-                turn.querySelector(".answer-text").textContent = data.answer;
+  "data-sci": {
+    name:"Data Science (BMath)",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core CS",
+        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 245":"2A","CS 241":"2A","CS 246":"2B","CS 240":"3A" },
+      },
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 239":"2B" },
+      },
+      {
+        name:"Core Statistics",
+        courses:["STAT 230","STAT 231","STAT 240","STAT 241","STAT 330","STAT 340","STAT 341"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 240":"2A","STAT 241":"2B","STAT 330":"3A","STAT 340":"3B","STAT 341":"3B" },
+      },
+      {
+        name:"Advanced CS",
+        courses:["STAT 441","STAT 442","STAT 444"],
+        typical:{ "STAT 441":"4A","STAT 442":"4A","STAT 444":"4B" },
+      },
+    ],
+  },
 
-                const sourcesWrap = turn.querySelector(".sources");
-                const chips = turn.querySelector(".chips");
-                chips.innerHTML = "";
-                if (data.source_codes && data.source_codes.length) {
-                    data.source_codes.forEach(code => {
-                        const chip = document.createElement("span");
-                        chip.className = "chip";
-                        chip.textContent = code;
-                        chip.title = "Ask about " + code;
-                        chip.onclick = () => ask("tell me about " + code);
-                        chips.appendChild(chip);
-                    });
-                    sourcesWrap.style.display = "block";
-                }
+  "comp-math": {
+    name:"Computational Mathematics",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core CS",
+        courses:["CS 135","CS 136","CS 136L","CS 241","CS 245","CS 246"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 241":"2A","CS 245":"2A","CS 246":"2B" },
+      },
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+      },
+      {
+        name:"Statistics",
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["MATH 245","MATH 247","CS 240","CS 241E","CS 245E","CS 246E","STAT 240","STAT 241"],
+        typical:{ "MATH 245":"2A","MATH 247":"2B","CS 240":"3A","CS 241E":"2A","CS 245E":"2A","CS 246E":"2B","STAT 240":"2A","STAT 241":"2B" },
+      },
+    ],
+  },
 
-                // Remember this turn so follow-ups have context.
-                history.push({ question: question, answer: data.answer });
-                document.getElementById("resetRow").classList.add("show");
-            } catch (e) {
-                turn.querySelector(".answer-text").textContent =
-                    "Something went wrong reaching the server. Please try again in a moment.";
-            } finally {
-                btn.disabled = false;
-            }
-        }
+  "pure-math": {
+    name:"Pure Mathematics",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+      },
+      {
+        name:"Pure Mathematics",
+        courses:["PMATH 330","PMATH 331","PMATH 332","PMATH 333","PMATH 334","PMATH 340","PMATH 345","PMATH 346","PMATH 347","PMATH 351","PMATH 352","PMATH 354","PMATH 365"],
+        typical:{ "PMATH 330":"2A","PMATH 331":"2B","PMATH 332":"3A","PMATH 333":"3A","PMATH 334":"3B","PMATH 340":"2A","PMATH 345":"2B","PMATH 346":"3A","PMATH 347":"3B","PMATH 351":"2B","PMATH 352":"3A","PMATH 354":"3B","PMATH 365":"3B" },
+      },
+      {
+        name:"Statistics",
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+    ],
+  },
 
-        function escapeHtml(s) {
-            const d = document.createElement("div");
-            d.textContent = s;
-            return d.innerHTML;
-        }
+  "math-finance": {
+    name:"Mathematical Finance",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+      },
+      {
+        name:"Actuarial Science",
+        courses:["ACTSC 231","ACTSC 232","ACTSC 331","ACTSC 362","ACTSC 363","ACTSC 371","ACTSC 372","ACTSC 431","ACTSC 432","ACTSC 433","ACTSC 445","ACTSC 446","ACTSC 447"],
+        typical:{ "ACTSC 231":"2A","ACTSC 232":"2B","ACTSC 331":"3A","ACTSC 362":"3A","ACTSC 363":"3B","ACTSC 371":"3A","ACTSC 372":"3B","ACTSC 431":"4A","ACTSC 432":"4A","ACTSC 433":"4B","ACTSC 445":"4A","ACTSC 446":"4B","ACTSC 447":"4B" },
+      },
+      {
+        name:"Core Statistics",
+        courses:["STAT 230","STAT 231","STAT 330","STAT 333","STAT 334"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 333":"3B","STAT 334":"3B" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+    ],
+  },
 
-        document.getElementById("question").addEventListener("keydown", e => {
-            if (e.key === "Enter") ask();
-        });
-    </script>
+  amath: {
+    name:"Applied Mathematics",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+      },
+      {
+        name:"Statistics",
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+      },
+      {
+        name:"Applied Mathematics",
+        courses:["AMATH 231","AMATH 250","AMATH 242","AMATH 271","AMATH 331","AMATH 342","AMATH 353"],
+        typical:{ "AMATH 231":"2A","AMATH 250":"2B","AMATH 242":"3A","AMATH 271":"3A","AMATH 331":"3B","AMATH 342":"3B","AMATH 353":"4A" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["MATH 247","AMATH 251","CS 371","AMATH 332","PMATH 331","PMATH 332","PMATH 333","PMATH 351","PMATH 352","PMATH 343","AMATH 333","AMATH 343","AMATH 345","AMATH 361","AMATH 362","AMATH 373","AMATH 382","AMATH 383","AMATH 390","AMATH 391","AMATH 442","AMATH 445","AMATH 446","AMATH 449","AMATH 451","AMATH 453","AMATH 455","AMATH 456","AMATH 462","AMATH 463","AMATH 473","AMATH 474","AMATH 475","AMATH 477","AMATH 490","AMATH 495","AMATH 499"],
+        typical:{},
+      },
+    ],
+  },
+
+  actsc: {
+    name:"Actuarial Science",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 239":"2B" },
+      },
+      {
+        name:"Statistics",
+        courses:["STAT 230","STAT 231","STAT 240","STAT 241"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 240":"2A","STAT 241":"2B" },
+      },
+      {
+        name:"Actuarial Science",
+        courses:["ACTSC 231","ACTSC 232","ACTSC 331","ACTSC 362","ACTSC 371","ACTSC 372"],
+        typical:{ "ACTSC 231":"2A","ACTSC 232":"2B","ACTSC 331":"3A","ACTSC 362":"3A","ACTSC 371":"3B","ACTSC 372":"3B" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["MATH 245","MATH 247","STAT 330","STAT 333","STAT 334","ACTSC 431","ACTSC 432","ACTSC 433"],
+        typical:{ "MATH 245":"2A","MATH 247":"2B","STAT 330":"3A","STAT 333":"3B","STAT 334":"3B","ACTSC 431":"4A","ACTSC 432":"4A","ACTSC 433":"4B" },
+      },
+    ],
+  },
+
+  co: {
+    name:"Combinatorics & Optimization",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 239":"2B" },
+      },
+      {
+        name:"Statistics",
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+      },
+      {
+        name:"Combinatorics & Optimization",
+        courses:["CO 250","CO 255","CO 330","CO 342","CO 351","CO 353","CO 367"],
+        typical:{ "CO 250":"2A","CO 255":"2B","CO 330":"2B","CO 342":"3A","CO 351":"3A","CO 353":"3B","CO 367":"3B" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["MATH 245","MATH 247","STAT 240","STAT 241","CO 430","CO 434","CO 442","CO 450","CO 452","CO 454","CO 456","CO 463","CO 466","CO 471","CO 480","CO 485","CO 487"],
+        typical:{ "MATH 245":"2A","MATH 247":"2B","CO 430":"4A","CO 434":"4A","CO 442":"4A","CO 450":"4B","CO 452":"4A","CO 454":"4B" },
+      },
+    ],
+  },
+
+  "math-phys": {
+    name:"Mathematical Physics",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+      },
+      {
+        name:"Statistics",
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+      },
+      {
+        name:"Applied Mathematics",
+        courses:["AMATH 231","AMATH 250","AMATH 271","AMATH 351","AMATH 361"],
+        typical:{ "AMATH 231":"2A","AMATH 250":"2B","AMATH 271":"2B","AMATH 351":"3A","AMATH 361":"3B" },
+      },
+      {
+        name:"Pure Mathematics",
+        courses:["PMATH 332","PMATH 333"],
+        typical:{ "PMATH 332":"3A","PMATH 333":"3B" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["MATH 245","MATH 247","AMATH 431","AMATH 432","AMATH 433","AMATH 442","AMATH 453","AMATH 455","PMATH 440","PMATH 450","PMATH 451"],
+        typical:{ "MATH 245":"2A","MATH 247":"2B","AMATH 431":"4A","AMATH 432":"4B","AMATH 442":"4A" },
+      },
+    ],
+  },
+
+  farm: {
+    name:"Financial Analysis & Risk Management",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 239":"2B" },
+      },
+      {
+        name:"Statistics",
+        courses:["STAT 230","STAT 231","STAT 240","STAT 241"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 240":"2A","STAT 241":"2B" },
+      },
+      {
+        name:"Finance & Risk",
+        courses:["ACTSC 231","ACTSC 232","ACTSC 371","ACTSC 372","STAT 330","STAT 333"],
+        typical:{ "ACTSC 231":"2A","ACTSC 232":"2B","ACTSC 371":"3A","ACTSC 372":"3B","STAT 330":"3A","STAT 333":"3B" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["MATH 245","MATH 247","STAT 334","STAT 340","ACTSC 433","ACTSC 445","ACTSC 446","ACTSC 447"],
+        typical:{ "MATH 245":"2A","MATH 247":"2B","STAT 334":"3B","STAT 340":"3B","ACTSC 433":"4B","ACTSC 445":"4A","ACTSC 446":"4B" },
+      },
+    ],
+  },
+
+  "math-studies": {
+    name:"Mathematical Studies",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 239":"2B" },
+      },
+      {
+        name:"Statistics",
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["MATH 237","MATH 245","MATH 247","STAT 240","STAT 241","PMATH 330","PMATH 340","AMATH 231","AMATH 250","CO 250"],
+        typical:{ "MATH 237":"2B","MATH 245":"2A","MATH 247":"2B","STAT 240":"2A","STAT 241":"2B","PMATH 330":"2A","PMATH 340":"2A","AMATH 231":"2A","AMATH 250":"2B","CO 250":"2A" },
+      },
+    ],
+  },
+};
+
+// ══════════════════════════════════════════════════════
+//  ALL COURSES (loaded from /courses API)
+// ══════════════════════════════════════════════════════
+let allCourses = [];   // [{ code, title, description, ... }]
+let searchQuery = "";
+let DYNAMIC_PREREQS = {};  // built from allCourses requirements text
+
+// ──────────────────────────────────────────────────────
+//  Prereq text parser: UW calendar format → group array
+// ──────────────────────────────────────────────────────
+function extractCodes(text) {
+  const codes = [];
+  let lastSubject = "";
+
+  // Strip grade conditions, filler words
+  let t = text
+    .replace(/(?:with\s+)?(?:a\s+)?(?:grade\s+of\s+)?at\s+least\s+\d+%\s*(?:in\s+)?/gi, " ")
+    .replace(/\b(one\s+of|at\s+least|or|and)\b/gi, " ");
+
+  // Split on whitespace and all punctuation except / (used in 245/245E variants)
+  const tokens = t.split(/[\s,;.()\[\]]+/).map(s => s.trim()).filter(Boolean);
+
+  for (let i = 0; i < tokens.length; i++) {
+    const tok = tokens[i];
+
+    // UW API format: "MATH" followed by "135" as separate tokens
+    if (/^[A-Z]{2,5}$/.test(tok)) {
+      const next = tokens[i + 1] || "";
+      if (/^\d{3}[A-Z]?(\/\d{3}[A-Z]?)*$/.test(next)) {
+        lastSubject = tok;
+        next.split("/").forEach(n => codes.push(`${lastSubject} ${n}`));
+        i++;
+      } else {
+        lastSubject = tok; // subject token with no number following — keep for shorthand
+      }
+
+    // UWFlow format: concatenated "MATH135" or "ACTSC231"
+    } else if (/^[A-Z]{2,6}\d{3}[A-Z]?$/.test(tok)) {
+      const m = tok.match(/^([A-Z]{2,6})(\d{3}[A-Z]?)$/);
+      if (m) { lastSubject = m[1]; codes.push(`${m[1]} ${m[2]}`); }
+
+    // Bare number inheriting last known subject (e.g. "CS 116, 136, 146")
+    } else if (/^\d{3}[A-Z]?(\/\d{3}[A-Z]?)*$/.test(tok) && lastSubject) {
+      tok.split("/").forEach(n => codes.push(`${lastSubject} ${n}`));
+    }
+  }
+
+  return [...new Set(codes)];
+}
+
+function parsePrereqText(requirements) {
+  if (!requirements || !requirements.includes("Prereq:")) return null;
+
+  // Grab everything after "Prereq:" up to Antireq/Coreq or end
+  const m = requirements.match(/Prereq:\s*(.*?)(?=\s*(?:Antireq:|Coreq:)|$)/i);
+  if (!m) return null;
+
+  let raw = m[1]
+    .replace(/(?:with\s+)?(?:a\s+)?(?:grade\s+of\s+)?at\s+least\s+\d+%\s*(?:in\s+)?/gi, " ")
+    // Remove restriction clauses after semicolons (Not open to / students only / Honours...)
+    .replace(/;[^;]*(not\s+open|students\s+only|Honours|must\s+be|program)[^;]*/gi, "")
+    .replace(/^[^;]*(not\s+open|students\s+only|must\s+be)[^;]*/gi, "");
+
+  // Try parenthesized groups first (AND groups)
+  const parenGroups = [...raw.matchAll(/\(([^)]+)\)/g)].map(p => p[1]);
+
+  let segments;
+  if (parenGroups.length >= 2) {
+    segments = parenGroups;
+  } else {
+    segments = raw.replace(/[()]/g, "").split(";").map(s => s.trim()).filter(Boolean);
+  }
+
+  const groups = segments.map(extractCodes).filter(g => g.length > 0);
+  return groups.length > 0 ? groups : null;
+}
+
+function buildDynamicPrereqs() {
+  DYNAMIC_PREREQS = {};
+  for (const c of allCourses) {
+    if (PREREQS[c.code]) continue; // hand-curated takes precedence
+    const parsed = parsePrereqText(c.requirements || "");
+    if (parsed) DYNAMIC_PREREQS[c.code] = parsed;
+  }
+}
+
+function getPrereqs(code) {
+  return PREREQS[code] || DYNAMIC_PREREQS[code] || null;
+}
+
+async function loadAllCourses() {
+  try {
+    const res = await fetch("/courses");
+    allCourses = await res.json();
+  } catch(_) { allCourses = []; }
+  buildDynamicPrereqs();
+}
+
+// Merge COURSES (has stats) with allCourses (has title for everything else)
+function getCourseInfo(code) {
+  if (COURSES[code]) return { name: COURSES[code].name, liked: COURSES[code].liked, easy: COURSES[code].easy };
+  const ac = allCourses.find(c => c.code === code);
+  return { name: ac ? ac.title : code };
+}
+
+function renderSearch(query) {
+  searchQuery = query;
+  const container = document.getElementById("searchResults");
+  const q = query.trim().toLowerCase();
+  if (q.length < 2) { container.innerHTML = ""; return; }
+
+  const matches = allCourses
+    .filter(c => c.code.toLowerCase().includes(q) || c.title.toLowerCase().includes(q))
+    .slice(0, 10);
+
+  if (!matches.length) {
+    container.innerHTML = `<div class="no-results">No courses found</div>`;
+    return;
+  }
+
+  container.innerHTML = matches.map(c => {
+    const info = getCourseInfo(c.code);
+    const st = statusOf(c.code);
+    const icon = st === "taken" ? "✓" : st === "planned" ? "●" : "○";
+    const drag = st === "available" ? 'draggable="true"' : "";
+    const stats = info.liked != null
+      ? `<div style="font-size:10px;color:var(--muted);margin-top:2px">♥ ${info.liked}% · ${info.easy}% easy</div>`
+      : "";
+    return `<div class="req-item" data-code="${c.code}" data-status="${st}" ${drag}>
+      <span class="req-icon">${icon}</span>
+      <div style="min-width:0;overflow:hidden">
+        <div class="req-code">${c.code}</div>
+        <div class="req-name">${c.title}</div>
+        ${stats}
+      </div>
+    </div>`;
+  }).join("");
+
+  container.querySelectorAll(".req-item[draggable='true']").forEach(el => {
+    el.addEventListener("dragstart", e => {
+      dragCode = el.dataset.code; dragFrom = null;
+      e.dataTransfer.effectAllowed = "move";
+    });
+    el.addEventListener("click", () => askAbout(el.dataset.code));
+  });
+}
+
+// ══════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════
+let S = null;  // { program, currentTerm, taken:[], plan:{termId:[codes]} }
+
+function loadState() {
+  try { const s = localStorage.getItem("watask-v1"); return s ? JSON.parse(s) : null; }
+  catch(_) { return null; }
+}
+function save() { localStorage.setItem("watask-v1", JSON.stringify(S)); }
+
+// ══════════════════════════════════════════════════════
+//  ONBOARDING
+// ══════════════════════════════════════════════════════
+let _obCoop = "coop";
+let _obSeq = "1";
+
+function showStep(n) {
+  document.querySelectorAll(".modal-step").forEach((el,i) => el.classList.toggle("active", i+1===n));
+}
+
+function selectCoop(type, btn) {
+  _obCoop = type;
+  btn.closest("#coopToggle").querySelectorAll(".seq-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  const seqSection = document.getElementById("seqSection");
+  if (seqSection) seqSection.style.display = type === "regular" ? "none" : "";
+  updateSeqPreview();
+}
+
+function selectSeq(num, btn) {
+  _obSeq = num;
+  btn.closest("#seqToggle").querySelectorAll(".seq-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  updateSeqPreview();
+}
+
+function updateSeqPreview() {
+  const prog = PROGRAMS[document.getElementById("obProgram").value];
+  const terms = resolveTerms(prog, _obCoop, _obSeq);
+  const preview = document.getElementById("seqPreview");
+  if (!preview) return;
+  const studyTerms = terms.filter(t => t !== "COOP");
+  const coopCount = terms.filter(t => t === "COOP").length;
+  preview.innerHTML = terms.map(t =>
+    t === "COOP"
+      ? `<span style="color:var(--gold);opacity:.6">${t}</span>`
+      : `<span style="color:var(--text)">${t}</span>`
+  ).join(" → ") +
+  `<div style="margin-top:8px">${studyTerms.length} study terms · ${coopCount} work term${coopCount!==1?"s":""}</div>`;
+}
+
+function resolveTerms(prog, coop, seq) {
+  if (coop === "regular") return prog.regularTerms || prog.terms.filter(t => t !== "COOP");
+  if (seq === "2") return prog.seq2Terms || prog.terms;
+  if (seq === "3") return prog.seq3Terms || prog.terms;
+  if (seq === "4") return prog.seq4Terms || prog.terms;
+  return prog.terms;
+}
+
+function getTerms() {
+  const prog = PROGRAMS[S.program];
+  return S.terms || prog.terms;
+}
+
+function obStep2() {
+  _obCoop = "coop";
+  _obSeq = "1";
+  document.querySelectorAll("#coopToggle .seq-btn").forEach((b,i) => b.classList.toggle("active", i===0));
+  document.querySelectorAll("#seqToggle .seq-btn").forEach((b,i) => b.classList.toggle("active", i===0));
+  document.getElementById("seqSection").style.display = "";
+  updateSeqPreview();
+  showStep(2);
+}
+
+function obStep3() {
+  const prog = document.getElementById("obProgram").value;
+  const allCodes = PROGRAMS[prog].groups.flatMap(g => g.courses);
+  const grid = document.getElementById("obCourses");
+  grid.innerHTML = "";
+  allCodes.forEach(code => {
+    const info = getCourseInfo(code);
+    const label = document.createElement("label");
+    label.className = "check-item";
+    label.innerHTML = `<input type="checkbox" value="${code}">
+      <div><div class="check-code">${code}</div><div class="check-name">${info.name}</div></div>`;
+    label.querySelector("input").addEventListener("change", e => {
+      label.classList.toggle("on", e.target.checked);
+    });
+    grid.appendChild(label);
+  });
+  showStep(3);
+}
+
+function obStep4() { showStep(4); }
+
+function launchApp() {
+  const prog = document.getElementById("obProgram").value;
+  const term = document.getElementById("obTerm").value;
+  const taken = [...document.querySelectorAll("#obCourses input:checked")].map(i => i.value);
+  const chosenTerms = resolveTerms(PROGRAMS[prog], _obCoop, _obSeq);
+  S = { program:prog, currentTerm:term, taken, plan:{}, coop:_obCoop, seq:_obSeq, terms:chosenTerms };
+  save();
+  startApp();
+}
+
+// ══════════════════════════════════════════════════════
+//  APP
+// ══════════════════════════════════════════════════════
+function startApp() {
+  document.getElementById("onboarding").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+  document.getElementById("programSelect").value = S.program;
+  render();
+}
+
+function changeProgram(prog) {
+  S.program = prog;
+  S.plan = {};
+  save();
+  render();
+}
+
+function resetApp() {
+  if (!confirm("Clear your entire plan and start over?")) return;
+  localStorage.removeItem("watask-v1");
+  location.reload();
+}
+
+function render() {
+  renderSidebar();
+  renderGrid();
+  updateProgress();
+  renderSearch(searchQuery);
+}
+
+// ══════════════════════════════════════════════════════
+//  PREREQ VALIDATION
+// ══════════════════════════════════════════════════════
+function coursesBefore(termId) {
+  const terms = getTerms();
+  const idx = terms.indexOf(termId);
+  const done = new Set(S.taken);
+  terms.forEach((t, i) => {
+    if (i < idx && t !== "COOP") (S.plan[t] || []).forEach(c => done.add(c));
+  });
+  return done;
+}
+
+function violations(code, termId) {
+  const groups = getPrereqs(code);
+  if (!groups) return [];
+  const before = coursesBefore(termId);
+  return groups
+    .filter(g => !g.some(c => before.has(c)))
+    .map(g => g.join(" or "));
+}
+
+// ══════════════════════════════════════════════════════
+//  SIDEBAR
+// ══════════════════════════════════════════════════════
+function statusOf(code) {
+  if (S.taken.includes(code)) return "taken";
+  if (Object.values(S.plan).some(arr => arr.includes(code))) return "planned";
+  return "available";
+}
+
+function renderSidebar() {
+  const prog = PROGRAMS[S.program];
+  const requiredCodes = new Set(prog.groups.flatMap(g => g.courses));
+  let html = "";
+
+  const SUBJECTS = [
+    { label:"CS Courses",    prefix:"CS"    },
+    { label:"MATH Courses",  prefix:"MATH"  },
+    { label:"STAT Courses",  prefix:"STAT"  },
+    { label:"PMATH Courses", prefix:"PMATH" },
+    { label:"AMATH Courses", prefix:"AMATH" },
+    { label:"ACTSC Courses", prefix:"ACTSC" },
+    { label:"CO Courses",    prefix:"CO"    },
+  ];
+
+  SUBJECTS.forEach(({ label, prefix }) => {
+    const courses = allCourses.filter(c => c.code.startsWith(prefix + " "));
+    if (!courses.length) return;
+
+    // required for this program come first, then the rest alphabetically
+    const req  = courses.filter(c => requiredCodes.has(c.code));
+    const rest = courses.filter(c => !requiredCodes.has(c.code));
+    const sorted = [...req, ...rest];
+
+    const reqDone  = req.filter(c => statusOf(c.code) !== "available").length;
+    const totalDone = courses.filter(c => statusOf(c.code) !== "available").length;
+
+    const badge = req.length
+      ? `<span class="req-count">${reqDone}/${req.length} req</span>`
+      : `<span class="req-count">${totalDone}/${courses.length}</span>`;
+
+    const items = sorted.map(c => sidebarItem(c.code, requiredCodes.has(c.code))).join("");
+    const isExpanded = req.length > 0;   // expand groups that have required courses
+    html += `<div class="req-group${isExpanded ? "" : " collapsed"}">
+      <div class="req-group-title" onclick="toggleGroup(this)">
+        <span>${label}</span>
+        <span style="display:flex;align-items:center;gap:6px">
+          ${badge}
+          <i class="chevron">▾</i>
+        </span>
+      </div>
+      <div class="req-list">${items}</div>
+    </div>`;
+  });
+
+  document.getElementById("sidebarContent").innerHTML = html;
+
+  // attach drag + click listeners
+  document.querySelectorAll("#sidebarContent .req-item[data-status='available']").forEach(el => {
+    el.addEventListener("dragstart", e => {
+      dragCode = el.dataset.code; dragFrom = null;
+      e.dataTransfer.effectAllowed = "move";
+    });
+    el.addEventListener("click", () => askAbout(el.dataset.code));
+  });
+}
+
+function toggleGroup(titleEl) {
+  titleEl.closest(".req-group").classList.toggle("collapsed");
+}
+
+function sidebarItem(code, isRequired = false) {
+  const st = statusOf(code);
+  const info = getCourseInfo(code);
+  const icon = st==="taken" ? "✓" : st==="planned" ? "●" : "○";
+  const drag = st==="available" ? 'draggable="true"' : "";
+
+  const prereqGroups = getPrereqs(code);
+  let prereqHtml = "";
+  if (prereqGroups && prereqGroups.length) {
+    const parts = prereqGroups.map(g =>
+      g.length === 1 ? g[0] : g[0] + (g.length > 1 ? "/" + g.slice(1).join("/") : "")
+    );
+    prereqHtml = `<div class="req-prereq">↳ ${parts.join(" &amp; ")}</div>`;
+  }
+
+  const reqStar = isRequired
+    ? `<span style="color:var(--gold);font-size:9px;font-weight:800;flex-shrink:0" title="Required for your program">★</span>`
+    : "";
+
+  return `<div class="req-item" data-code="${code}" data-status="${st}" ${drag}>
+    <span class="req-icon">${icon}</span>
+    <div style="min-width:0;overflow:hidden">
+      <div style="display:flex;align-items:baseline;gap:4px">
+        <span class="req-code">${code}</span>${reqStar}
+        <span class="req-name">${info.name}</span>
+      </div>
+      ${prereqHtml}
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+//  TERM GRID
+// ══════════════════════════════════════════════════════
+function renderGrid() {
+  let coopN = 0;
+  let html = "";
+  getTerms().forEach(termId => {
+    const isCoop = termId === "COOP";
+    if (isCoop) { coopN++; }
+    const label = isCoop ? `Co-op ${coopN}` : termId;
+    html += `<div class="term-col${isCoop?" coop":""}">
+      <div class="term-lbl">${label}</div>`;
+    if (isCoop) {
+      html += `<div class="coop-body"><div class="coop-icon">💼</div><div>Work term</div></div>`;
+    } else {
+      const cards = (S.plan[termId] || []).map(code => courseCard(code, termId)).join("");
+      html += `<div class="term-drop" data-term="${termId}">${cards}</div>`;
+    }
+    html += `</div>`;
+  });
+  const grid = document.getElementById("termGrid");
+  grid.innerHTML = html;
+
+  grid.querySelectorAll(".term-drop").forEach(zone => {
+    zone.addEventListener("dragover",  e => { e.preventDefault(); zone.classList.add("drag-over"); });
+    zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
+    zone.addEventListener("drop",      e => onDrop(e, zone.dataset.term));
+  });
+
+  grid.querySelectorAll(".course-card").forEach(card => {
+    card.addEventListener("dragstart", e => {
+      dragCode = card.dataset.code; dragFrom = card.dataset.term;
+      e.dataTransfer.effectAllowed = "move";
+      e.stopPropagation();
+    });
+    card.addEventListener("click", () => askAbout(card.dataset.code));
+  });
+
+  grid.querySelectorAll(".card-rm").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      const { code, term } = btn.dataset;
+      S.plan[term] = (S.plan[term] || []).filter(c => c !== code);
+      save(); render();
+    });
+  });
+}
+
+function courseCard(code, termId) {
+  const info = getCourseInfo(code);
+  const v = violations(code, termId);
+  const likedCls = info.liked >= 70 ? "g" : info.liked < 45 ? "r" : "";
+  const easyCls  = info.easy  >= 55 ? "g" : info.easy  < 35 ? "r" : "";
+  const warnHtml = v.length ? `<div class="card-warn">⚠ needs ${v[0]}</div>` : "";
+  const typical  = typicalTermFor(code);
+  const hintHtml = typical && typical !== termId
+    ? `<div class="card-hint">Typical: ${typical}</div>` : "";
+  return `<div class="course-card${v.length?" bad":""}" data-code="${code}" data-term="${termId}" draggable="true">
+    <button class="card-rm" data-code="${code}" data-term="${termId}">×</button>
+    <div class="card-code">${code}</div>
+    <div class="card-name">${info.name}</div>
+    <div class="card-stats">
+      <span class="card-stat ${likedCls}">♥ ${info.liked}%</span>
+      <span class="card-stat ${easyCls}">${info.easy}% easy</span>
+    </div>
+    ${warnHtml}${hintHtml}
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+//  DRAG AND DROP
+// ══════════════════════════════════════════════════════
+let dragCode = null, dragFrom = null;
+
+function onDrop(e, termId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove("drag-over");
+  if (!dragCode) return;
+  if (dragFrom && dragFrom !== termId) {
+    S.plan[dragFrom] = (S.plan[dragFrom] || []).filter(c => c !== dragCode);
+  }
+  if (!(S.plan[termId] || []).includes(dragCode)) {
+    S.plan[termId] = [...(S.plan[termId] || []), dragCode];
+  }
+  dragCode = null; dragFrom = null;
+  save(); render();
+}
+
+// ══════════════════════════════════════════════════════
+//  PROGRESS
+// ══════════════════════════════════════════════════════
+function updateProgress() {
+  const prog = PROGRAMS[S.program];
+  const all = prog.groups.flatMap(g => g.courses);
+  const done = all.filter(c =>
+    S.taken.includes(c) || Object.values(S.plan).some(a => a.includes(c))
+  ).length;
+  const pct = all.length ? Math.round(done / all.length * 100) : 0;
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressLbl").textContent = `${done} / ${all.length} courses`;
+}
+
+// ══════════════════════════════════════════════════════
+//  CHAT
+// ══════════════════════════════════════════════════════
+let chatHistory = [];
+
+function toggleChat() {
+  document.getElementById("chatBar").classList.toggle("open");
+}
+
+function askAbout(code) {
+  const bar = document.getElementById("chatBar");
+  if (!bar.classList.contains("open")) bar.classList.add("open");
+  sendChat(`Tell me about ${code}`);
+}
+
+async function sendChat(preset) {
+  const input  = document.getElementById("chatInput");
+  const btn    = document.getElementById("chatBtn");
+  const thread = document.getElementById("chatThread");
+  const q = preset || input.value.trim();
+  if (!q) return;
+  input.value = "";
+  btn.disabled = true;
+
+  const uMsg = document.createElement("div");
+  uMsg.className = "chat-msg u";
+  uMsg.innerHTML = `<div class="lbl">You</div>${esc(q)}`;
+  thread.appendChild(uMsg);
+
+  const bMsg = document.createElement("div");
+  bMsg.className = "chat-msg b";
+  bMsg.innerHTML = `<div class="lbl">WatAsk</div><em style="color:var(--muted)">Thinking…</em>`;
+  thread.appendChild(bMsg);
+  thread.scrollTop = thread.scrollHeight;
+
+  // build full student context for the backend
+  const prog = PROGRAMS[S.program];
+  const planSummary = Object.entries(S.plan)
+    .filter(([,a]) => a.length)
+    .map(([t,a]) => `${t}: ${a.join(", ")}`)
+    .join("; ") || "empty";
+  const takenStr = S.taken.length ? S.taken.join(", ") : "none";
+  const reqCodes = prog.groups
+    .filter(g => !g.name.startsWith("Advanced"))
+    .flatMap(g => g.courses).join(", ");
+  const seqLabel = S.coop === "regular" ? "regular (no co-op)" : `co-op SEQ ${S.seq || "1"}`;
+  const studentCtx = `${prog.name} · ${seqLabel} · current term: ${S.currentTerm} · completed: ${takenStr} · required courses: ${reqCodes} · plan so far: ${planSummary}`;
+
+  try {
+    const res  = await fetch("/ask", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ question:q, history:chatHistory, student_context:studentCtx }),
+    });
+    const data = await res.json();
+    bMsg.innerHTML = `<div class="lbl">WatAsk</div>${esc(data.answer)}`;
+    chatHistory.push({ question:q, answer:data.answer });
+    if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
+  } catch(_) {
+    bMsg.innerHTML = `<div class="lbl">WatAsk</div><em style="color:var(--red)">Couldn't reach server.</em>`;
+  } finally {
+    btn.disabled = false;
+    thread.scrollTop = thread.scrollHeight;
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  AI SUGGEST
+// ══════════════════════════════════════════════════════
+function parsePlanToTable(text) {
+  // Parse lines like "1A: CS 135, MATH 135, MATH 137" into an HTML table
+  const rows = [];
+  for (const line of text.split("\n")) {
+    const m = line.match(/^([\w\s&]+?):\s*(.+)/);
+    if (!m) continue;
+    const term = m[1].trim();
+    const courses = m[2].split(/,\s*/).map(c => c.trim()).filter(Boolean);
+    if (courses.length) rows.push({ term, courses });
+  }
+  if (!rows.length) return `<pre style="white-space:pre-wrap;margin:0">${esc(text)}</pre>`;
+
+  const termStyle = `style="padding:6px 10px;color:var(--gold);font-weight:600;font-size:12px;white-space:nowrap;border-right:1px solid var(--border)"`;
+  const cellStyle = `style="padding:6px 10px;font-size:12px;color:var(--text)"`;
+  const rowsHtml = rows.map((r,i) => {
+    const bg = i % 2 === 0 ? "background:rgba(255,255,255,0.02)" : "";
+    const pills = r.courses.map(c =>
+      `<span style="display:inline-block;background:var(--gold-muted);border:1px solid var(--gold-border);border-radius:4px;padding:1px 6px;margin:2px;font-size:11px;color:var(--gold)">${esc(c)}</span>`
+    ).join("");
+    return `<tr style="${bg}"><td ${termStyle}>${esc(r.term)}</td><td ${cellStyle}>${pills}</td></tr>`;
+  }).join("");
+
+  return `<table style="width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:8px">${rowsHtml}</table>`;
+}
+
+async function suggestPlan() {
+  const btn = document.getElementById("suggestBtn");
+  btn.textContent = "Thinking…"; btn.disabled = true;
+
+  const prog = PROGRAMS[S.program];
+  const studyTerms = getTerms().filter(t => t !== "COOP");
+  const reqList = prog.groups.map(g => `${g.name}: ${g.courses.join(", ")}`).join("; ");
+  const taken = S.taken.length ? S.taken.join(", ") : "none yet";
+
+  const bar = document.getElementById("chatBar");
+  if (!bar.classList.contains("open")) bar.classList.add("open");
+
+  const thread = document.getElementById("chatThread");
+  const el = document.createElement("div");
+  el.className = "chat-msg b";
+  el.innerHTML = `<div class="lbl">✦ Suggested Plan</div><em style="color:var(--muted)">Generating…</em>`;
+  thread.appendChild(el);
+  thread.scrollTop = thread.scrollHeight;
+
+  try {
+    const res = await fetch("/plan", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        program: prog.name,
+        terms: studyTerms,
+        taken: S.taken,
+        groups: prog.groups.map(g => ({ name: g.name, courses: g.courses })),
+        placed: S.plan,
+        current_term: S.currentTerm,
+      }),
+    });
+    const data = await res.json();
+    el.innerHTML = `<div class="lbl">✦ Suggested Plan</div>${parsePlanToTable(data.answer)}`;
+  } catch(err) {
+    el.innerHTML = `<div class="lbl">✦ Suggested Plan</div><em style="color:var(--red)">Error: ${err.message}</em>`;
+  } finally {
+    btn.textContent = "✦ Suggest my plan"; btn.disabled = false;
+    thread.scrollTop = thread.scrollHeight;
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  UTILS + INIT
+// ══════════════════════════════════════════════════════
+function esc(s) {
+  const d = document.createElement("div"); d.textContent = s; return d.innerHTML;
+}
+
+document.getElementById("chatInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") sendChat();
+});
+
+document.getElementById("courseSearch").addEventListener("input", e => {
+  renderSearch(e.target.value);
+});
+
+S = loadState();
+loadAllCourses().then(() => {
+  if (S) {
+    startApp();
+  } else {
+    document.getElementById("onboarding").classList.remove("hidden");
+  }
+});
+</script>
 </body>
 </html>
