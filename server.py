@@ -55,9 +55,10 @@ class PlanRequest(BaseModel):
     program: str
     terms: List[str]
     taken: List[str]
-    groups: List[dict]          # [{name, courses}]
+    groups: List[dict]          # [{name, courses, typical}]
     placed: Optional[dict] = None  # {termId: [codes]} already in the grid
     current_term: Optional[str] = None
+    prereqs: Optional[dict] = None  # {courseCode: [[group1_opts], [group2_opts], ...]}
 
 
 GREETING_TRIGGERS = [
@@ -101,77 +102,111 @@ def looks_like_course_question(q: str) -> bool:
 
 @app.post("/plan")
 def suggest_plan(req: PlanRequest):
-    taken_str = ", ".join(req.taken) if req.taken else "none yet"
-
-    # Flatten all required courses across groups
-    all_required = []
+    all_required: list[str] = []
+    advanced_pool: list[str] = []
     for g in req.groups:
-        if not g["name"].startswith("Advanced"):
+        if g["name"].startswith("Advanced"):
+            advanced_pool.extend(g["courses"])
+        else:
             all_required.extend(g["courses"])
-    # Remove already taken or placed
-    placed_flat = set()
+
+    typical: dict[str, str] = {}
+    for g in req.groups:
+        for code, term in (g.get("typical") or {}).items():
+            typical[code] = term
+
+    placed_flat: set[str] = set()
     if req.placed:
         for codes in req.placed.values():
             placed_flat.update(codes)
     already_done = set(req.taken) | placed_flat
     to_schedule = [c for c in all_required if c not in already_done]
 
-    terms_str = ", ".join(req.terms)
+    study_terms = [t for t in req.terms if t != "COOP"]
+    if not study_terms:
+        return {"answer": "No study terms found."}
 
-    placed_str = ""
-    if req.placed:
-        placed_str = "; ".join(
-            f"{t}: {', '.join(codes)}" for t, codes in req.placed.items() if codes
-        ) or "none"
-    else:
-        placed_str = "none"
+    # Full-load schedule: 5 courses per term = 40 courses across 8 terms = 20.0 units
+    MAX_PER_TERM = 5
+    term_index = {t: i for i, t in enumerate(study_terms)}
+    prereqs = req.prereqs or {}
 
-    prompt = f"""You are a UW academic advisor generating a term-by-term course plan.
+    schedule: dict[str, list[str]] = {t: [] for t in study_terms}
 
-STUDENT: {req.program}
-Already completed: {taken_str}
-Already placed in grid: {placed_str}
-Study terms in order: {terms_str}
-Required courses still to schedule: {', '.join(to_schedule) if to_schedule else 'none — all done!'}
+    def placed_before(term_idx: int) -> set[str]:
+        """All courses committed to terms 0..term_idx-1, plus taken courses."""
+        result = set(req.taken)
+        for j in range(term_idx):
+            for c in schedule[study_terms[j]]:
+                result.add(c.replace("[suggested]", "").strip())
+        return result
 
-STRICT RULES (follow every one):
-1. CO-REQUISITES — these MUST appear in the exact same term:
-   - CS 136 and CS 136L always together
-2. PREREQUISITES — determine the CS path from the required course list, then respect ordering:
-   PATH A (non-CS programs): CS 115 in 1A → CS 116 in 1B → CS 234 in 2A (if in required list)
-   PATH B (CS-heavy programs): CS 135 or CS 145 in 1A → CS 136 + CS 136L in 1B
-   Do NOT mix paths. Use whichever path appears in the required course list.
-   - MATH 135, MATH 137 (or MATH 145/147) go in 1A; MATH 136, MATH 138 go in 1B
-   - MATH 235 and MATH 239 require MATH 136 → earliest 2A
-   - STAT 230 before STAT 231; STAT 240 before STAT 241
-   - AMATH 231, AMATH 250 require MATH 138 → earliest 2A
-   - AMATH 271 requires MATH 138 → earliest 2B or 3A
-   - AMATH 331 requires MATH 237 → earliest 3A
-   - AMATH 342, AMATH 353 require AMATH 231 and AMATH 250 → earliest 3B/4A
-   - ACTSC 231 requires MATH 128/138 → earliest 2A
-   - CO 250 requires MATH 136 → earliest 2A
-   - CS 240, CS 241, CS 245, CS 246 require CS 136 (PATH B) → earliest 2A or 2B
-   - 300-level courses require their 200-level prereqs done first
-   - 400-level courses require their 300-level prereqs done first
-3. COURSE LOAD — list only required courses per term (students fill with electives to reach 5/term)
-4. DISTRIBUTION — spread required courses across ALL study terms given above, working in order
-   - 4A and 4B are normal study terms; include them whenever required courses remain
-   - Max 4 required courses per study term
-   - Output all terms that have at least 1 required course; skip only genuinely empty terms
+    def prereqs_ok(code: str, term_idx: int) -> bool:
+        if code not in prereqs:
+            return True
+        done = placed_before(term_idx)
+        for group in prereqs[code]:
+            # Strip grade-minimum suffixes (e.g. "MATH 138:60" → "MATH 138")
+            if not any(c.split(":")[0] in done for c in group):
+                return False
+        return True
 
-Output format — ONLY the schedule, one term per line, no preamble:
-[term]: [code1], [code2], ..."""
+    def sort_key(code: str):
+        t = typical.get(code, study_terms[-1])
+        return (term_index.get(t, len(study_terms)), code)
 
-    try:
-        response = client.models.generate_content(model="gemini-3.1-flash-lite", contents=prompt)
-        return {"answer": response.text}
-    except Exception as e:
-        return {"answer": f"Error generating plan: {e}", "error": True}
+    # Phase 1 — required courses with prereq checking (multi-pass to resolve dependencies)
+    unplaced = sorted(to_schedule, key=sort_key)
+    for _ in range(len(study_terms) + 2):
+        if not unplaced:
+            break
+        still_unplaced: list[str] = []
+        for code in unplaced:
+            target = typical.get(code, study_terms[-1])
+            start_idx = term_index.get(target, 0)
+            placed = False
+            for i in range(start_idx, len(study_terms)):
+                if prereqs_ok(code, i) and len(schedule[study_terms[i]]) < MAX_PER_TERM:
+                    schedule[study_terms[i]].append(code)
+                    placed = True
+                    break
+            if not placed:
+                still_unplaced.append(code)
+        unplaced = still_unplaced
+
+    # Phase 2 — suggest up to 5 Advanced Options (student can swap; labeled [suggested])
+    adv_candidates = [c for c in advanced_pool if c not in already_done]
+    adv_start_idx = term_index.get("3A", len(study_terms) // 2)
+    adv_placed = 0
+    for code in adv_candidates:
+        if adv_placed >= 5:
+            break
+        for i in range(adv_start_idx, len(study_terms)):
+            if prereqs_ok(code, i) and len(schedule[study_terms[i]]) < MAX_PER_TERM:
+                schedule[study_terms[i]].append(code + "[suggested]")
+                adv_placed += 1
+                break
+
+    # Phase 3 — fill remaining slots: 5 Non-Math Elective slots then Free Elective
+    # BMath requires ≥5 non-math (non-Math-faculty) credits; rest are free electives
+    non_math_left = 5
+    lines = []
+    for term in study_terms:
+        parts = list(schedule[term])
+        for _ in range(MAX_PER_TERM - len(parts)):
+            if non_math_left > 0:
+                parts.append("Non-Math Elective")
+                non_math_left -= 1
+            else:
+                parts.append("Free Elective")
+        lines.append(f"{term}: {', '.join(parts)}")
+
+    return {"answer": "\n".join(lines)}
 
 
 @app.get("/courses")
 def get_courses():
-    with open("planner_courses.json") as f:
+    with open("data/course_catalog.json") as f:
         return json.load(f)
     
     
@@ -249,6 +284,11 @@ def ask(req: AskRequest):
 
     prompt = f"""You are WatAsk, a knowledgeable UW academic advisor chatbot.
 You know this student's program, completed courses, and current plan — use that context to give tailored advice.{student_section}
+
+IMPORTANT — reading the student profile:
+- "required courses" = what the degree actually mandates
+- "plan so far" = courses the student placed in their schedule (mix of required + optional electives they chose)
+- NEVER call a course "required" just because it appears in "plan so far". Only call something required if it's in the "required courses" list.
 
 Primary source: use the course information retrieved below.
 If the retrieved info doesn't fully cover the question (e.g. a planning question, an edge case, or a course comparison), draw on your general knowledge of UW programs to give a helpful answer — but flag if you're less certain.

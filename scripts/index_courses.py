@@ -1,9 +1,9 @@
 """
-Embed all courses from planner_courses.json into Supabase pgvector.
+Embed all courses from data/course_catalog.json into Supabase pgvector.
 Skips courses that already have embeddings in the DB (safe to re-run).
 
 Run from project root:
-  python scripts/embed_all_courses.py
+  python scripts/index_courses.py
 
 Flags:
   --force    Re-embed and overwrite ALL courses (even ones already in DB)
@@ -80,10 +80,10 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Print plan without calling APIs")
     args = parser.parse_args()
 
-    with open(os.path.join(ROOT, "planner_courses.json")) as f:
+    with open(os.path.join(ROOT, "data", "course_catalog.json")) as f:
         all_courses = json.load(f)
 
-    print(f"Loaded {len(all_courses)} courses from planner_courses.json")
+    print(f"Loaded {len(all_courses)} courses from data/course_catalog.json")
 
     if args.dry_run:
         print("\n[DRY RUN] Would embed:")

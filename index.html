@@ -73,20 +73,91 @@ body { font-family: system-ui,-apple-system,sans-serif; background:var(--bg); co
 }
 .modal select:focus { outline:none; border-color:var(--gold); }
 
-.check-grid {
-  display:grid; grid-template-columns:1fr 1fr; gap:7px;
-  max-height:260px; overflow-y:auto; margin-bottom:24px;
+.ob-search-box { position:relative; margin-bottom:12px; }
+.ob-search-input {
+  width:100%; background:var(--surface-2); border:1px solid var(--border);
+  border-radius:8px; color:var(--text); font-size:14px; padding:10px 14px;
+  outline:none; box-sizing:border-box;
 }
-.check-item {
-  display:flex; align-items:center; gap:9px;
-  padding:8px 10px; background:var(--surface-2); border:1px solid var(--border);
-  border-radius:8px; cursor:pointer; transition:border-color .1s;
+.ob-search-input:focus { border-color:var(--gold); }
+.ob-search-dropdown {
+  position:absolute; top:calc(100% + 4px); left:0; right:0;
+  background:var(--surface-2); border:1px solid var(--border);
+  border-radius:8px; z-index:200; max-height:220px; overflow-y:auto;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
 }
-.check-item:hover { border-color:var(--gold); }
-.check-item.on { border-color:var(--green); background:var(--green-muted); }
-.check-item input { accent-color:var(--gold); width:14px; height:14px; flex-shrink:0; }
-.check-code { font-size:12px; font-weight:700; }
-.check-name { font-size:11px; color:var(--muted); line-height:1.3; }
+.ob-result {
+  display:flex; align-items:center; gap:8px; padding:9px 14px;
+  cursor:pointer; border-bottom:1px solid var(--border);
+}
+.ob-result:last-child { border-bottom:none; }
+.ob-result:hover { background:var(--surface); }
+.ob-result-code { font-size:12px; font-weight:700; color:var(--gold); min-width:68px; }
+.ob-result-name { font-size:12px; color:var(--muted); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ob-result-badge { font-size:10px; color:var(--green); font-weight:600; white-space:nowrap; }
+.ob-term-picker {
+  background:rgba(230,179,80,.06); border:1px solid var(--gold-border);
+  border-radius:8px; padding:12px 14px; margin-bottom:12px;
+}
+.ob-picker-label { font-size:12px; color:var(--muted); margin-bottom:10px; }
+.ob-picker-btns { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+.ob-picker-cancel {
+  background:none; border:none; color:var(--muted); font-size:12px;
+  cursor:pointer; padding:0; text-decoration:underline;
+}
+.ob-retake-btn {
+  width:100%; padding:8px 14px; margin-top:8px;
+  background:rgba(224,138,60,.08); border:1px solid rgba(224,138,60,.3);
+  border-radius:6px; color:#e08a3c; font-size:12px; cursor:pointer; text-align:left;
+}
+.ob-retake-btn:hover { background:rgba(224,138,60,.18); }
+.ob-taken-retaking { border-color:rgba(224,138,60,.4) !important; }
+.ob-taken-retaking .ob-taken-code { color:#e08a3c; }
+.ob-taken-retake-badge {
+  font-size:11px; color:#e08a3c; background:rgba(224,138,60,.1);
+  border:1px solid rgba(224,138,60,.3); border-radius:4px; padding:2px 7px;
+}
+.ob-taken-list { max-height:190px; overflow-y:auto; margin-bottom:20px; }
+.ob-taken-empty { text-align:center; color:var(--muted); font-size:12px; padding:14px 0; }
+.ob-taken-item {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 12px; background:var(--surface-2); border:1px solid var(--border);
+  border-radius:6px; margin-bottom:5px;
+}
+.ob-taken-left { display:flex; align-items:center; gap:10px; overflow:hidden; }
+.ob-taken-code { font-size:12px; font-weight:700; color:var(--gold); white-space:nowrap; }
+.ob-taken-name { font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ob-taken-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.ob-taken-term {
+  font-size:11px; color:var(--gold); background:rgba(230,179,80,.1);
+  border:1px solid var(--gold-border); border-radius:4px; padding:2px 7px;
+}
+.ob-taken-remove { background:none; border:none; color:var(--muted); cursor:pointer; font-size:13px; line-height:1; padding:2px; }
+.ob-taken-remove:hover { color:#e05252; }
+.ob-grade-row { margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+.ob-grade-optional { color:var(--muted); font-style:italic; font-size:11px; }
+.ob-grade-input-row { display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+.ob-grade-input {
+  width:72px; padding:5px 8px; background:var(--surface-2);
+  border:1px solid var(--border); border-radius:6px; color:var(--text);
+  font-size:14px; font-family:inherit; text-align:center;
+}
+.ob-grade-input:focus { outline:none; border-color:var(--gold); }
+.ob-grade-pct { font-size:13px; color:var(--muted); }
+.ob-grade-selected-term { font-size:12px; color:var(--gold); font-weight:600; margin-bottom:6px; }
+.ob-grade-warn { font-size:11px; color:#e08a3c; margin-bottom:7px; }
+.ob-grade-actions { display:flex; gap:10px; align-items:center; }
+.ob-confirm-btn {
+  padding:6px 14px; background:var(--gold); border:none; border-radius:6px;
+  color:#1a1208; font-size:12px; font-weight:700; cursor:pointer;
+}
+.ob-confirm-btn:hover { opacity:.85; }
+.ob-skip-grade-btn { background:none; border:none; color:var(--muted); font-size:12px; cursor:pointer; text-decoration:underline; padding:0; }
+.ob-taken-grade {
+  font-size:11px; color:var(--muted); background:var(--surface-2);
+  border:1px solid var(--border); border-radius:4px; padding:2px 6px;
+}
+.ob-taken-grade.ob-grade-warn-badge { color:#e08a3c; border-color:rgba(224,138,60,.4); background:rgba(224,138,60,.08); }
 
 .modal-footer { display:flex; justify-content:space-between; align-items:center; margin-top:4px; }
 .step-dots { display:flex; gap:6px; }
@@ -129,6 +200,7 @@ header {
 .progress-bar { flex:1; height:4px; background:var(--border); border-radius:99px; overflow:hidden; }
 .progress-fill { height:100%; background:var(--gold); border-radius:99px; transition:width .35s; }
 .progress-lbl { font-size:12px; color:var(--muted); white-space:nowrap; }
+.units-lbl { font-size:12px; color:var(--gold); white-space:nowrap; opacity:.85; cursor:default; }
 
 .btn-suggest {
   display:flex; align-items:center; gap:6px; background:var(--gold-muted);
@@ -174,34 +246,52 @@ header {
   border:1px solid transparent; transition:border-color .12s, background .12s;
   user-select:none;
 }
-.req-item:hover:not([data-status="taken"]):not([data-status="planned"]) {
+.req-item:hover:not([data-status="taken"]):not([data-status="planned"]):not([data-status="retaking"]) {
   background:var(--surface-2); border-color:var(--border);
 }
-.req-item[data-status="taken"]  { opacity:.5; cursor:default; }
-.req-item[data-status="planned"]{ opacity:.65; cursor:default; }
+.req-item[data-status="taken"]    { opacity:.5; cursor:default; }
+.req-item[data-status="planned"]  { opacity:.65; cursor:default; }
+.req-item[data-status="retaking"] { opacity:.8; }
 .req-icon { font-size:11px; flex-shrink:0; width:13px; text-align:center; }
-.req-item[data-status="taken"]  .req-icon { color:var(--green); }
-.req-item[data-status="planned"] .req-icon { color:var(--gold); }
-.req-item[data-status="available"] .req-icon { color:var(--border); }
+.req-item[data-status="taken"]    .req-icon { color:var(--green); }
+.req-item[data-status="planned"]  .req-icon { color:var(--gold); }
+.req-item[data-status="available"].req-icon { color:var(--border); }
+.req-item[data-status="retaking"] .req-icon { color:#e08a3c; }
 .req-code { font-size:12px; font-weight:700; flex-shrink:0; }
 .req-name { font-size:11px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .req-prereq { font-size:10px; color:var(--gold); opacity:.55; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
-/* ── Course browser ── */
-.browse-hdr {
-  padding:13px 16px 10px; font-size:10px; font-weight:700; letter-spacing:1px;
-  text-transform:uppercase; color:var(--muted);
-  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-  flex-shrink:0;
-}
-.search-wrap { padding:8px 8px 4px; }
-.search-input {
+/* ── Sidebar search + quick-add ── */
+.sidebar-search-wrap { padding:8px 8px 6px; border-bottom:1px solid var(--border); flex-shrink:0; }
+.sidebar-search {
   width:100%; background:var(--surface-2); border:1px solid var(--border);
   border-radius:8px; color:var(--text); font-size:12px; padding:7px 10px;
+  box-sizing:border-box;
 }
-.search-input:focus { outline:none; border-color:var(--gold); }
-.search-results { padding:0 8px 8px; }
-.no-results { padding:10px 8px; font-size:12px; color:var(--muted); }
+.sidebar-search:focus { outline:none; border-color:var(--gold); }
+.no-results { padding:10px 16px; font-size:12px; color:var(--muted); }
+.sidebar-add-btn {
+  flex-shrink:0; width:20px; height:20px; border-radius:5px;
+  border:1px solid var(--border); background:none; color:var(--gold);
+  font-size:16px; line-height:1; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  padding:0; opacity:0; transition:opacity .12s;
+}
+.req-item:hover .sidebar-add-btn { opacity:1; }
+.sidebar-add-btn:hover { background:rgba(230,179,80,.15); border-color:var(--gold); }
+#quickAddPop {
+  position:fixed; z-index:9999; background:var(--surface);
+  border:1px solid var(--gold-border); border-radius:10px; padding:8px;
+  box-shadow:0 6px 24px rgba(0,0,0,.5); display:none; min-width:120px;
+}
+.qa-btn {
+  display:block; width:100%; padding:6px 12px; margin-bottom:3px;
+  background:none; border:1px solid var(--border); border-radius:6px;
+  color:var(--text); font-size:12px; cursor:pointer; text-align:left;
+}
+.qa-btn:hover { border-color:var(--gold); background:rgba(230,179,80,.08); color:var(--gold); }
+.qa-btn.planned { color:var(--gold); border-color:var(--gold-border); }
+.qa-btn:last-child { margin-bottom:0; }
 
 /* ════════════════════════════════════════
    TERM CANVAS
@@ -238,8 +328,18 @@ header {
   cursor:grab; position:relative; transition:box-shadow .12s;
 }
 .course-card:hover { box-shadow:0 2px 10px rgba(0,0,0,.5); }
-.course-card.bad { border-left-color:var(--red); }
+.course-card.card-green  { border-left-color:var(--green); }
+.course-card.card-yellow { border-left-color:#e8b43a; }
+.course-card.card-orange { border-left-color:#e07840; }
+.course-card.bad         { border-left-color:var(--red) !important; border-left-width:4px !important; }
 .card-code { font-size:11px; font-weight:700; }
+.req-group-filter-wrap { padding:4px 8px 2px; }
+.req-group-filter {
+  width:100%; padding:4px 8px; background:var(--surface-2);
+  border:1px solid var(--border); border-radius:6px; color:var(--text);
+  font-size:11px; box-sizing:border-box;
+}
+.req-group-filter:focus { outline:none; border-color:var(--gold); }
 .card-name { font-size:10px; color:var(--muted); margin-top:2px; line-height:1.3; }
 .card-stats { display:flex; gap:8px; margin-top:5px; }
 .card-stat { font-size:10px; color:var(--muted); }
@@ -247,11 +347,20 @@ header {
 .card-stat.r { color:var(--red); }
 .card-warn { font-size:10px; color:var(--red); margin-top:3px; }
 .card-hint { font-size:10px; color:var(--gold); opacity:.75; margin-top:3px; }
+.card-soft-warn { font-size:10px; color:#e8b43a; margin-top:3px; line-height:1.3; }
 .card-rm {
   position:absolute; top:4px; right:5px; background:none; border:none;
   color:var(--muted); font-size:13px; cursor:pointer; padding:1px 4px; border-radius:4px; line-height:1;
 }
 .card-rm:hover { color:var(--red); background:var(--red-muted); }
+.course-card.card-done {
+  border-left-color:var(--green); opacity:.75; cursor:default;
+  background:rgba(74,179,108,.06);
+}
+.course-card.card-done:hover { opacity:.9; }
+.card-done-badge {
+  font-size:10px; color:var(--green); margin-top:4px; font-weight:600;
+}
 
 /* ════════════════════════════════════════
    CHAT BAR
@@ -374,8 +483,33 @@ header {
 
     <div class="modal-step" id="step3">
       <h2>Courses completed</h2>
-      <p class="sub">Check off courses you've already finished — they'll be marked done in your plan.</p>
-      <div class="check-grid" id="obCourses"></div>
+      <p class="sub">Search for courses you've already finished and pick the term. Skip if you're starting fresh.</p>
+      <div class="ob-search-box">
+        <input type="text" id="obCourseSearch" class="ob-search-input"
+               placeholder="Search by code or name…" autocomplete="off"
+               oninput="obSearchCourses(this.value)">
+        <div id="obSearchDropdown" class="ob-search-dropdown" style="display:none"></div>
+      </div>
+      <div id="obTermPicker" class="ob-term-picker" style="display:none">
+        <div class="ob-picker-label">Which term did you complete <strong id="obPickerCode"></strong>?<span id="obPickerRetake" style="color:var(--gold);margin-left:6px;font-size:11px"></span></div>
+        <div id="obTermPickerBtns" class="ob-picker-btns"></div>
+        <div id="obGradeRow" class="ob-grade-row" style="display:none">
+          <div class="ob-grade-selected-term" id="obGradeSelectedTerm"></div>
+          <div class="ob-picker-label" style="margin-bottom:6px">What % did you get? <span class="ob-grade-optional">(optional — skip if unsure)</span></div>
+          <div class="ob-grade-input-row">
+            <input type="number" id="obGradeVal" class="ob-grade-input" min="32" max="100" placeholder="e.g. 78" oninput="obGradeInput()">
+            <span class="ob-grade-pct">%</span>
+          </div>
+          <div id="obGradeWarn" class="ob-grade-warn" style="display:none"></div>
+          <div class="ob-grade-actions">
+            <button class="ob-confirm-btn" onclick="obFinalizeTaken()">Add course</button>
+            <button class="ob-skip-grade-btn" onclick="obFinalizeTaken(true)">Skip %</button>
+          </div>
+        </div>
+        <button class="ob-retake-btn" onclick="obMarkRetaking()">⚠ Currently retaking — didn't pass yet</button>
+        <button class="ob-picker-cancel" onclick="obCancelPicker()">Cancel</button>
+      </div>
+      <div id="obTakenList"></div>
       <div class="modal-footer">
         <div class="step-dots"><div class="dot"></div><div class="dot"></div><div class="dot on"></div><div class="dot"></div></div>
         <div class="actions">
@@ -432,7 +566,8 @@ header {
     </select>
     <div class="progress-wrap">
       <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-      <div class="progress-lbl" id="progressLbl">0 / 0</div>
+      <div class="progress-lbl" id="progressLbl">0 / 0 req</div>
+      <div class="units-lbl" id="unitsLbl">0.0 / 20.0 units</div>
     </div>
     <button class="btn-suggest" id="suggestBtn" onclick="suggestPlan()">✦ Suggest my plan</button>
     <button class="btn-ghost" onclick="resetApp()">Reset</button>
@@ -440,13 +575,11 @@ header {
 
   <div class="layout">
     <aside class="sidebar">
-      <div class="sidebar-hdr">Required Courses</div>
-      <div id="sidebarContent"></div>
-      <div class="browse-hdr">Browse All Courses</div>
-      <div class="search-wrap">
-        <input class="search-input" id="courseSearch" placeholder="Search by code or name…" autocomplete="off" />
+      <div class="sidebar-hdr">Courses</div>
+      <div class="sidebar-search-wrap">
+        <input class="sidebar-search" id="sidebarSearch" placeholder="Search by code or name…" autocomplete="off" oninput="filterSidebar(this.value)">
       </div>
-      <div class="search-results" id="searchResults"></div>
+      <div id="sidebarContent"></div>
     </aside>
     <main class="canvas">
       <div class="term-grid" id="termGrid"></div>
@@ -469,6 +602,8 @@ header {
   </div>
 
 </div>
+
+<div id="quickAddPop"></div>
 
 <script>
 // ══════════════════════════════════════════════════════
@@ -520,32 +655,129 @@ function typicalTermFor(code) {
 
 // Each inner array = "need at least one of these completed before"
 const PREREQS = {
-  "CS 116":  [["CS 115"]],
-  "CS 136":  [["CS 135","CS 145"]],
-  "CS 136L": [["CS 135","CS 145"]],
-  "CS 146":  [["CS 145"]],
-  "CS 234":  [["CS 116"]],
-  "CS 240":  [["CS 245"],["CS 241","CS 246"],["STAT 230","STAT 240"]],
-  "CS 241":  [["CS 136","CS 146"]],
-  "CS 241E": [["CS 136","CS 146"]],
-  "CS 245":  [["CS 136","CS 146"],["MATH 135","MATH 145"]],
-  "CS 245E": [["CS 136","CS 146"],["MATH 135","MATH 145"]],
-  "CS 246":  [["CS 136","CS 146"]],
-  "CS 246E": [["CS 136","CS 146"]],
-  "MATH 136":[["MATH 135","MATH 145"]],
-  "MATH 138":[["MATH 137","MATH 147"]],
+  // ── CS ──────────────────────────────────────────────────────────────────
+  "CS 116":  [["CS 115","CS 135","CS 145"]],              // just pass — no grade min
+  "CS 136":  [["CS 145","CS 116:70","CS 115:90","CS 135:60"]],
+  "CS 136L": [["CS 145","CS 116:70","CS 115:90","CS 135:60"]],
+  "CS 146":  [["CS 145:75"]],
+  "CS 230":  [["CS 116","CS 136","CS 138","CS 146"]],
+  "CS 231":  [["CS 116","CS 136","CS 138","CS 146"]],
+  "CS 234":  [["CS 116","CS 136","CS 138","CS 146"]],
+  "CS 240":  [["CS 245","CS 245E"],["CS 241","CS 241E","CS 246","CS 246E"],["STAT 230","STAT 240"]],
+  "CS 338":  [["CS 230","CS 231","CS 234","CS 246","CS 246E"]],
+  "CS 431":  [["CS 231","CS 234","CS 341"]],
+  "CS 241":  [["CS 136:85","CS 146:85","CS 138"]],
+  "CS 241E": [["CS 136:85","CS 146:85","CS 138"]],
+  "CS 245":  [["CS 136","CS 138","CS 146"],["MATH 135","MATH 145"]],
+  "CS 245E": [["CS 136:85","CS 146:85"]],                // 85% required
+  "CS 246":  [["CS 136:60","CS 146","CS 138:60"]],       // 60% for CS 136 or CS 138
+  "CS 246E": [["CS 136:85","CS 146:85"]],                // 85% required
+
+  // ── MATH ────────────────────────────────────────────────────────────────
+  "MATH 136":[["MATH 135:60","MATH 145"]],
+  "MATH 138":[["MATH 137:60","MATH 147"]],
   "MATH 146":[["MATH 145"]],
   "MATH 148":[["MATH 147"]],
-  "MATH 235":[["MATH 136","MATH 146"]],
+  "MATH 235":[["MATH 136:60","MATH 146"]],               // 60% in MATH 136
   "MATH 245":[["MATH 146"]],
-  "MATH 237":[["MATH 136","MATH 146"],["MATH 128","MATH 138","MATH 148"]],
+  "MATH 237":[["MATH 136","MATH 146"],["MATH 138:60","MATH 148","MATH 128:70"]], // MATH 136 just pass; MATH 138 needs 60%
   "MATH 247":[["MATH 146"],["MATH 148"]],
-  "MATH 239":[["MATH 136","MATH 146"]],
-  // STAT prereqs (grade thresholds not tracked — just ordering)
-  "STAT 230":[["MATH 137","MATH 147","MATH 128","MATH 138","MATH 148"]],
-  "STAT 240":[["MATH 137","MATH 147","MATH 138","MATH 148"]],
+  "MATH 239":[["MATH 136","MATH 146"],["MATH 135:60","MATH 145"]], // MATH 135 needs 60%
+
+  // ── STAT ────────────────────────────────────────────────────────────────
+  "STAT 230":[["MATH 137:80","MATH 147:80","MATH 128:60","MATH 138","MATH 148"]],
+  "STAT 240":[["MATH 137:80","MATH 147:80","MATH 138","MATH 148"]],
   "STAT 231":[["STAT 230","STAT 240"]],
-  "STAT 241":[["STAT 230","STAT 240"]],
+  "STAT 241":[["MATH 138","MATH 148"],["STAT 230","STAT 240"]],
+  "STAT 330":[["MATH 237","MATH 247"],["STAT 230:60","STAT 240"],["STAT 231","STAT 241"]], // STAT 230 needs 60%
+  "STAT 331":[["MATH 235","MATH 245"],["STAT 231:60","STAT 241"]],  // STAT 231 needs 60%
+  "STAT 332":[["STAT 231:60","STAT 241"]],                // does NOT need STAT 331 — just STAT 231:60
+  "STAT 333":[["STAT 230:60","STAT 240"],["MATH 237","MATH 247"]], // STAT 230 needs 60%
+  "STAT 334":[["MATH 237","MATH 247"],["STAT 230:60","STAT 240"],["STAT 231","STAT 241"]], // STAT 230 needs 60%
+  "STAT 340":[["CS 116","CS 136","CS 138","CS 146"],["STAT 230:60","STAT 240"],["STAT 231","STAT 241"]], // STAT 230 needs 60%
+
+  // ── AMATH ───────────────────────────────────────────────────────────────
+  "AMATH 231":[["MATH 237","MATH 247"]],                 // needs MATH 237, NOT MATH 138
+  "AMATH 250":[["MATH 136","MATH 146"],["MATH 138","MATH 148"]], // two-group prereq
+  "AMATH 251":[["MATH 136","MATH 146"],["MATH 138","MATH 148"]],
+  "AMATH 271":[["MATH 138","MATH 148"]],
+  "AMATH 242":[["CS 116","CS 136","CS 138","CS 146"],["MATH 235","MATH 245"],["MATH 237","MATH 247"]], // needs CS + MATH 235 + MATH 237
+  "AMATH 331":[["MATH 237","MATH 247"]],
+  "AMATH 332":[["MATH 237","MATH 247"]],                 // just needs MATH 237, NOT AMATH 331
+  "AMATH 342":[["AMATH 242","CS 371"],["AMATH 250","AMATH 251"]], // needs AMATH 242, NOT AMATH 231
+  "AMATH 353":[["AMATH 231"],["AMATH 250","AMATH 251"]],
+
+  // ── CO ──────────────────────────────────────────────────────────────────
+  "CO 250":  [["MATH 136","MATH 146"]],                  // only MATH prereq, no CS prereq
+  "CO 255":  [["MATH 235","MATH 245"],["MATH 237","MATH 247"]], // needs MATH 235 AND MATH 237
+  "CO 330":  [["MATH 239"]],
+  "CO 342":  [["MATH 239"]],
+  "CO 351":  [["CO 250","CO 255"]],                      // needs CO 250, NOT MATH 239
+  "CO 353":  [["CO 250","CO 255"]],
+  "CO 367":  [["CO 250","CO 255"],["MATH 138","MATH 148","MATH 128:70"]], // needs CO 250 + MATH 138
+
+  // ── ACTSC ───────────────────────────────────────────────────────────────
+  "ACTSC 231":[["MATH 137","MATH 147"]],                 // needs MATH 137, NOT MATH 138
+  "ACTSC 232":[["ACTSC 231:60"],["STAT 230","STAT 240"]], // ACTSC 231 needs 60% + STAT 230
+  "ACTSC 331":[["ACTSC 232:60"]],                        // only needs ACTSC 232:60
+  "ACTSC 362":[["ACTSC 231:60"]],                        // needs ACTSC 231:60, NOT ACTSC 232
+  "ACTSC 371":[["MATH 235","MATH 245"]],
+  "ACTSC 372":[["ACTSC 231"],["MATH 235","MATH 245"],["MATH 237","MATH 247"]], // needs ACTSC 231 + MATH 235 + MATH 237
+
+  // ── PMATH ───────────────────────────────────────────────────────────────
+  "PMATH 330":[["MATH 135","MATH 145"],["MATH 235","MATH 245"]], // needs both MATH 135 and MATH 235
+  "PMATH 331":[["MATH 237","MATH 247"]],
+  "PMATH 332":[["MATH 237","MATH 247"]],                 // just needs MATH 237, NOT PMATH 331
+  "PMATH 333":[["MATH 138:60","MATH 148","MATH 128:70"]], // grade thresholds required
+  "PMATH 334":[["MATH 235","MATH 245"]],                 // needs MATH 235, NOT PMATH 333
+  "PMATH 340":[["MATH 135","MATH 145"]],
+  "PMATH 345":[["MATH 235","MATH 245"]],
+  "PMATH 346":[["PMATH 345"]],
+  "PMATH 347":[["MATH 235","MATH 245"]],                 // calendar: just needs MATH 235
+  "PMATH 351":[["MATH 247","PMATH 333"]],                // MATH 247 or PMATH 333
+  "PMATH 352":[["PMATH 351"]],
+  "PMATH 354":[["PMATH 333"]],
+  "PMATH 365":[["MATH 235","MATH 245"],["MATH 237","MATH 247"]], // needs MATH 235 AND MATH 237
+};
+
+// Mutually exclusive courses — cannot appear in the same term or plan
+const ANTIREQS = {
+  "CS 115":   ["CS 135","CS 145"],
+  "CS 135":   ["CS 115","CS 145"],
+  "CS 145":   ["CS 115","CS 135"],
+  "CS 136":   ["CS 146"],
+  "CS 146":   ["CS 136"],
+  "CS 230":   ["CS 241","CS 241E"],
+  "CS 234":   ["CS 240"],
+  "CS 240":   ["CS 234"],
+  "CS 241":   ["CS 230","CS 241E"],
+  "CS 241E":  ["CS 230","CS 241"],
+  "CS 245":   ["CS 245E"],
+  "CS 245E":  ["CS 245"],
+  "CS 246":   ["CS 246E"],
+  "CS 246E":  ["CS 246"],
+  "MATH 135": ["MATH 145"],
+  "MATH 145": ["MATH 135"],
+  "MATH 136": ["MATH 146"],
+  "MATH 146": ["MATH 136"],
+  "MATH 127": ["MATH 137","MATH 147"],
+  "MATH 137": ["MATH 127","MATH 147"],
+  "MATH 147": ["MATH 127","MATH 137"],
+  "MATH 128": ["MATH 138","MATH 148"],
+  "MATH 138": ["MATH 128","MATH 148"],
+  "MATH 148": ["MATH 128","MATH 138"],
+  "MATH 235": ["MATH 245"],
+  "MATH 245": ["MATH 235"],
+  "MATH 237": ["MATH 247"],
+  "MATH 247": ["MATH 237"],
+  "STAT 230": ["STAT 240"],
+  "STAT 240": ["STAT 230"],
+  "STAT 231": ["STAT 241"],
+  "STAT 241": ["STAT 231"],
+  "AMATH 250": ["AMATH 251"],
+  "AMATH 251": ["AMATH 250"],
+  "CO 250":   ["CO 255"],
+  "CO 255":   ["CO 250"],
 };
 
 // "COOP" appears multiple times intentionally — each occurrence is a work term slot
@@ -586,7 +818,7 @@ const PROGRAMS = {
       {
         name:"Core Math",
         courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
         name:"Statistics",
@@ -646,7 +878,7 @@ const PROGRAMS = {
       {
         name:"Core Math",
         courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
         name:"Statistics",
@@ -701,24 +933,34 @@ const PROGRAMS = {
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
       {
-        name:"Core CS",
-        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 245":"2A","CS 241":"2A","CS 246":"2B","CS 240":"3A" },
+        name:"CS Foundation",
+        courses:["CS 135","CS 136","CS 136L"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B" },
+      },
+      {
+        name:"Data Science CS",
+        courses:["CS 230","CS 231","CS 234","CS 338","CS 431"],
+        typical:{ "CS 230":"2A","CS 231":"2B","CS 234":"2B","CS 338":"3A","CS 431":"3B" },
       },
       {
         name:"Core Math",
-        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 239":"2B" },
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
-        name:"Core Statistics",
-        courses:["STAT 230","STAT 231","STAT 240","STAT 241","STAT 330","STAT 340","STAT 341"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 240":"2A","STAT 241":"2B","STAT 330":"3A","STAT 340":"3B","STAT 341":"3B" },
+        name:"Statistics",
+        courses:["STAT 230","STAT 231","STAT 331","STAT 341","STAT 442"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 331":"3A","STAT 341":"3B","STAT 442":"4A" },
       },
       {
-        name:"Advanced CS",
-        courses:["STAT 441","STAT 442","STAT 444"],
-        typical:{ "STAT 441":"4A","STAT 442":"4A","STAT 444":"4B" },
+        name:"Applied Math / Optimization",
+        courses:["AMATH 231","AMATH 250","AMATH 251","CO 250","CO 255"],
+        typical:{ "AMATH 231":"2B","AMATH 250":"3A","AMATH 251":"3A","CO 250":"3A","CO 255":"3A" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["CS 245","CS 341","CS 346","CS 348","CS 446","STAT 340","STAT 430","STAT 440","STAT 441","STAT 444","AMATH 242"],
+        typical:{},
       },
     ],
   },
@@ -739,7 +981,7 @@ const PROGRAMS = {
       {
         name:"Core Math",
         courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
         name:"Statistics",
@@ -765,7 +1007,7 @@ const PROGRAMS = {
       {
         name:"Core Math",
         courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
         name:"Pure Mathematics",
@@ -796,7 +1038,7 @@ const PROGRAMS = {
       {
         name:"Core Math",
         courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
         name:"Actuarial Science",
@@ -827,7 +1069,7 @@ const PROGRAMS = {
       {
         name:"Core Math",
         courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
         name:"Statistics",
@@ -837,7 +1079,7 @@ const PROGRAMS = {
       {
         name:"Applied Mathematics",
         courses:["AMATH 231","AMATH 250","AMATH 242","AMATH 271","AMATH 331","AMATH 342","AMATH 353"],
-        typical:{ "AMATH 231":"2A","AMATH 250":"2B","AMATH 242":"3A","AMATH 271":"3A","AMATH 331":"3B","AMATH 342":"3B","AMATH 353":"4A" },
+        typical:{ "AMATH 231":"2B","AMATH 250":"2B","AMATH 242":"3A","AMATH 271":"3A","AMATH 331":"3B","AMATH 342":"3B","AMATH 353":"4A" },
       },
       {
         name:"CS Requirement",
@@ -935,7 +1177,7 @@ const PROGRAMS = {
       {
         name:"Core Math",
         courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
         name:"Statistics",
@@ -945,7 +1187,7 @@ const PROGRAMS = {
       {
         name:"Applied Mathematics",
         courses:["AMATH 231","AMATH 250","AMATH 271","AMATH 351","AMATH 361"],
-        typical:{ "AMATH 231":"2A","AMATH 250":"2B","AMATH 271":"2B","AMATH 351":"3A","AMATH 361":"3B" },
+        typical:{ "AMATH 231":"2B","AMATH 250":"2B","AMATH 271":"2B","AMATH 351":"3A","AMATH 361":"3B" },
       },
       {
         name:"Pure Mathematics",
@@ -1027,7 +1269,7 @@ const PROGRAMS = {
       {
         name:"Advanced Options",
         courses:["MATH 237","MATH 245","MATH 247","STAT 240","STAT 241","PMATH 330","PMATH 340","AMATH 231","AMATH 250","CO 250"],
-        typical:{ "MATH 237":"2B","MATH 245":"2A","MATH 247":"2B","STAT 240":"2A","STAT 241":"2B","PMATH 330":"2A","PMATH 340":"2A","AMATH 231":"2A","AMATH 250":"2B","CO 250":"2A" },
+        typical:{ "MATH 237":"2A","MATH 245":"2A","MATH 247":"2B","STAT 240":"2A","STAT 241":"2B","PMATH 330":"2A","PMATH 340":"2A","AMATH 231":"2B","AMATH 250":"2B","CO 250":"2A" },
       },
     ],
   },
@@ -1037,7 +1279,6 @@ const PROGRAMS = {
 //  ALL COURSES (loaded from /courses API)
 // ══════════════════════════════════════════════════════
 let allCourses = [];   // [{ code, title, description, ... }]
-let searchQuery = "";
 let DYNAMIC_PREREQS = {};  // built from allCourses requirements text
 
 // ──────────────────────────────────────────────────────
@@ -1135,43 +1376,33 @@ async function loadAllCourses() {
 function getCourseInfo(code) {
   if (COURSES[code]) return { name: COURSES[code].name, liked: COURSES[code].liked, easy: COURSES[code].easy };
   const ac = allCourses.find(c => c.code === code);
-  return { name: ac ? ac.title : code };
+  if (!ac) return { name: code };
+  return {
+    name: ac.title || code,
+    liked: ac._liked != null ? Math.round(ac._liked * 100) : null,
+    easy:  ac._easy  != null ? Math.round(ac._easy  * 100) : null,
+  };
 }
 
-function renderSearch(query) {
-  searchQuery = query;
-  const container = document.getElementById("searchResults");
+function filterSidebar(query) {
+  const container = document.getElementById("sidebarContent");
   const q = query.trim().toLowerCase();
-  if (q.length < 2) { container.innerHTML = ""; return; }
+  if (q.length < 2) { renderSidebar(); return; }
 
-  const matches = allCourses
-    .filter(c => c.code.toLowerCase().includes(q) || c.title.toLowerCase().includes(q))
-    .slice(0, 10);
+  const prog = PROGRAMS[S.program];
+  const requiredCodes = new Set(prog.groups.flatMap(g => g.courses));
+  const matches = rankedCourseSearch(query, 15);
 
   if (!matches.length) {
     container.innerHTML = `<div class="no-results">No courses found</div>`;
     return;
   }
 
-  container.innerHTML = matches.map(c => {
-    const info = getCourseInfo(c.code);
-    const st = statusOf(c.code);
-    const icon = st === "taken" ? "✓" : st === "planned" ? "●" : "○";
-    const drag = st === "available" ? 'draggable="true"' : "";
-    const stats = info.liked != null
-      ? `<div style="font-size:10px;color:var(--muted);margin-top:2px">♥ ${info.liked}% · ${info.easy}% easy</div>`
-      : "";
-    return `<div class="req-item" data-code="${c.code}" data-status="${st}" ${drag}>
-      <span class="req-icon">${icon}</span>
-      <div style="min-width:0;overflow:hidden">
-        <div class="req-code">${c.code}</div>
-        <div class="req-name">${c.title}</div>
-        ${stats}
-      </div>
-    </div>`;
-  }).join("");
+  container.innerHTML = `<div class="req-list">${
+    matches.map(c => sidebarItem(c.code, requiredCodes.has(c.code))).join("")
+  }</div>`;
 
-  container.querySelectorAll(".req-item[draggable='true']").forEach(el => {
+  container.querySelectorAll(".req-item[data-status='available'], .req-item[data-status='retaking']").forEach(el => {
     el.addEventListener("dragstart", e => {
       dragCode = el.dataset.code; dragFrom = null;
       e.dataTransfer.effectAllowed = "move";
@@ -1179,6 +1410,50 @@ function renderSearch(query) {
     el.addEventListener("click", () => askAbout(el.dataset.code));
   });
 }
+
+// ── Quick-add: click "+" on a sidebar course to assign it to a term ────────
+let _qaCode = null;
+
+function quickAddCourse(code, e) {
+  e.stopPropagation();
+  const pop = document.getElementById("quickAddPop");
+  if (_qaCode === code && pop.style.display !== "none") {
+    pop.style.display = "none"; _qaCode = null; return;
+  }
+  _qaCode = code;
+  const studyTerms = getTerms().filter(t => t !== "COOP");
+  pop.innerHTML = studyTerms.map(t => {
+    const inTerm = (S.plan[t] || []).includes(code);
+    return `<button class="qa-btn${inTerm ? " planned" : ""}" onclick="doQuickAdd('${esc(code)}','${t}')">${t}${inTerm ? " ✓" : ""}</button>`;
+  }).join("");
+  const rect = e.target.getBoundingClientRect();
+  pop.style.top  = (rect.bottom + 4) + "px";
+  pop.style.left = Math.max(4, rect.left - 60) + "px";
+  pop.style.display = "block";
+}
+
+function doQuickAdd(code, termId) {
+  const conflict = (ANTIREQS[code] || []).find(a => (S.plan[termId] || []).includes(a));
+  if (conflict) {
+    alert(`Can't add ${code} to ${termId} — conflicts with ${conflict} (antirequisite).`);
+    document.getElementById("quickAddPop").style.display = "none";
+    _qaCode = null;
+    return;
+  }
+  if (!(S.plan[termId] || []).includes(code)) {
+    S.plan[termId] = [...(S.plan[termId] || []), code];
+    save(); render();
+  }
+  document.getElementById("quickAddPop").style.display = "none";
+  _qaCode = null;
+}
+
+document.addEventListener("click", e => {
+  if (!e.target.closest(".sidebar-add-btn") && !e.target.closest("#quickAddPop")) {
+    document.getElementById("quickAddPop").style.display = "none";
+    _qaCode = null;
+  }
+});
 
 // ══════════════════════════════════════════════════════
 //  STATE
@@ -1255,23 +1530,179 @@ function obStep2() {
   showStep(2);
 }
 
+// ── Onboarding step 3: search-based course completion ──────────────────────
+let _obTaken = [];      // [{code, term}]
+let _obRetaking = [];   // [code]  — attempted but not yet passed
+let _obGrades = {};     // {code: pct}  — percentage grade per taken course
+let _obPickingCode = null;
+let _obSelectedTerm = null;
+
 function obStep3() {
-  const prog = document.getElementById("obProgram").value;
-  const allCodes = PROGRAMS[prog].groups.flatMap(g => g.courses);
-  const grid = document.getElementById("obCourses");
-  grid.innerHTML = "";
-  allCodes.forEach(code => {
-    const info = getCourseInfo(code);
-    const label = document.createElement("label");
-    label.className = "check-item";
-    label.innerHTML = `<input type="checkbox" value="${code}">
-      <div><div class="check-code">${code}</div><div class="check-name">${info.name}</div></div>`;
-    label.querySelector("input").addEventListener("change", e => {
-      label.classList.toggle("on", e.target.checked);
-    });
-    grid.appendChild(label);
-  });
+  _obPickingCode = null;
+  document.getElementById("obCourseSearch").value = "";
+  document.getElementById("obSearchDropdown").style.display = "none";
+  document.getElementById("obTermPicker").style.display = "none";
+  renderObTakenList();
   showStep(3);
+}
+
+// Ranked search: code-prefix first, then code-contains, then title-contains
+function rankedCourseSearch(q, limit) {
+  const lq = q.trim().toLowerCase();
+  if (lq.length < 2) return [];
+  const tier1 = [], tier2 = [], tier3 = [];
+  for (const c of allCourses) {
+    const code = c.code.toLowerCase();
+    const title = (c.title || "").toLowerCase();
+    if (code.startsWith(lq)) tier1.push(c);
+    else if (code.includes(lq)) tier2.push(c);
+    else if (title.includes(lq)) tier3.push(c);
+  }
+  return [...tier1, ...tier2, ...tier3].slice(0, limit || 9);
+}
+
+function obSearchCourses(q) {
+  q = q.trim().toLowerCase();
+  const dropdown = document.getElementById("obSearchDropdown");
+  if (q.length < 2) { dropdown.style.display = "none"; return; }
+  const results = rankedCourseSearch(q, 9);
+  if (!results.length) { dropdown.style.display = "none"; return; }
+  const takenCodes = new Set(_obTaken.map(t => t.code));
+  const retakingCodes = new Set(_obRetaking);
+  dropdown.innerHTML = results.map(c => {
+    const passed = takenCodes.has(c.code);
+    const retaking = retakingCodes.has(c.code);
+    const badge = passed ? `<span class="ob-result-badge">✓ passed</span>`
+                : retaking ? `<span class="ob-result-badge" style="color:#e08a3c">↻ retaking</span>`
+                : "";
+    return `<div class="ob-result" onclick="obPickTerm('${esc(c.code)}')">
+      <span class="ob-result-code">${esc(c.code)}</span>
+      <span class="ob-result-name">${esc(c.title || "")}</span>
+      ${badge}
+    </div>`;
+  }).join("");
+  dropdown.style.display = "block";
+}
+
+function obPickTerm(code) {
+  _obPickingCode = code;
+  _obSelectedTerm = null;
+  document.getElementById("obPickerCode").textContent = code;
+  const existing = _obTaken.find(t => t.code === code);
+  document.getElementById("obPickerRetake").textContent = existing ? `(was ${existing.term} — updating)` : "";
+  document.getElementById("obCourseSearch").value = "";
+  document.getElementById("obSearchDropdown").style.display = "none";
+  const prog = document.getElementById("obProgram").value;
+  const studyTerms = resolveTerms(PROGRAMS[prog], _obCoop, _obSeq).filter(t => t !== "COOP");
+  document.getElementById("obTermPickerBtns").innerHTML =
+    studyTerms.map(t => `<button class="seq-btn" onclick="obSelectTerm('${t}')">${t}</button>`).join("");
+  document.getElementById("obGradeRow").style.display = "none";
+  document.getElementById("obTermPicker").style.display = "block";
+}
+
+function obSelectTerm(term) {
+  _obSelectedTerm = term;
+  document.getElementById("obGradeSelectedTerm").textContent = `Term: ${term} — now enter your grade (or skip)`;
+  document.getElementById("obGradeVal").value = "";
+  document.getElementById("obGradeWarn").style.display = "none";
+  document.getElementById("obGradeRow").style.display = "block";
+  document.getElementById("obGradeVal").focus();
+}
+
+function obGradeInput() {
+  const val = parseInt(document.getElementById("obGradeVal").value);
+  const warn = document.getElementById("obGradeWarn");
+  if (!isNaN(val) && val < 50) {
+    warn.textContent = "Grade below 50% — if you didn't pass, use \"Currently retaking\" below instead.";
+    warn.style.display = "block";
+  } else {
+    warn.style.display = "none";
+  }
+}
+
+function obFinalizeTaken(skipGrade) {
+  if (!_obSelectedTerm || !_obPickingCode) return;
+  const gradeStr = document.getElementById("obGradeVal").value;
+  const grade = !skipGrade && gradeStr !== "" ? parseInt(gradeStr) : undefined;
+  _obTaken = _obTaken.filter(t => t.code !== _obPickingCode);
+  _obRetaking = _obRetaking.filter(c => c !== _obPickingCode);
+  _obTaken.push({ code: _obPickingCode, term: _obSelectedTerm });
+  if (grade !== undefined && !isNaN(grade)) {
+    _obGrades[_obPickingCode] = grade;
+  } else {
+    delete _obGrades[_obPickingCode];
+  }
+  _obTaken.sort((a, b) => a.code < b.code ? -1 : 1);
+  _obPickingCode = null;
+  _obSelectedTerm = null;
+  document.getElementById("obTermPicker").style.display = "none";
+  renderObTakenList();
+}
+
+function obMarkRetaking() {
+  _obTaken = _obTaken.filter(t => t.code !== _obPickingCode);
+  _obRetaking = _obRetaking.filter(c => c !== _obPickingCode);
+  _obRetaking.push(_obPickingCode);
+  delete _obGrades[_obPickingCode];
+  _obPickingCode = null;
+  _obSelectedTerm = null;
+  document.getElementById("obTermPicker").style.display = "none";
+  renderObTakenList();
+}
+
+function obCancelPicker() {
+  _obPickingCode = null;
+  _obSelectedTerm = null;
+  document.getElementById("obTermPicker").style.display = "none";
+}
+
+function obRemoveTaken(code) {
+  _obTaken = _obTaken.filter(t => t.code !== code);
+  _obRetaking = _obRetaking.filter(c => c !== code);
+  delete _obGrades[code];
+  renderObTakenList();
+}
+
+function renderObTakenList() {
+  const el = document.getElementById("obTakenList");
+  const hasPassed = _obTaken.length > 0;
+  const hasRetaking = _obRetaking.length > 0;
+  if (!hasPassed && !hasRetaking) {
+    el.innerHTML = `<div class="ob-taken-empty">No courses added yet</div>`;
+    return;
+  }
+  const passedHtml = _obTaken.map(({code, term}) => {
+    const info = getCourseInfo(code);
+    const grade = _obGrades[code];
+    const gradeHtml = grade !== undefined
+      ? `<span class="ob-taken-grade${grade < 50 ? ' ob-grade-warn-badge' : ''}">${grade}%</span>`
+      : "";
+    return `<div class="ob-taken-item">
+      <div class="ob-taken-left">
+        <span class="ob-taken-code">${esc(code)}</span>
+        <span class="ob-taken-name">${esc(info.name || "")}</span>
+      </div>
+      <div class="ob-taken-right">
+        ${gradeHtml}
+        <span class="ob-taken-term">${esc(term)}</span>
+        <button class="ob-taken-remove" onclick="obRemoveTaken('${esc(code)}')" title="Remove">✕</button>
+      </div>
+    </div>`;
+  }).join("");
+  const retakingHtml = _obRetaking.map(code => {
+    const info = getCourseInfo(code);
+    return `<div class="ob-taken-item ob-taken-retaking">
+      <div class="ob-taken-left">
+        <span class="ob-taken-code">${esc(code)}</span>
+        <span class="ob-taken-name">${esc(info.name || "")}</span>
+      </div>
+      <div class="ob-taken-right">
+        <span class="ob-taken-retake-badge">↻ retaking</span>
+        <button class="ob-taken-remove" onclick="obRemoveTaken('${esc(code)}')" title="Remove">✕</button>
+      </div>
+    </div>`;
+  }).join("");
+  el.innerHTML = passedHtml + retakingHtml;
 }
 
 function obStep4() { showStep(4); }
@@ -1279,9 +1710,11 @@ function obStep4() { showStep(4); }
 function launchApp() {
   const prog = document.getElementById("obProgram").value;
   const term = document.getElementById("obTerm").value;
-  const taken = [...document.querySelectorAll("#obCourses input:checked")].map(i => i.value);
+  const taken = _obTaken.map(t => t.code);
+  const takenTerms = Object.fromEntries(_obTaken.map(t => [t.code, t.term]));
+  const takenGrades = { ..._obGrades };
   const chosenTerms = resolveTerms(PROGRAMS[prog], _obCoop, _obSeq);
-  S = { program:prog, currentTerm:term, taken, plan:{}, coop:_obCoop, seq:_obSeq, terms:chosenTerms };
+  S = { program:prog, currentTerm:term, taken, takenTerms, takenGrades, retaking:[..._obRetaking], plan:{}, coop:_obCoop, seq:_obSeq, terms:chosenTerms };
   save();
   startApp();
 }
@@ -1310,10 +1743,11 @@ function resetApp() {
 }
 
 function render() {
-  renderSidebar();
+  const q = document.getElementById("sidebarSearch")?.value || "";
+  if (q.length >= 2) filterSidebar(q);
+  else renderSidebar();
   renderGrid();
   updateProgress();
-  renderSearch(searchQuery);
 }
 
 // ══════════════════════════════════════════════════════
@@ -1330,12 +1764,37 @@ function coursesBefore(termId) {
 }
 
 function violations(code, termId) {
+  const v = [];
+
+  // Prereq violations
   const groups = getPrereqs(code);
-  if (!groups) return [];
-  const before = coursesBefore(termId);
-  return groups
-    .filter(g => !g.some(c => before.has(c)))
-    .map(g => g.join(" or "));
+  if (groups) {
+    const before = coursesBefore(termId);
+    v.push(...groups
+      .filter(g => !g.some(entry => {
+        const [c, minStr] = entry.split(":");
+        if (!before.has(c)) return false;
+        if (!minStr) return true;
+        const min = parseInt(minStr);
+        if (S.taken.includes(c)) {
+          const grade = S.takenGrades?.[c];
+          return grade === undefined || grade >= min;
+        }
+        return true;
+      }))
+      .map(g => g.map(entry => {
+        const [c, minStr] = entry.split(":");
+        return minStr ? `${c} (${minStr}%+)` : c;
+      }).join(" or "))
+    );
+  }
+
+  // Antirequisite conflict — mutually exclusive course already in this term
+  const termCourses = S.plan[termId] || [];
+  const conflict = (ANTIREQS[code] || []).find(a => termCourses.includes(a));
+  if (conflict) v.push(`conflicts with ${conflict} (antirequisite)`);
+
+  return v;
 }
 
 // ══════════════════════════════════════════════════════
@@ -1344,10 +1803,23 @@ function violations(code, termId) {
 function statusOf(code) {
   if (S.taken.includes(code)) return "taken";
   if (Object.values(S.plan).some(arr => arr.includes(code))) return "planned";
+  if (S.retaking?.includes(code)) return "retaking";
   return "available";
 }
 
 function renderSidebar() {
+  // Preserve scroll position and user-toggled collapse state across re-renders
+  const aside = document.querySelector(".sidebar");
+  const savedScroll = aside ? aside.scrollTop : 0;
+  const collapsed = new Set();
+  const hasExistingGroups = !!document.querySelector("#sidebarContent .req-group");
+  if (hasExistingGroups) {
+    document.querySelectorAll("#sidebarContent .req-group.collapsed").forEach(g => {
+      const lbl = g.querySelector(".req-group-title > span:first-child")?.textContent?.trim();
+      if (lbl) collapsed.add(lbl);
+    });
+  }
+
   const prog = PROGRAMS[S.program];
   const requiredCodes = new Set(prog.groups.flatMap(g => g.courses));
   let html = "";
@@ -1366,36 +1838,32 @@ function renderSidebar() {
     const courses = allCourses.filter(c => c.code.startsWith(prefix + " "));
     if (!courses.length) return;
 
-    // required for this program come first, then the rest alphabetically
     const req  = courses.filter(c => requiredCodes.has(c.code));
     const rest = courses.filter(c => !requiredCodes.has(c.code));
     const sorted = [...req, ...rest];
 
-    const reqDone  = req.filter(c => statusOf(c.code) !== "available").length;
-    const totalDone = courses.filter(c => statusOf(c.code) !== "available").length;
-
-    const badge = req.length
-      ? `<span class="req-count">${reqDone}/${req.length} req</span>`
-      : `<span class="req-count">${totalDone}/${courses.length}</span>`;
-
     const items = sorted.map(c => sidebarItem(c.code, requiredCodes.has(c.code))).join("");
-    const isExpanded = req.length > 0;   // expand groups that have required courses
-    html += `<div class="req-group${isExpanded ? "" : " collapsed"}">
+    // First render: all groups start collapsed. After: restore user's toggled state.
+    const isCollapsed = hasExistingGroups ? collapsed.has(label) : true;
+    html += `<div class="req-group${isCollapsed ? " collapsed" : ""}">
       <div class="req-group-title" onclick="toggleGroup(this)">
         <span>${label}</span>
-        <span style="display:flex;align-items:center;gap:6px">
-          ${badge}
-          <i class="chevron">▾</i>
-        </span>
+        <i class="chevron">▾</i>
       </div>
-      <div class="req-list">${items}</div>
+      <div class="req-list">
+        <div class="req-group-filter-wrap">
+          <input class="req-group-filter" placeholder="Filter ${label}…" oninput="filterGroup(this)">
+        </div>
+        ${items}
+      </div>
     </div>`;
   });
 
   document.getElementById("sidebarContent").innerHTML = html;
+  if (aside) aside.scrollTop = savedScroll;
 
   // attach drag + click listeners
-  document.querySelectorAll("#sidebarContent .req-item[data-status='available']").forEach(el => {
+  document.querySelectorAll("#sidebarContent .req-item[data-status='available'], #sidebarContent .req-item[data-status='retaking']").forEach(el => {
     el.addEventListener("dragstart", e => {
       dragCode = el.dataset.code; dragFrom = null;
       e.dataTransfer.effectAllowed = "move";
@@ -1408,17 +1876,29 @@ function toggleGroup(titleEl) {
   titleEl.closest(".req-group").classList.toggle("collapsed");
 }
 
+function filterGroup(input) {
+  const q = input.value.trim().toLowerCase();
+  input.closest(".req-group").querySelectorAll(".req-item").forEach(item => {
+    const code = (item.dataset.code || "").toLowerCase();
+    const name = (item.querySelector(".req-name")?.textContent || "").toLowerCase();
+    item.style.display = (!q || code.includes(q) || name.includes(q)) ? "" : "none";
+  });
+}
+
 function sidebarItem(code, isRequired = false) {
   const st = statusOf(code);
   const info = getCourseInfo(code);
-  const icon = st==="taken" ? "✓" : st==="planned" ? "●" : "○";
-  const drag = st==="available" ? 'draggable="true"' : "";
+  const icon = st==="taken" ? "✓" : st==="planned" ? "●" : st==="retaking" ? "↻" : "○";
+  const drag = (st==="available" || st==="retaking") ? 'draggable="true"' : "";
 
   const prereqGroups = getPrereqs(code);
   let prereqHtml = "";
   if (prereqGroups && prereqGroups.length) {
     const parts = prereqGroups.map(g =>
-      g.length === 1 ? g[0] : g[0] + (g.length > 1 ? "/" + g.slice(1).join("/") : "")
+      g.map(entry => {
+        const [c, min] = entry.split(":");
+        return min ? `${c}(${min}%+)` : c;
+      }).join("/")
     );
     prereqHtml = `<div class="req-prereq">↳ ${parts.join(" &amp; ")}</div>`;
   }
@@ -1427,21 +1907,37 @@ function sidebarItem(code, isRequired = false) {
     ? `<span style="color:var(--gold);font-size:9px;font-weight:800;flex-shrink:0" title="Required for your program">★</span>`
     : "";
 
+  const addBtn = (st === "available" || st === "retaking")
+    ? `<button class="sidebar-add-btn" title="Add to a term" onclick="quickAddCourse('${esc(code)}',event)">+</button>`
+    : "";
+
   return `<div class="req-item" data-code="${code}" data-status="${st}" ${drag}>
     <span class="req-icon">${icon}</span>
-    <div style="min-width:0;overflow:hidden">
+    <div style="min-width:0;overflow:hidden;flex:1">
       <div style="display:flex;align-items:baseline;gap:4px">
         <span class="req-code">${code}</span>${reqStar}
         <span class="req-name">${info.name}</span>
       </div>
       ${prereqHtml}
     </div>
+    ${addBtn}
   </div>`;
 }
 
 // ══════════════════════════════════════════════════════
 //  TERM GRID
 // ══════════════════════════════════════════════════════
+function takenCourseCard(code) {
+  const info = getCourseInfo(code);
+  const grade = S.takenGrades?.[code];
+  const badge = grade !== undefined ? `✓ ${grade}%` : `✓ Completed`;
+  return `<div class="course-card card-done" data-code="${code}" data-term="" draggable="false">
+    <div class="card-code">${code}</div>
+    <div class="card-name">${info.name}</div>
+    <div class="card-done-badge">${badge} · 0.5 units</div>
+  </div>`;
+}
+
 function renderGrid() {
   let coopN = 0;
   let html = "";
@@ -1454,8 +1950,12 @@ function renderGrid() {
     if (isCoop) {
       html += `<div class="coop-body"><div class="coop-icon">💼</div><div>Work term</div></div>`;
     } else {
-      const cards = (S.plan[termId] || []).map(code => courseCard(code, termId)).join("");
-      html += `<div class="term-drop" data-term="${termId}">${cards}</div>`;
+      const takenInTerm = Object.entries(S.takenTerms || {})
+        .filter(([, t]) => t === termId)
+        .map(([c]) => c);
+      const takenCards    = takenInTerm.map(code => takenCourseCard(code)).join("");
+      const plannedCards  = (S.plan[termId] || []).map(code => courseCard(code, termId)).join("");
+      html += `<div class="term-drop" data-term="${termId}">${takenCards}${plannedCards}</div>`;
     }
     html += `</div>`;
   });
@@ -1468,12 +1968,14 @@ function renderGrid() {
     zone.addEventListener("drop",      e => onDrop(e, zone.dataset.term));
   });
 
-  grid.querySelectorAll(".course-card").forEach(card => {
+  grid.querySelectorAll(".course-card:not(.card-done)").forEach(card => {
     card.addEventListener("dragstart", e => {
       dragCode = card.dataset.code; dragFrom = card.dataset.term;
       e.dataTransfer.effectAllowed = "move";
       e.stopPropagation();
     });
+  });
+  grid.querySelectorAll(".course-card").forEach(card => {
     card.addEventListener("click", () => askAbout(card.dataset.code));
   });
 
@@ -1487,24 +1989,95 @@ function renderGrid() {
   });
 }
 
+// Returns {cls, softWarn} — cls is the card color class, softWarn is an explanation string or null
+function cardStatus(code, termId) {
+  const info = getCourseInfo(code);
+  if (violations(code, termId).length) return { cls: "", softWarn: null };
+
+  const warns = [];
+  let score = 0;
+
+  // Factor 1: liked %
+  if (info.liked != null) {
+    if (info.liked >= 70) score += 1;
+    else if (info.liked < 45) score -= 1;
+  }
+
+  // Factor 2: timing vs typical term
+  const typical = typicalTermFor(code);
+  if (typical) {
+    const studyTerms = getTerms().filter(t => t !== "COOP");
+    const typIdx = studyTerms.indexOf(typical);
+    const curIdx = studyTerms.indexOf(termId);
+    if (typIdx !== -1 && curIdx !== -1) {
+      const diff = curIdx - typIdx;
+      if (diff === 0) {
+        score += 1;  // exactly on time — green boost
+      } else if (diff < 0) {
+        warns.push(`Not recommended in ${termId} — typically taken in ${typical}`);
+        // no score change: yellow + explanation is enough signal
+      } else if (diff >= 2) {
+        score -= 1;
+        warns.push(`Usually taken in ${typical} — scheduled ${diff} terms later`);
+      }
+    }
+  }
+
+  // Factor 3: prereq grade barely meets threshold
+  const groups = getPrereqs(code);
+  if (groups) {
+    for (const group of groups) {
+      for (const entry of group) {
+        const [c, minStr] = entry.split(":");
+        if (!minStr || !S.taken.includes(c)) continue;
+        const min = parseInt(minStr);
+        const grade = S.takenGrades?.[c];
+        if (grade === undefined) continue;
+        if (grade < min + 8) {
+          score -= 1;
+          if (!warns.some(w => w.includes(c))) {
+            warns.push(`${c}: ${grade}% barely meets the ${min}%+ threshold`);
+          }
+        } else if (grade >= min + 15) {
+          score += 1;
+        }
+      }
+    }
+  }
+
+  const softWarn = warns.length ? warns[0] : null;
+
+  // If there are warnings, cap color at yellow (don't show conflicting green + "not recommended")
+  if (warns.length) {
+    return { cls: score <= -1 ? "card-orange" : "card-yellow", softWarn };
+  }
+
+  if (info.liked == null) return { cls: "", softWarn: null };
+  if (score >= 1)  return { cls: "card-green",  softWarn: null };
+  if (score <= -1) return { cls: "card-orange", softWarn: null };
+  return { cls: "card-yellow", softWarn: null };
+}
+
+
 function courseCard(code, termId) {
   const info = getCourseInfo(code);
   const v = violations(code, termId);
+  const { cls: rcls, softWarn } = cardStatus(code, termId);
   const likedCls = info.liked >= 70 ? "g" : info.liked < 45 ? "r" : "";
   const easyCls  = info.easy  >= 55 ? "g" : info.easy  < 35 ? "r" : "";
   const warnHtml = v.length ? `<div class="card-warn">⚠ needs ${v[0]}</div>` : "";
-  const typical  = typicalTermFor(code);
-  const hintHtml = typical && typical !== termId
-    ? `<div class="card-hint">Typical: ${typical}</div>` : "";
-  return `<div class="course-card${v.length?" bad":""}" data-code="${code}" data-term="${termId}" draggable="true">
+  const softWarnHtml = !v.length && softWarn ? `<div class="card-soft-warn">⚠ ${softWarn}</div>` : "";
+  const statHtml = info.liked != null
+    ? `<div class="card-stats">
+      <span class="card-stat ${likedCls}">♥ ${info.liked}%</span>
+      <span class="card-stat ${easyCls}">${info.easy}% easy</span>
+    </div>` : "";
+  return `<div class="course-card${rcls?" "+rcls:""}${v.length?" bad":""}" data-code="${code}" data-term="${termId}" draggable="true">
     <button class="card-rm" data-code="${code}" data-term="${termId}">×</button>
     <div class="card-code">${code}</div>
     <div class="card-name">${info.name}</div>
-    <div class="card-stats">
-      <span class="card-stat ${likedCls}">♥ ${info.liked}%</span>
-      <span class="card-stat ${easyCls}">${info.easy}% easy</span>
-    </div>
-    ${warnHtml}${hintHtml}
+    ${statHtml}
+    ${warnHtml}${softWarnHtml}
   </div>`;
 }
 
@@ -1517,6 +2090,12 @@ function onDrop(e, termId) {
   e.preventDefault();
   e.currentTarget.classList.remove("drag-over");
   if (!dragCode) return;
+  const conflict = (ANTIREQS[dragCode] || []).find(a => (S.plan[termId] || []).includes(a));
+  if (conflict) {
+    alert(`Can't add ${dragCode} — it's mutually exclusive with ${conflict} already in ${termId}.`);
+    dragCode = null; dragFrom = null;
+    return;
+  }
   if (dragFrom && dragFrom !== termId) {
     S.plan[dragFrom] = (S.plan[dragFrom] || []).filter(c => c !== dragCode);
   }
@@ -1530,6 +2109,9 @@ function onDrop(e, termId) {
 // ══════════════════════════════════════════════════════
 //  PROGRESS
 // ══════════════════════════════════════════════════════
+// Honours BMath/BCS: 40 courses = 20.0 units (0.50 units per course)
+const DEGREE_UNITS = 20.0;
+
 function updateProgress() {
   const prog = PROGRAMS[S.program];
   const all = prog.groups.flatMap(g => g.courses);
@@ -1538,7 +2120,17 @@ function updateProgress() {
   ).length;
   const pct = all.length ? Math.round(done / all.length * 100) : 0;
   document.getElementById("progressFill").style.width = pct + "%";
-  document.getElementById("progressLbl").textContent = `${done} / ${all.length} courses`;
+  document.getElementById("progressLbl").textContent = `${done} / ${all.length} req`;
+
+  // Units: only courses actually completed (taken) count toward earned units
+  const unitsDone = (S.taken.length * 0.5).toFixed(1);
+  // Planned (in grid, not yet taken) count as in-progress
+  const plannedCodes = new Set(Object.values(S.plan).flat());
+  S.taken.forEach(c => plannedCodes.delete(c));
+  const unitsPlanned = (plannedCodes.size * 0.5).toFixed(1);
+  const el = document.getElementById("unitsLbl");
+  el.textContent = `${unitsDone} / ${DEGREE_UNITS.toFixed(1)} units`;
+  el.title = `${unitsDone} units earned · ${unitsPlanned} units in plan · ${DEGREE_UNITS.toFixed(1)} needed for Honours`;
 }
 
 // ══════════════════════════════════════════════════════
@@ -1578,16 +2170,24 @@ async function sendChat(preset) {
 
   // build full student context for the backend
   const prog = PROGRAMS[S.program];
+  const reqSet = new Set(prog.groups.flatMap(g => g.courses));
   const planSummary = Object.entries(S.plan)
     .filter(([,a]) => a.length)
-    .map(([t,a]) => `${t}: ${a.join(", ")}`)
+    .map(([t,a]) => `${t}: ${a.map(c => reqSet.has(c) ? `${c}[req]` : `${c}[elective]`).join(", ")}`)
     .join("; ") || "empty";
-  const takenStr = S.taken.length ? S.taken.join(", ") : "none";
+  const takenStr = S.taken.length
+    ? S.taken.map(c => {
+        const term = S.takenTerms?.[c] ? `(${S.takenTerms[c]})` : "";
+        const grade = S.takenGrades?.[c] !== undefined ? ` ${S.takenGrades[c]}%` : "";
+        return `${c}${term}${grade}`;
+      }).join(", ")
+    : "none";
   const reqCodes = prog.groups
     .filter(g => !g.name.startsWith("Advanced"))
     .flatMap(g => g.courses).join(", ");
   const seqLabel = S.coop === "regular" ? "regular (no co-op)" : `co-op SEQ ${S.seq || "1"}`;
-  const studentCtx = `${prog.name} · ${seqLabel} · current term: ${S.currentTerm} · completed: ${takenStr} · required courses: ${reqCodes} · plan so far: ${planSummary}`;
+  const retakingStr = S.retaking?.length ? ` · currently retaking (failed previously): ${S.retaking.join(", ")}` : "";
+  const studentCtx = `${prog.name} · ${seqLabel} · current term: ${S.currentTerm} · completed: ${takenStr}${retakingStr} · required courses: ${reqCodes} · plan so far: ${planSummary}`;
 
   try {
     const res  = await fetch("/ask", {
@@ -1610,13 +2210,18 @@ async function sendChat(preset) {
 //  AI SUGGEST
 // ══════════════════════════════════════════════════════
 function parsePlanToTable(text) {
-  // Parse lines like "1A: CS 135, MATH 135, MATH 137" into an HTML table
+  const PLACEHOLDERS = new Set(["Non-Math Elective", "Free Elective"]);
   const rows = [];
   for (const line of text.split("\n")) {
     const m = line.match(/^([\w\s&]+?):\s*(.+)/);
     if (!m) continue;
     const term = m[1].trim();
-    const courses = m[2].split(/,\s*/).map(c => c.trim()).filter(Boolean);
+    const courses = m[2].split(/,\s*/).map(raw => {
+      const s = raw.trim();
+      if (!s) return null;
+      const suggested = s.endsWith("[suggested]");
+      return { code: suggested ? s.slice(0, -"[suggested]".length).trim() : s, suggested };
+    }).filter(Boolean);
     if (courses.length) rows.push({ term, courses });
   }
   if (!rows.length) return `<pre style="white-space:pre-wrap;margin:0">${esc(text)}</pre>`;
@@ -1625,9 +2230,15 @@ function parsePlanToTable(text) {
   const cellStyle = `style="padding:6px 10px;font-size:12px;color:var(--text)"`;
   const rowsHtml = rows.map((r,i) => {
     const bg = i % 2 === 0 ? "background:rgba(255,255,255,0.02)" : "";
-    const pills = r.courses.map(c =>
-      `<span style="display:inline-block;background:var(--gold-muted);border:1px solid var(--gold-border);border-radius:4px;padding:1px 6px;margin:2px;font-size:11px;color:var(--gold)">${esc(c)}</span>`
-    ).join("");
+    const pills = r.courses.map(({ code, suggested }) => {
+      if (PLACEHOLDERS.has(code)) {
+        return `<span style="display:inline-block;border:1px dashed rgba(255,255,255,0.18);border-radius:4px;padding:1px 6px;margin:2px;font-size:11px;color:rgba(255,255,255,0.32);font-style:italic">${esc(code)}</span>`;
+      }
+      if (suggested) {
+        return `<span title="Suggested — swap if preferred" style="display:inline-block;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.38);border-radius:4px;padding:1px 6px;margin:2px;font-size:11px;color:rgba(160,163,255,0.9)">⟡ ${esc(code)}</span>`;
+      }
+      return `<span style="display:inline-block;background:var(--gold-muted);border:1px solid var(--gold-border);border-radius:4px;padding:1px 6px;margin:2px;font-size:11px;color:var(--gold)">${esc(code)}</span>`;
+    }).join("");
     return `<tr style="${bg}"><td ${termStyle}>${esc(r.term)}</td><td ${cellStyle}>${pills}</td></tr>`;
   }).join("");
 
@@ -1653,6 +2264,24 @@ async function suggestPlan() {
   thread.appendChild(el);
   thread.scrollTop = thread.scrollHeight;
 
+  // Within each group, drop courses that are antireqs of an already-chosen course in that group.
+  // This prevents e.g. AMATH 250 AND AMATH 251 both being scheduled (they're alternatives).
+  function dedupeGroup(courses) {
+    const chosen = new Set();
+    return courses.filter(code => {
+      if ((ANTIREQS[code] || []).some(a => chosen.has(a))) return false;
+      chosen.add(code);
+      return true;
+    });
+  }
+
+  // Only send prereqs for courses actually in this program (keeps payload small)
+  const allProgCourses = new Set(prog.groups.flatMap(g => g.courses));
+  const relevantPrereqs = {};
+  for (const code of allProgCourses) {
+    if (PREREQS[code]) relevantPrereqs[code] = PREREQS[code];
+  }
+
   try {
     const res = await fetch("/plan", {
       method:"POST", headers:{"Content-Type":"application/json"},
@@ -1660,9 +2289,10 @@ async function suggestPlan() {
         program: prog.name,
         terms: studyTerms,
         taken: S.taken,
-        groups: prog.groups.map(g => ({ name: g.name, courses: g.courses })),
+        groups: prog.groups.map(g => ({ name: g.name, courses: dedupeGroup(g.courses), typical: g.typical || {} })),
         placed: S.plan,
         current_term: S.currentTerm,
+        prereqs: relevantPrereqs,
       }),
     });
     const data = await res.json();
@@ -1682,13 +2312,15 @@ function esc(s) {
   const d = document.createElement("div"); d.textContent = s; return d.innerHTML;
 }
 
+document.addEventListener("click", e => {
+  const box = document.getElementById("obSearchDropdown");
+  if (box && !e.target.closest(".ob-search-box")) box.style.display = "none";
+});
+
 document.getElementById("chatInput").addEventListener("keydown", e => {
   if (e.key === "Enter") sendChat();
 });
 
-document.getElementById("courseSearch").addEventListener("input", e => {
-  renderSearch(e.target.value);
-});
 
 S = loadState();
 loadAllCourses().then(() => {
