@@ -211,6 +211,14 @@ header {
 .btn-suggest:hover { background:var(--gold); color:#0c0c0f; }
 .btn-suggest:disabled { opacity:.5; cursor:default; }
 
+.int-chip {
+  font-size:11px; padding:3px 11px; border-radius:10px; cursor:pointer;
+  border:1px solid var(--border); color:var(--muted); background:transparent;
+  transition:.15s all; user-select:none; display:inline-block;
+}
+.int-chip:hover { border-color:var(--muted); color:var(--text); }
+.int-chip.active { background:rgba(218,165,32,0.12); border-color:var(--gold-border); color:var(--gold); }
+
 /* Layout */
 .layout { display:flex; flex:1; overflow:hidden; }
 
@@ -653,92 +661,16 @@ function typicalTermFor(code) {
   return null;
 }
 
-// Each inner array = "need at least one of these completed before"
-const PREREQS = {
-  // ── CS ──────────────────────────────────────────────────────────────────
-  "CS 116":  [["CS 115","CS 135","CS 145"]],              // just pass — no grade min
-  "CS 136":  [["CS 145","CS 116:70","CS 115:90","CS 135:60"]],
-  "CS 136L": [["CS 145","CS 116:70","CS 115:90","CS 135:60"]],
-  "CS 146":  [["CS 145:75"]],
-  "CS 230":  [["CS 116","CS 136","CS 138","CS 146"]],
-  "CS 231":  [["CS 116","CS 136","CS 138","CS 146"]],
-  "CS 234":  [["CS 116","CS 136","CS 138","CS 146"]],
-  "CS 240":  [["CS 245","CS 245E"],["CS 241","CS 241E","CS 246","CS 246E"],["STAT 230","STAT 240"]],
-  "CS 338":  [["CS 230","CS 231","CS 234","CS 246","CS 246E"]],
-  "CS 431":  [["CS 231","CS 234","CS 341"]],
-  "CS 241":  [["CS 136:85","CS 146:85","CS 138"]],
-  "CS 241E": [["CS 136:85","CS 146:85","CS 138"]],
-  "CS 245":  [["CS 136","CS 138","CS 146"],["MATH 135","MATH 145"]],
-  "CS 245E": [["CS 136:85","CS 146:85"]],                // 85% required
-  "CS 246":  [["CS 136:60","CS 146","CS 138:60"]],       // 60% for CS 136 or CS 138
-  "CS 246E": [["CS 136:85","CS 146:85"]],                // 85% required
-
-  // ── MATH ────────────────────────────────────────────────────────────────
-  "MATH 136":[["MATH 135:60","MATH 145"]],
-  "MATH 138":[["MATH 137:60","MATH 147"]],
-  "MATH 146":[["MATH 145"]],
-  "MATH 148":[["MATH 147"]],
-  "MATH 235":[["MATH 136:60","MATH 146"]],               // 60% in MATH 136
-  "MATH 245":[["MATH 146"]],
-  "MATH 237":[["MATH 136","MATH 146"],["MATH 138:60","MATH 148","MATH 128:70"]], // MATH 136 just pass; MATH 138 needs 60%
-  "MATH 247":[["MATH 146"],["MATH 148"]],
-  "MATH 239":[["MATH 136","MATH 146"],["MATH 135:60","MATH 145"]], // MATH 135 needs 60%
-
-  // ── STAT ────────────────────────────────────────────────────────────────
-  "STAT 230":[["MATH 137:80","MATH 147:80","MATH 128:60","MATH 138","MATH 148"]],
-  "STAT 240":[["MATH 137:80","MATH 147:80","MATH 138","MATH 148"]],
-  "STAT 231":[["STAT 230","STAT 240"]],
-  "STAT 241":[["MATH 138","MATH 148"],["STAT 230","STAT 240"]],
-  "STAT 330":[["MATH 237","MATH 247"],["STAT 230:60","STAT 240"],["STAT 231","STAT 241"]], // STAT 230 needs 60%
-  "STAT 331":[["MATH 235","MATH 245"],["STAT 231:60","STAT 241"]],  // STAT 231 needs 60%
-  "STAT 332":[["STAT 231:60","STAT 241"]],                // does NOT need STAT 331 — just STAT 231:60
-  "STAT 333":[["STAT 230:60","STAT 240"],["MATH 237","MATH 247"]], // STAT 230 needs 60%
-  "STAT 334":[["MATH 237","MATH 247"],["STAT 230:60","STAT 240"],["STAT 231","STAT 241"]], // STAT 230 needs 60%
-  "STAT 340":[["CS 116","CS 136","CS 138","CS 146"],["STAT 230:60","STAT 240"],["STAT 231","STAT 241"]], // STAT 230 needs 60%
-
-  // ── AMATH ───────────────────────────────────────────────────────────────
-  "AMATH 231":[["MATH 237","MATH 247"]],                 // needs MATH 237, NOT MATH 138
-  "AMATH 250":[["MATH 136","MATH 146"],["MATH 138","MATH 148"]], // two-group prereq
-  "AMATH 251":[["MATH 136","MATH 146"],["MATH 138","MATH 148"]],
-  "AMATH 271":[["MATH 138","MATH 148"]],
-  "AMATH 242":[["CS 116","CS 136","CS 138","CS 146"],["MATH 235","MATH 245"],["MATH 237","MATH 247"]], // needs CS + MATH 235 + MATH 237
-  "AMATH 331":[["MATH 237","MATH 247"]],
-  "AMATH 332":[["MATH 237","MATH 247"]],                 // just needs MATH 237, NOT AMATH 331
-  "AMATH 342":[["AMATH 242","CS 371"],["AMATH 250","AMATH 251"]], // needs AMATH 242, NOT AMATH 231
-  "AMATH 353":[["AMATH 231"],["AMATH 250","AMATH 251"]],
-
-  // ── CO ──────────────────────────────────────────────────────────────────
-  "CO 250":  [["MATH 136","MATH 146"]],                  // only MATH prereq, no CS prereq
-  "CO 255":  [["MATH 235","MATH 245"],["MATH 237","MATH 247"]], // needs MATH 235 AND MATH 237
-  "CO 330":  [["MATH 239"]],
-  "CO 342":  [["MATH 239"]],
-  "CO 351":  [["CO 250","CO 255"]],                      // needs CO 250, NOT MATH 239
-  "CO 353":  [["CO 250","CO 255"]],
-  "CO 367":  [["CO 250","CO 255"],["MATH 138","MATH 148","MATH 128:70"]], // needs CO 250 + MATH 138
-
-  // ── ACTSC ───────────────────────────────────────────────────────────────
-  "ACTSC 231":[["MATH 137","MATH 147"]],                 // needs MATH 137, NOT MATH 138
-  "ACTSC 232":[["ACTSC 231:60"],["STAT 230","STAT 240"]], // ACTSC 231 needs 60% + STAT 230
-  "ACTSC 331":[["ACTSC 232:60"]],                        // only needs ACTSC 232:60
-  "ACTSC 362":[["ACTSC 231:60"]],                        // needs ACTSC 231:60, NOT ACTSC 232
-  "ACTSC 371":[["MATH 235","MATH 245"]],
-  "ACTSC 372":[["ACTSC 231"],["MATH 235","MATH 245"],["MATH 237","MATH 247"]], // needs ACTSC 231 + MATH 235 + MATH 237
-
-  // ── PMATH ───────────────────────────────────────────────────────────────
-  "PMATH 330":[["MATH 135","MATH 145"],["MATH 235","MATH 245"]], // needs both MATH 135 and MATH 235
-  "PMATH 331":[["MATH 237","MATH 247"]],
-  "PMATH 332":[["MATH 237","MATH 247"]],                 // just needs MATH 237, NOT PMATH 331
-  "PMATH 333":[["MATH 138:60","MATH 148","MATH 128:70"]], // grade thresholds required
-  "PMATH 334":[["MATH 235","MATH 245"]],                 // needs MATH 235, NOT PMATH 333
-  "PMATH 340":[["MATH 135","MATH 145"]],
-  "PMATH 345":[["MATH 235","MATH 245"]],
-  "PMATH 346":[["PMATH 345"]],
-  "PMATH 347":[["MATH 235","MATH 245"]],                 // calendar: just needs MATH 235
-  "PMATH 351":[["MATH 247","PMATH 333"]],                // MATH 247 or PMATH 333
-  "PMATH 352":[["PMATH 351"]],
-  "PMATH 354":[["PMATH 333"]],
-  "PMATH 365":[["MATH 235","MATH 245"],["MATH 237","MATH 247"]], // needs MATH 235 AND MATH 237
-};
+// Loaded from server at startup via /prereqs — 280+ courses from UWFlow
+let PREREQS = {};
+(async () => {
+  try {
+    const r = await fetch("/prereqs");
+    PREREQS = await r.json();
+  } catch(e) {
+    console.warn("Could not load prereqs from server:", e);
+  }
+})();
 
 // Mutually exclusive courses — cannot appear in the same term or plan
 const ANTIREQS = {
@@ -780,6 +712,42 @@ const ANTIREQS = {
   "CO 255":   ["CO 250"],
 };
 
+// Interest tracks — courses to prioritize for each track when sorting advanced options.
+// All listed courses are Math Faculty (CS, STAT, AMATH, PMATH, CO, ACTSC count as math credits).
+const INTEREST_TRACKS = {
+  cs: [
+    { id:"ai-ml",    label:"AI & ML",      courses:["CS 480","CS 486","CS 489","CS 370","CS 371","CS 338"] },
+    { id:"systems",  label:"Systems",       courses:["CS 350","CS 343","CS 444","CS 445","CS 446","CS 447","CS 452","CS 453","CS 456"] },
+    { id:"theory",   label:"Theory",        courses:["CS 341","CS 360","CS 365","CS 466"] },
+    { id:"software", label:"Software Eng",  courses:["CS 346","CS 348","CS 349","CS 431","CS 436","CS 442","CS 448","CS 451"] },
+    { id:"security", label:"Security",      courses:["CS 458","CS 487"] },
+  ],
+  "data-sci": [
+    { id:"ml",    label:"ML / AI",       courses:["CS 341","STAT 441","STAT 444","AMATH 242"] },
+    { id:"data",  label:"Data Eng",      courses:["CS 346","CS 348","CS 446"] },
+    { id:"stats", label:"Statistics",    courses:["STAT 340","STAT 430","STAT 440","STAT 441","STAT 444"] },
+    { id:"opt",   label:"Optimization",  courses:["CS 245","AMATH 242"] },
+  ],
+  amath: [
+    { id:"fluid", label:"Fluid Dynamics", courses:["AMATH 361","AMATH 362","AMATH 373"] },
+    { id:"comp",  label:"Computation",    courses:["CS 371","AMATH 442","AMATH 445","AMATH 446"] },
+    { id:"bio",   label:"Math Biology",   courses:["AMATH 382","AMATH 383","AMATH 390","AMATH 391"] },
+    { id:"quant", label:"Quantum",        courses:["AMATH 473","AMATH 474","AMATH 477"] },
+    { id:"anal",  label:"Analysis",       courses:["PMATH 331","PMATH 332","PMATH 333","AMATH 332","AMATH 333"] },
+  ],
+  stat: [
+    { id:"ml",   label:"ML / AI",        courses:["STAT 441","STAT 444","STAT 340","STAT 442"] },
+    { id:"bio",  label:"Biostatistics",  courses:["STAT 430","STAT 431","STAT 433"] },
+    { id:"comp", label:"Computational",  courses:["STAT 340","STAT 442","STAT 443"] },
+    { id:"fin",  label:"Finance / Risk", courses:["STAT 433","STAT 440","STAT 444"] },
+  ],
+  co: [
+    { id:"opt",    label:"Optimization",   courses:["CO 351","CO 353","CO 367"] },
+    { id:"graph",  label:"Graph Theory",   courses:["CO 330","CO 342"] },
+    { id:"algo",   label:"Algorithms",     courses:["CO 330","CO 342","CO 351"] },
+  ],
+};
+
 // "COOP" appears multiple times intentionally — each occurrence is a work term slot
 const PROGRAMS = {
   cs: {
@@ -802,8 +770,14 @@ const PROGRAMS = {
       },
       {
         name:"Advanced Options",
-        courses:["CS 145","CS 146","CS 241E","CS 245E","CS 246E","MATH 145","MATH 146","MATH 147","MATH 148","MATH 245","MATH 247","STAT 240","STAT 241"],
-        typical:{ "CS 145":"1A","CS 146":"1B","CS 241E":"2A","CS 245E":"2A","CS 246E":"2B","MATH 145":"1A","MATH 147":"1A","MATH 146":"1B","MATH 148":"1B","MATH 245":"2A","MATH 247":"2B","STAT 240":"2A","STAT 241":"2B" },
+        courses:[
+          "CS 341","CS 343","CS 346","CS 348","CS 349","CS 350",
+          "CS 360","CS 365","CS 370","CS 371",
+          "CS 430","CS 431","CS 436","CS 442","CS 444","CS 445","CS 446","CS 447","CS 448","CS 449",
+          "CS 450","CS 451","CS 452","CS 453","CS 456","CS 458","CS 466",
+          "CS 480","CS 486","CS 487","CS 489","CS 492","CS 493",
+        ],
+        typical:{},
       },
     ],
   },
@@ -2226,46 +2200,65 @@ function parsePlanToTable(text) {
   }
   if (!rows.length) return `<pre style="white-space:pre-wrap;margin:0">${esc(text)}</pre>`;
 
-  const termStyle = `style="padding:6px 10px;color:var(--gold);font-weight:600;font-size:12px;white-space:nowrap;border-right:1px solid var(--border)"`;
-  const cellStyle = `style="padding:6px 10px;font-size:12px;color:var(--text)"`;
+  const termStyle = `style="padding:8px 10px;color:var(--gold);font-weight:600;font-size:12px;white-space:nowrap;border-right:1px solid var(--border);vertical-align:top"`;
+  const cellStyle = `style="padding:6px 8px;font-size:12px;color:var(--text)"`;
   const rowsHtml = rows.map((r,i) => {
     const bg = i % 2 === 0 ? "background:rgba(255,255,255,0.02)" : "";
     const pills = r.courses.map(({ code, suggested }) => {
       if (PLACEHOLDERS.has(code)) {
-        return `<span style="display:inline-block;border:1px dashed rgba(255,255,255,0.18);border-radius:4px;padding:1px 6px;margin:2px;font-size:11px;color:rgba(255,255,255,0.32);font-style:italic">${esc(code)}</span>`;
+        const hint = code === "Non-Math Elective"
+          ? "Any non-Math-Faculty course (e.g. ECON, PSYCH, ENGL)"
+          : "Any course — math or non-math";
+        return `<span title="${hint}" style="display:inline-block;border:1px dashed rgba(255,255,255,0.18);border-radius:4px;padding:2px 7px;margin:2px;font-size:10.5px;color:rgba(255,255,255,0.3);font-style:italic">${esc(code)}</span>`;
       }
+      const info = getCourseInfo(code);
+      const nameHtml = info.name && info.name !== code
+        ? `<span style="display:block;font-size:9px;opacity:0.5;margin-top:1px;line-height:1.3">${esc(info.name)}</span>`
+        : "";
       if (suggested) {
-        return `<span title="Suggested — swap if preferred" style="display:inline-block;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.38);border-radius:4px;padding:1px 6px;margin:2px;font-size:11px;color:rgba(160,163,255,0.9)">⟡ ${esc(code)}</span>`;
+        return `<span title="Suggested elective — swap if preferred" style="display:inline-block;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.38);border-radius:4px;padding:2px 7px;margin:2px;font-size:11px;color:rgba(160,163,255,0.9);vertical-align:top">⟡ ${esc(code)}${nameHtml}</span>`;
       }
-      return `<span style="display:inline-block;background:var(--gold-muted);border:1px solid var(--gold-border);border-radius:4px;padding:1px 6px;margin:2px;font-size:11px;color:var(--gold)">${esc(code)}</span>`;
+      return `<span style="display:inline-block;background:var(--gold-muted);border:1px solid var(--gold-border);border-radius:4px;padding:2px 7px;margin:2px;font-size:11px;color:var(--gold);vertical-align:top">${esc(code)}${nameHtml}</span>`;
     }).join("");
     return `<tr style="${bg}"><td ${termStyle}>${esc(r.term)}</td><td ${cellStyle}>${pills}</td></tr>`;
   }).join("");
 
-  return `<table style="width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:8px">${rowsHtml}</table>`;
+  const legend = `<div style="margin-top:6px;font-size:10px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap">
+    <span><span style="color:var(--gold)">■</span> Required course</span>
+    <span><span style="color:rgba(160,163,255,0.9)">⟡</span> Suggested elective (swap freely)</span>
+    <span style="font-style:italic;opacity:.6">Dashed = placeholder to fill</span>
+  </div>`;
+
+  return `<table style="width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:8px">${rowsHtml}</table>${legend}`;
 }
 
-async function suggestPlan() {
+// ── Interest picker helpers ───────────────────────────────────────────
+function togglePlanInterest(el, id) {
+  el.classList.toggle("active");
+  if (!S.interests) S.interests = [];
+  const idx = S.interests.indexOf(id);
+  if (idx >= 0) S.interests.splice(idx, 1); else S.interests.push(id);
+  save();
+}
+
+async function buildPlan() {
+  document.getElementById("planInterestPicker")?.remove();
   const btn = document.getElementById("suggestBtn");
   btn.textContent = "Thinking…"; btn.disabled = true;
+  await doGeneratePlan(btn, document.getElementById("chatThread"));
+}
 
+// ── Core plan generation ──────────────────────────────────────────────
+async function doGeneratePlan(btn, thread) {
   const prog = PROGRAMS[S.program];
   const studyTerms = getTerms().filter(t => t !== "COOP");
-  const reqList = prog.groups.map(g => `${g.name}: ${g.courses.join(", ")}`).join("; ");
-  const taken = S.taken.length ? S.taken.join(", ") : "none yet";
 
-  const bar = document.getElementById("chatBar");
-  if (!bar.classList.contains("open")) bar.classList.add("open");
-
-  const thread = document.getElementById("chatThread");
   const el = document.createElement("div");
   el.className = "chat-msg b";
   el.innerHTML = `<div class="lbl">✦ Suggested Plan</div><em style="color:var(--muted)">Generating…</em>`;
   thread.appendChild(el);
   thread.scrollTop = thread.scrollHeight;
 
-  // Within each group, drop courses that are antireqs of an already-chosen course in that group.
-  // This prevents e.g. AMATH 250 AND AMATH 251 both being scheduled (they're alternatives).
   function dedupeGroup(courses) {
     const chosen = new Set();
     return courses.filter(code => {
@@ -2275,11 +2268,16 @@ async function suggestPlan() {
     });
   }
 
-  // Only send prereqs for courses actually in this program (keeps payload small)
-  const allProgCourses = new Set(prog.groups.flatMap(g => g.courses));
-  const relevantPrereqs = {};
-  for (const code of allProgCourses) {
-    if (PREREQS[code]) relevantPrereqs[code] = PREREQS[code];
+  // Move interest-matching courses to the front of the advanced pool
+  function sortedAdvanced(courses) {
+    const tracks = INTEREST_TRACKS[S.program] || [];
+    const selected = tracks.filter(t => (S.interests || []).includes(t.id));
+    if (!selected.length) return courses;
+    const preferred = new Set(selected.flatMap(t => t.courses));
+    return [
+      ...courses.filter(c => preferred.has(c)),
+      ...courses.filter(c => !preferred.has(c)),
+    ];
   }
 
   try {
@@ -2289,10 +2287,13 @@ async function suggestPlan() {
         program: prog.name,
         terms: studyTerms,
         taken: S.taken,
-        groups: prog.groups.map(g => ({ name: g.name, courses: dedupeGroup(g.courses), typical: g.typical || {} })),
+        groups: prog.groups.map(g => ({
+          name: g.name,
+          courses: g.name.startsWith("Advanced") ? sortedAdvanced(dedupeGroup(g.courses)) : dedupeGroup(g.courses),
+          typical: g.typical || {},
+        })),
         placed: S.plan,
         current_term: S.currentTerm,
-        prereqs: relevantPrereqs,
       }),
     });
     const data = await res.json();
@@ -2303,6 +2304,44 @@ async function suggestPlan() {
     btn.textContent = "✦ Suggest my plan"; btn.disabled = false;
     thread.scrollTop = thread.scrollHeight;
   }
+}
+
+async function suggestPlan() {
+  const btn = document.getElementById("suggestBtn");
+  btn.textContent = "Thinking…"; btn.disabled = true;
+
+  const bar = document.getElementById("chatBar");
+  if (!bar.classList.contains("open")) bar.classList.add("open");
+  const thread = document.getElementById("chatThread");
+
+  // Remove stale picker from a previous click
+  document.getElementById("planInterestPicker")?.remove();
+
+  const tracks = INTEREST_TRACKS[S.program];
+  if (tracks) {
+    // Show interest picker — always show so student can update preferences
+    const selected = S.interests || [];
+    const picker = document.createElement("div");
+    picker.className = "chat-msg b";
+    picker.id = "planInterestPicker";
+    picker.innerHTML = `
+      <div class="lbl">✦ Tailor your plan</div>
+      <div style="color:var(--muted);font-size:12px;margin-bottom:10px">What topics interest you most? We'll prioritize matching electives.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+        ${tracks.map(t => `<span class="int-chip${selected.includes(t.id) ? " active" : ""}" onclick="togglePlanInterest(this,'${t.id}')">${esc(t.label)}</span>`).join("")}
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn-suggest" style="font-size:12px;padding:5px 14px" onclick="buildPlan()">Build my plan →</button>
+        <span style="font-size:11px;color:var(--muted);cursor:pointer;text-decoration:underline" onclick="buildPlan()">Skip</span>
+      </div>`;
+    thread.appendChild(picker);
+    thread.scrollTop = thread.scrollHeight;
+    btn.textContent = "✦ Suggest my plan"; btn.disabled = false;
+    return;
+  }
+
+  // No tracks for this program — generate immediately
+  await doGeneratePlan(btn, thread);
 }
 
 // ══════════════════════════════════════════════════════

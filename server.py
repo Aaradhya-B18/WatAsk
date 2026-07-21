@@ -19,6 +19,10 @@ supabase = create_client(
     os.getenv("SUPABASE_KEY")
 )
 
+# Load prereqs once at startup — 280 courses, all parsed from UWFlow
+with open("data/prereqs.json") as f:
+    PREREQS: dict = json.load(f)
+
 
 def embed(text: str):
     r = client.models.embed_content(
@@ -58,7 +62,6 @@ class PlanRequest(BaseModel):
     groups: List[dict]          # [{name, courses, typical}]
     placed: Optional[dict] = None  # {termId: [codes]} already in the grid
     current_term: Optional[str] = None
-    prereqs: Optional[dict] = None  # {courseCode: [[group1_opts], [group2_opts], ...]}
 
 
 GREETING_TRIGGERS = [
@@ -100,6 +103,12 @@ def find_codes(q: str):
 def looks_like_course_question(q: str) -> bool:
     return bool(find_codes(normalize_query(q)) or COURSE_WORDS.search(q))
 
+
+@app.get("/prereqs")
+def get_prereqs():
+    return PREREQS
+
+
 @app.post("/plan")
 def suggest_plan(req: PlanRequest):
     all_required: list[str] = []
@@ -129,7 +138,7 @@ def suggest_plan(req: PlanRequest):
     # Full-load schedule: 5 courses per term = 40 courses across 8 terms = 20.0 units
     MAX_PER_TERM = 5
     term_index = {t: i for i, t in enumerate(study_terms)}
-    prereqs = req.prereqs or {}
+    prereqs = PREREQS
 
     schedule: dict[str, list[str]] = {t: [] for t in study_terms}
 
