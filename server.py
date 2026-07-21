@@ -183,17 +183,20 @@ def suggest_plan(req: PlanRequest):
                 still_unplaced.append(code)
         unplaced = still_unplaced
 
-    # Phase 2 — suggest up to 5 Advanced Options (student can swap; labeled [suggested])
-    adv_candidates = [c for c in advanced_pool if c not in already_done]
+    # Phase 2 — suggest Advanced Options spread across 3A → 3B → 4A → 4B
+    # Cap at 2 per term so suggestions appear in every upper-year term, not piled in 3A
+    ADV_PER_TERM = 2
     adv_start_idx = term_index.get("3A", len(study_terms) // 2)
-    adv_placed = 0
-    for code in adv_candidates:
-        if adv_placed >= 5:
-            break
+    adv_per_term: dict[str, int] = {t: 0 for t in study_terms}
+
+    for code in [c for c in advanced_pool if c not in already_done]:
         for i in range(adv_start_idx, len(study_terms)):
-            if prereqs_ok(code, i) and len(schedule[study_terms[i]]) < MAX_PER_TERM:
-                schedule[study_terms[i]].append(code + "[suggested]")
-                adv_placed += 1
+            t = study_terms[i]
+            if (prereqs_ok(code, i)
+                    and len(schedule[t]) < MAX_PER_TERM
+                    and adv_per_term[t] < ADV_PER_TERM):
+                schedule[t].append(code + "[suggested]")
+                adv_per_term[t] += 1
                 break
 
     # Phase 3 — fill remaining slots: 5 Non-Math Elective slots then Free Elective
