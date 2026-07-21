@@ -760,19 +760,18 @@ const PROGRAMS = {
     groups:[
       {
         name:"Core CS",
-        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 245":"2A","CS 241":"2A","CS 246":"2B","CS 240":"3A" },
+        courses:["CS 135","CS 136","CS 136L","CS 241","CS 245","CS 246","CS 251","CS 240","CS 350","CS 370","CS 341","CS 360"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 241":"2A","CS 245":"2A","CS 246":"2B","CS 251":"2B","CS 240":"3A","CS 350":"3A","CS 370":"3A","CS 341":"3B","CS 360":"3B" },
       },
       {
         name:"Core Math",
-        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 239","STAT 230","STAT 231"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","STAT 230":"2A","MATH 239":"2B","STAT 231":"2B" },
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239","STAT 230","STAT 231"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","STAT 230":"2A","MATH 237":"2B","MATH 239":"2B","STAT 231":"2B" },
       },
       {
         name:"Advanced Options",
         courses:[
-          "CS 341","CS 343","CS 346","CS 348","CS 349","CS 350",
-          "CS 360","CS 365","CS 370","CS 371",
+          "CS 343","CS 346","CS 348","CS 349","CS 365","CS 371",
           "CS 430","CS 431","CS 436","CS 442","CS 444","CS 445","CS 446","CS 447","CS 448","CS 449",
           "CS 450","CS 451","CS 452","CS 453","CS 456","CS 458","CS 466",
           "CS 480","CS 486","CS 487","CS 489","CS 492","CS 493",
@@ -827,22 +826,22 @@ const PROGRAMS = {
     groups:[
       {
         name:"Core CS",
-        courses:["CS 241","CS 245","CS 246"],
-        typical:{ "CS 241":"2A","CS 245":"2B","CS 246":"2B" },
+        // Required: same CS base as BMath CS + SE-specific: CS 343, CS 346 (List A), CS 445/446/447
+        courses:["CS 135","CS 136","CS 136L","CS 241","CS 245","CS 246","CS 251","CS 240","CS 350","CS 370","CS 341","CS 360","CS 343","CS 346","CS 445","CS 446","CS 447"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 241":"2A","CS 245":"2A","CS 246":"2B","CS 251":"2B","CS 240":"3A","CS 343":"3A","CS 350":"3A","CS 370":"3A","CS 341":"3B","CS 346":"3B","CS 360":"3B","CS 445":"3B","CS 446":"4A","CS 447":"4A" },
       },
       {
         name:"Core Math",
-        courses:["MATH 135","MATH 137","MATH 138","MATH 239","STAT 230"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 138":"1B","STAT 230":"2A","MATH 239":"2B" },
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239","STAT 230","STAT 231"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","STAT 230":"2A","MATH 237":"2B","MATH 239":"2B","STAT 231":"2B" },
       },
       {
         name:"Advanced Options",
+        // List B choices (pick 2) + other upper-year SE options
         courses:[
-          "CS 341","CS 343","CS 346","CS 348","CS 349","CS 350",
-          "CS 360","CS 370","CS 371","CS 430","CS 431","CS 436",
-          "CS 442","CS 444","CS 445","CS 446","CS 447","CS 448","CS 449",
-          "CS 450","CS 451","CS 452","CS 453","CS 456","CS 458","CS 466",
-          "CS 480","CS 486","CS 487","CS 489",
+          "CS 348","CS 349","CS 365","CS 371",
+          "CS 442","CS 444","CS 448","CS 449","CS 450","CS 451","CS 452","CS 453",
+          "CS 454","CS 456","CS 457","CS 459","CS 466","CS 480","CS 484","CS 486","CS 488",
         ],
         typical:{},
       },
@@ -900,8 +899,9 @@ const PROGRAMS = {
       },
       {
         name:"Core Statistics",
-        courses:["STAT 230","STAT 231","STAT 240","STAT 241","STAT 330","STAT 331","STAT 332","STAT 333","STAT 334","STAT 340"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 240":"2A","STAT 241":"2B","STAT 330":"3A","STAT 331":"3A","STAT 332":"3B","STAT 333":"3A","STAT 334":"3B","STAT 340":"3B" },
+        // STAT 240/241 are enriched alternatives to 230/231 — not additional requirements
+        courses:["STAT 230","STAT 231","STAT 330","STAT 331","STAT 332","STAT 333","STAT 334","STAT 340"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 331":"3A","STAT 332":"3B","STAT 333":"3A","STAT 334":"3B","STAT 340":"3B" },
       },
       {
         name:"CS Requirement",
@@ -917,7 +917,7 @@ const PROGRAMS = {
   },
 
   "data-sci": {
-    name:"Data Science (BMath)",
+    name:"Data Science (BCS)",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
@@ -925,33 +925,24 @@ const PROGRAMS = {
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
       {
-        name:"CS Foundation",
-        courses:["CS 135","CS 136","CS 136L"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B" },
-      },
-      {
-        name:"Data Science CS",
-        courses:["CS 230","CS 231","CS 234","CS 338","CS 431"],
-        typical:{ "CS 230":"2A","CS 231":"2B","CS 234":"2B","CS 338":"3A","CS 431":"3B" },
+        name:"Core CS",
+        // Required per 2025-2026 BCS Data Science checklist
+        courses:["CS 135","CS 136","CS 136L","CS 241","CS 245","CS 246","CS 251","CS 240","CS 341","CS 348","CS 350","CS 451","CS 480"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 241":"2A","CS 245":"2A","CS 246":"2B","CS 251":"2B","CS 240":"3A","CS 341":"3A","CS 348":"3A","CS 350":"3B","CS 451":"3B","CS 480":"4A" },
       },
       {
         name:"Core Math",
-        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
-      },
-      {
-        name:"Statistics",
-        courses:["STAT 230","STAT 231","STAT 331","STAT 341","STAT 442"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 331":"3A","STAT 341":"3B","STAT 442":"4A" },
-      },
-      {
-        name:"Applied Math / Optimization",
-        courses:["AMATH 231","AMATH 250","AMATH 251","CO 250","CO 255"],
-        typical:{ "AMATH 231":"2B","AMATH 250":"3A","AMATH 251":"3A","CO 250":"3A","CO 255":"3A" },
+        // Required: 7 MATH + STAT 230/231/330/331/341
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239","STAT 230","STAT 231","STAT 330","STAT 331","STAT 341"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","STAT 230":"2A","MATH 237":"2B","MATH 239":"2B","STAT 231":"2B","STAT 330":"3A","STAT 331":"3B","STAT 341":"3B" },
       },
       {
         name:"Advanced Options",
-        courses:["CS 245","CS 341","CS 346","CS 348","CS 446","STAT 340","STAT 430","STAT 440","STAT 441","STAT 444","AMATH 242"],
+        // List A (one more 4XX CS), List B (two STAT 4XX)
+        courses:[
+          "CS 448","CS 454","CS 484","CS 485","CS 486",
+          "STAT 431","STAT 440","STAT 441","STAT 442","STAT 443","STAT 444",
+        ],
         typical:{},
       },
     ],
@@ -1147,8 +1138,9 @@ const PROGRAMS = {
       },
       {
         name:"Combinatorics & Optimization",
-        courses:["CO 250","CO 255","CO 330","CO 342","CO 351","CO 353","CO 367"],
-        typical:{ "CO 250":"2A","CO 255":"2B","CO 330":"2B","CO 342":"3A","CO 351":"3A","CO 353":"3B","CO 367":"3B" },
+        // CO 255 is an alternative to CO 250 (enriched), not an additional requirement
+        courses:["CO 250","CO 330","CO 342","CO 351","CO 353","CO 367"],
+        typical:{ "CO 250":"2A","CO 330":"2B","CO 342":"3A","CO 351":"3A","CO 353":"3B","CO 367":"3B" },
       },
       {
         name:"CS Requirement",
