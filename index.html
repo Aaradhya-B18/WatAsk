@@ -723,10 +723,10 @@ const INTEREST_TRACKS = {
     { id:"security", label:"Security",      courses:["CS 458","CS 487"] },
   ],
   "data-sci": [
-    { id:"ml",    label:"ML / AI",       courses:["CS 341","STAT 441","STAT 444","AMATH 242"] },
-    { id:"data",  label:"Data Eng",      courses:["CS 346","CS 348","CS 446"] },
-    { id:"stats", label:"Statistics",    courses:["STAT 340","STAT 430","STAT 440","STAT 441","STAT 444"] },
-    { id:"opt",   label:"Optimization",  courses:["CS 245","AMATH 242"] },
+    { id:"ml",    label:"ML / AI",       courses:["AMATH 445","STAT 441","STAT 444","AMATH 449","CS 479"] },
+    { id:"stats", label:"Statistics",    courses:["STAT 431","STAT 440","STAT 430","STAT 454","STAT 443"] },
+    { id:"opt",   label:"Optimization",  courses:["AMATH 345","CO 353","CO 365","CO 367","CO 370"] },
+    { id:"bio",   label:"Math Bio/Sig",  courses:["AMATH 391","AMATH 345"] },
   ],
   amath: [
     { id:"fluid", label:"Fluid Dynamics", courses:["AMATH 361","AMATH 362","AMATH 373"] },
@@ -917,7 +917,7 @@ const PROGRAMS = {
   },
 
   "data-sci": {
-    name:"Data Science (BCS)",
+    name:"Data Science (BMath)",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
@@ -925,23 +925,50 @@ const PROGRAMS = {
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
       {
-        name:"Core CS",
-        // Required per 2025-2026 BCS Data Science checklist
-        courses:["CS 135","CS 136","CS 136L","CS 241","CS 245","CS 246","CS 251","CS 240","CS 341","CS 348","CS 350","CS 451","CS 480"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 241":"2A","CS 245":"2A","CS 246":"2B","CS 251":"2B","CS 240":"3A","CS 341":"3A","CS 348":"3A","CS 350":"3B","CS 451":"3B","CS 480":"4A" },
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2B","MATH 239":"2B" },
       },
       {
-        name:"Core Math",
-        // Required: 7 MATH + STAT 230/231/330/331/341
-        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239","STAT 230","STAT 231","STAT 330","STAT 331","STAT 341"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","STAT 230":"2A","MATH 237":"2B","MATH 239":"2B","STAT 231":"2B","STAT 330":"3A","STAT 331":"3B","STAT 341":"3B" },
+        name:"Statistics Foundation",
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+      },
+      {
+        name:"Data Science Core",
+        // Required per BMath Data Science academic calendar (uwaterloo.ca)
+        // CS 230/231/234/338/431 are DS-specific replacements for standard CS 241/245/246
+        courses:["CS 135","CS 136","CS 136L","CS 230","CS 231","CS 234","CS 338","CS 431","DATSC 401"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 230":"2A","CS 231":"2A","CS 234":"2B","CS 338":"3A","CS 431":"3B","DATSC 401":"4B" },
+      },
+      {
+        name:"Applied Math & Optimization",
+        // AMATH 250/251 pick 1; CO 250/255 pick 1 — default to most common
+        courses:["AMATH 250","CO 250"],
+        typical:{ "CO 250":"2B","AMATH 250":"3A" },
+      },
+      {
+        name:"Statistics Requirements",
+        // STAT 330 always required; 331 always required; 332 required; 341 + 442 also required
+        courses:["STAT 330","STAT 331","STAT 332","STAT 341","STAT 442"],
+        typical:{ "STAT 330":"3A","STAT 331":"3B","STAT 332":"3B","STAT 341":"4A","STAT 442":"4A" },
+      },
+      {
+        name:"Ethics & Communication",
+        courses:["ENGL 378","PHIL 228"],
+        typical:{ "ENGL 378":"3A","PHIL 228":"3B" },
       },
       {
         name:"Advanced Options",
-        // List A (one more 4XX CS), List B (two STAT 4XX)
         courses:[
-          "CS 448","CS 454","CS 484","CS 485","CS 486",
-          "STAT 431","STAT 440","STAT 441","STAT 442","STAT 443","STAT 444",
+          // Pick 2: applied math electives
+          "AMATH 345","AMATH 391","CO 353","CO 365","CO 367","CO 370",
+          // Pick 2: ML / stats electives
+          "AMATH 445","STAT 441","STAT 443","STAT 444",
+          // Alternatives for required pick-1 slots
+          "AMATH 231","AMATH 251","CO 255","CS 146","MATH 247",
+          // Nested stats specialization (STAT 330 cluster + STAT 332 cluster + neural nets)
+          "STAT 430","STAT 431","STAT 440","STAT 454","AMATH 449","CS 479",
         ],
         typical:{},
       },

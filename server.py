@@ -125,9 +125,13 @@ def suggest_plan(req: PlanRequest):
             typical[code] = term
 
     placed_flat: set[str] = set()
+    # grid_by_term: per-term list of courses already placed in the planner grid
+    grid_by_term: dict[str, list[str]] = {}
     if req.placed:
-        for codes in req.placed.values():
-            placed_flat.update(codes)
+        for term_id, codes in req.placed.items():
+            clean = [c for c in codes if c]
+            grid_by_term[term_id] = clean
+            placed_flat.update(clean)
     already_done = set(req.taken) | placed_flat
     to_schedule = [c for c in all_required if c not in already_done]
 
@@ -143,12 +147,19 @@ def suggest_plan(req: PlanRequest):
     schedule: dict[str, list[str]] = {t: [] for t in study_terms}
 
     def placed_before(term_idx: int) -> set[str]:
-        """All courses committed to terms 0..term_idx-1, plus taken courses."""
+        """All courses available before term_idx: taken + grid-placed + server-scheduled."""
         result = set(req.taken)
         for j in range(term_idx):
-            for c in schedule[study_terms[j]]:
+            t = study_terms[j]
+            # grid-placed courses count as done once that term has passed
+            result.update(grid_by_term.get(t, []))
+            for c in schedule[t]:
                 result.add(c.replace("[suggested]", "").strip())
         return result
+
+    def term_capacity(term: str) -> int:
+        """Remaining open slots in a term (grid-placed + server-scheduled combined)."""
+        return MAX_PER_TERM - len(grid_by_term.get(term, [])) - len(schedule[term])
 
     def prereqs_ok(code: str, term_idx: int) -> bool:
         if code not in prereqs:
@@ -175,7 +186,7 @@ def suggest_plan(req: PlanRequest):
             start_idx = term_index.get(target, 0)
             placed = False
             for i in range(start_idx, len(study_terms)):
-                if prereqs_ok(code, i) and len(schedule[study_terms[i]]) < MAX_PER_TERM:
+                if prereqs_ok(code, i) and term_capacity(study_terms[i]) > 0:
                     schedule[study_terms[i]].append(code)
                     placed = True
                     break
@@ -193,25 +204,27 @@ def suggest_plan(req: PlanRequest):
         for i in range(adv_start_idx, len(study_terms)):
             t = study_terms[i]
             if (prereqs_ok(code, i)
-                    and len(schedule[t]) < MAX_PER_TERM
+                    and term_capacity(t) > 0
                     and adv_per_term[t] < ADV_PER_TERM):
                 schedule[t].append(code + "[suggested]")
                 adv_per_term[t] += 1
                 break
 
-    # Phase 3 — fill remaining slots: 5 Non-Math Elective slots then Free Elective
+    # Phase 3 — fill remaining open slots with Non-Math Elective then Free Elective
     # BMath requires ≥5 non-math (non-Math-faculty) credits; rest are free electives
     non_math_left = 5
     lines = []
     for term in study_terms:
         parts = list(schedule[term])
-        for _ in range(MAX_PER_TERM - len(parts)):
+        open_slots = term_capacity(term)  # already accounts for grid-placed
+        for _ in range(open_slots):
             if non_math_left > 0:
                 parts.append("Non-Math Elective")
                 non_math_left -= 1
             else:
                 parts.append("Free Elective")
-        lines.append(f"{term}: {', '.join(parts)}")
+        if parts:  # skip terms that are fully handled by the grid
+            lines.append(f"{term}: {', '.join(parts)}")
 
     return {"answer": "\n".join(lines)}
 
