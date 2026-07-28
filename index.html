@@ -729,11 +729,12 @@ const INTEREST_TRACKS = {
     { id:"bio",   label:"Math Bio/Sig",  courses:["AMATH 391","AMATH 345"] },
   ],
   amath: [
-    { id:"fluid", label:"Fluid Dynamics", courses:["AMATH 361","AMATH 362","AMATH 373"] },
-    { id:"comp",  label:"Computation",    courses:["CS 371","AMATH 442","AMATH 445","AMATH 446"] },
-    { id:"bio",   label:"Math Biology",   courses:["AMATH 382","AMATH 383","AMATH 390","AMATH 391"] },
-    { id:"quant", label:"Quantum",        courses:["AMATH 473","AMATH 474","AMATH 477"] },
-    { id:"anal",  label:"Analysis",       courses:["PMATH 331","PMATH 332","PMATH 333","AMATH 332","AMATH 333"] },
+    { id:"sml",   label:"Sci. Machine Learning", courses:["CS 479","AMATH 445","AMATH 446","AMATH 449","AMATH 391"] },
+    { id:"fluid", label:"Fluid Dynamics",         courses:["AMATH 361","AMATH 362","AMATH 373"] },
+    { id:"comp",  label:"Computation",            courses:["CS 371","AMATH 442","AMATH 445","AMATH 446"] },
+    { id:"bio",   label:"Math Biology",           courses:["AMATH 382","AMATH 383","AMATH 390","AMATH 391"] },
+    { id:"quant", label:"Quantum",                courses:["AMATH 473","AMATH 474","AMATH 477"] },
+    { id:"anal",  label:"Analysis",               courses:["PMATH 331","PMATH 332","PMATH 333","AMATH 332","AMATH 333"] },
   ],
   stat: [
     { id:"ml",   label:"ML / AI",        courses:["STAT 441","STAT 444","STAT 340","STAT 442"] },
@@ -894,14 +895,13 @@ const PROGRAMS = {
     groups:[
       {
         name:"Core Math",
-        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 239":"2B" },
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
         name:"Core Statistics",
-        // STAT 240/241 are enriched alternatives to 230/231 — not additional requirements
         courses:["STAT 230","STAT 231","STAT 330","STAT 331","STAT 332","STAT 333","STAT 334","STAT 340"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 331":"3A","STAT 332":"3B","STAT 333":"3A","STAT 334":"3B","STAT 340":"3B" },
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 331":"3B","STAT 332":"3B","STAT 333":"3A","STAT 334":"3B","STAT 340":"3B" },
       },
       {
         name:"CS Requirement",
@@ -909,9 +909,9 @@ const PROGRAMS = {
         typical:{ "CS 115":"1A","CS 116":"1B" },
       },
       {
-        name:"Upper Year Statistics",
+        name:"Advanced Statistics Electives",
         courses:["STAT 430","STAT 431","STAT 433","STAT 440","STAT 441","STAT 442","STAT 443","STAT 444"],
-        typical:{ "STAT 430":"4A","STAT 431":"4A","STAT 433":"4B","STAT 440":"4A","STAT 441":"4B","STAT 442":"4A","STAT 443":"4B","STAT 444":"4B" },
+        typical:{},
       },
     ],
   },
@@ -944,8 +944,9 @@ const PROGRAMS = {
       {
         name:"Applied Math & Optimization",
         // AMATH 250/251 pick 1; CO 250/255 pick 1 — default to most common
+        // CO 250 in 3A keeps 2B to 4 courses; AMATH 250 after MATH 137 (prereq) done in 1B
         courses:["AMATH 250","CO 250"],
-        typical:{ "CO 250":"2B","AMATH 250":"3A" },
+        typical:{ "AMATH 250":"3A","CO 250":"3A" },
       },
       {
         name:"Statistics Requirements",
@@ -985,8 +986,8 @@ const PROGRAMS = {
     groups:[
       {
         name:"Core CS",
-        courses:["CS 135","CS 136","CS 136L","CS 241","CS 245","CS 246"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 241":"2A","CS 245":"2A","CS 246":"2B" },
+        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 241":"2A","CS 245":"2A","CS 246":"2B","CS 240":"3A" },
       },
       {
         name:"Core Math",
@@ -1001,12 +1002,12 @@ const PROGRAMS = {
       {
         name:"Advanced Options",
         courses:[
-          "CS 240","CS 341","CS 350","CS 360","CS 370","CS 371","CS 442","CS 444","CS 445","CS 450","CS 480",
+          "CS 341","CS 350","CS 360","CS 370","CS 371","CS 442","CS 444","CS 445","CS 450","CS 480",
           "AMATH 231","AMATH 242","AMATH 250","AMATH 271","AMATH 331","AMATH 342","AMATH 353",
           "CO 250","CO 351","CO 367",
           "STAT 330","STAT 331","STAT 340",
         ],
-        typical:{ "CS 240":"3A" },
+        typical:{},
       },
     ],
   },
@@ -1025,9 +1026,11 @@ const PROGRAMS = {
         typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
-        name:"Pure Mathematics",
-        courses:["PMATH 330","PMATH 331","PMATH 332","PMATH 333","PMATH 334","PMATH 340","PMATH 345","PMATH 346","PMATH 347","PMATH 351","PMATH 352","PMATH 354","PMATH 365"],
-        typical:{ "PMATH 330":"2A","PMATH 331":"2B","PMATH 332":"3A","PMATH 333":"3A","PMATH 334":"3B","PMATH 340":"2A","PMATH 345":"2B","PMATH 346":"3A","PMATH 347":"3B","PMATH 351":"2B","PMATH 352":"3A","PMATH 354":"3B","PMATH 365":"3B" },
+        name:"Pure Mathematics Core",
+        // PMATH 333 (Real Analysis intro, needs MATH 138:60) anchors the 351/352 chain
+        // PMATH 351/352 need PMATH 333 or MATH 247; PMATH 330/347 need MATH 235
+        courses:["PMATH 330","PMATH 333","PMATH 347","PMATH 351","PMATH 352"],
+        typical:{ "PMATH 330":"2B","PMATH 333":"2A","PMATH 347":"3A","PMATH 351":"3A","PMATH 352":"3B" },
       },
       {
         name:"Statistics",
@@ -1038,6 +1041,12 @@ const PROGRAMS = {
         name:"CS Requirement",
         courses:["CS 115","CS 116"],
         typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["PMATH 331","PMATH 332","PMATH 334","PMATH 340","PMATH 345","PMATH 346","PMATH 354","PMATH 365",
+                 "PMATH 440","PMATH 441","PMATH 445","PMATH 446","PMATH 450","PMATH 451","PMATH 453","PMATH 454"],
+        typical:{},
       },
     ],
   },
@@ -1057,13 +1066,16 @@ const PROGRAMS = {
       },
       {
         name:"Actuarial Science",
+        // ACTSC 231 needs MATH 137(1A)+STAT 230(2A) → earliest 2B
+        // ACTSC 232 needs ACTSC 231:60(2B) → earliest 3A
+        // ACTSC 331 needs ACTSC 232:60(3A) → earliest 3B
         courses:["ACTSC 231","ACTSC 232","ACTSC 331","ACTSC 362","ACTSC 363","ACTSC 371","ACTSC 372","ACTSC 431","ACTSC 432","ACTSC 433","ACTSC 445","ACTSC 446","ACTSC 447"],
-        typical:{ "ACTSC 231":"2A","ACTSC 232":"2B","ACTSC 331":"3A","ACTSC 362":"3A","ACTSC 363":"3B","ACTSC 371":"3A","ACTSC 372":"3B","ACTSC 431":"4A","ACTSC 432":"4A","ACTSC 433":"4B","ACTSC 445":"4A","ACTSC 446":"4B","ACTSC 447":"4B" },
+        typical:{ "ACTSC 231":"2B","ACTSC 232":"3A","ACTSC 331":"3B","ACTSC 362":"3A","ACTSC 363":"3B","ACTSC 371":"3A","ACTSC 372":"3B","ACTSC 431":"4A","ACTSC 432":"4A","ACTSC 433":"4B","ACTSC 445":"4A","ACTSC 446":"4B","ACTSC 447":"4B" },
       },
       {
         name:"Core Statistics",
         courses:["STAT 230","STAT 231","STAT 330","STAT 333","STAT 334"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 333":"3B","STAT 334":"3B" },
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 333":"3A","STAT 334":"3B" },
       },
       {
         name:"CS Requirement",
@@ -1083,8 +1095,8 @@ const PROGRAMS = {
     groups:[
       {
         name:"Core Math",
-        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 237":"2A","MATH 235":"2B" },
       },
       {
         name:"Statistics",
@@ -1093,8 +1105,8 @@ const PROGRAMS = {
       },
       {
         name:"Applied Mathematics",
-        courses:["AMATH 231","AMATH 250","AMATH 242","AMATH 271","AMATH 331","AMATH 342","AMATH 353"],
-        typical:{ "AMATH 231":"2B","AMATH 250":"2B","AMATH 242":"3A","AMATH 271":"3A","AMATH 331":"3B","AMATH 342":"3B","AMATH 353":"4A" },
+        courses:["AMATH 250","AMATH 231","AMATH 242","AMATH 271","AMATH 331","AMATH 342","AMATH 353"],
+        typical:{ "AMATH 250":"2B","AMATH 231":"3A","AMATH 242":"3A","AMATH 271":"3B","AMATH 331":"3B","AMATH 342":"3B","AMATH 353":"4A" },
       },
       {
         name:"CS Requirement",
@@ -1103,7 +1115,7 @@ const PROGRAMS = {
       },
       {
         name:"Advanced Options",
-        courses:["MATH 247","AMATH 251","CS 371","AMATH 332","PMATH 331","PMATH 332","PMATH 333","PMATH 351","PMATH 352","PMATH 343","AMATH 333","AMATH 343","AMATH 345","AMATH 361","AMATH 362","AMATH 373","AMATH 382","AMATH 383","AMATH 390","AMATH 391","AMATH 442","AMATH 445","AMATH 446","AMATH 449","AMATH 451","AMATH 453","AMATH 455","AMATH 456","AMATH 462","AMATH 463","AMATH 473","AMATH 474","AMATH 475","AMATH 477","AMATH 490","AMATH 495","AMATH 499"],
+        courses:["MATH 247","AMATH 251","CS 371","CS 479","AMATH 332","PMATH 331","PMATH 332","PMATH 333","PMATH 351","PMATH 352","PMATH 343","AMATH 333","AMATH 343","AMATH 345","AMATH 361","AMATH 362","AMATH 373","AMATH 382","AMATH 383","AMATH 390","AMATH 391","AMATH 442","AMATH 445","AMATH 446","AMATH 449","AMATH 451","AMATH 453","AMATH 455","AMATH 456","AMATH 462","AMATH 463","AMATH 473","AMATH 474","AMATH 475","AMATH 477","AMATH 490","AMATH 495","AMATH 499"],
         typical:{},
       },
     ],
@@ -1119,18 +1131,21 @@ const PROGRAMS = {
     groups:[
       {
         name:"Core Math",
-        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 239":"2B" },
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
         name:"Statistics",
-        courses:["STAT 230","STAT 231","STAT 240","STAT 241"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 240":"2A","STAT 241":"2B" },
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
       },
       {
         name:"Actuarial Science",
+        // ACTSC 231 needs MATH 137(1A)+STAT 230(2A) → earliest 2B
+        // ACTSC 232 needs ACTSC 231:60(2B) → earliest 3A
+        // ACTSC 331 needs ACTSC 232:60(3A) → earliest 3B
         courses:["ACTSC 231","ACTSC 232","ACTSC 331","ACTSC 362","ACTSC 371","ACTSC 372"],
-        typical:{ "ACTSC 231":"2A","ACTSC 232":"2B","ACTSC 331":"3A","ACTSC 362":"3A","ACTSC 371":"3B","ACTSC 372":"3B" },
+        typical:{ "ACTSC 231":"2B","ACTSC 232":"3A","ACTSC 331":"3B","ACTSC 362":"3A","ACTSC 371":"3B","ACTSC 372":"3B" },
       },
       {
         name:"CS Requirement",
@@ -1139,8 +1154,8 @@ const PROGRAMS = {
       },
       {
         name:"Advanced Options",
-        courses:["MATH 245","MATH 247","STAT 330","STAT 333","STAT 334","ACTSC 431","ACTSC 432","ACTSC 433"],
-        typical:{ "MATH 245":"2A","MATH 247":"2B","STAT 330":"3A","STAT 333":"3B","STAT 334":"3B","ACTSC 431":"4A","ACTSC 432":"4A","ACTSC 433":"4B" },
+        courses:["MATH 247","STAT 330","STAT 333","STAT 334","ACTSC 431","ACTSC 432","ACTSC 433","ACTSC 445","ACTSC 446","ACTSC 453","ACTSC 455","ACTSC 456","ACTSC 462","ACTSC 471"],
+        typical:{ "STAT 330":"3A","STAT 333":"3B","STAT 334":"3B","ACTSC 431":"4A","ACTSC 432":"4A","ACTSC 433":"4B","ACTSC 445":"4A","ACTSC 446":"4B" },
       },
     ],
   },
@@ -1207,8 +1222,10 @@ const PROGRAMS = {
       },
       {
         name:"Pure Mathematics",
+        // PMATH 333 (needs MATH 138:60) can go 2A/2B; schedules to 3A since 2B is full
+        // PMATH 332 needs MATH 237 (done 2A) → 3A
         courses:["PMATH 332","PMATH 333"],
-        typical:{ "PMATH 332":"3A","PMATH 333":"3B" },
+        typical:{ "PMATH 332":"3A","PMATH 333":"2B" },
       },
       {
         name:"CS Requirement",
@@ -1233,18 +1250,18 @@ const PROGRAMS = {
     groups:[
       {
         name:"Core Math",
-        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 239":"2B" },
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A" },
       },
       {
         name:"Statistics",
-        courses:["STAT 230","STAT 231","STAT 240","STAT 241"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 240":"2A","STAT 241":"2B" },
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
       },
       {
         name:"Finance & Risk",
         courses:["ACTSC 231","ACTSC 232","ACTSC 371","ACTSC 372","STAT 330","STAT 333"],
-        typical:{ "ACTSC 231":"2A","ACTSC 232":"2B","ACTSC 371":"3A","ACTSC 372":"3B","STAT 330":"3A","STAT 333":"3B" },
+        typical:{ "ACTSC 231":"2B","ACTSC 232":"3A","ACTSC 371":"3A","ACTSC 372":"3B","STAT 330":"3A","STAT 333":"3B" },
       },
       {
         name:"CS Requirement",
@@ -1253,8 +1270,8 @@ const PROGRAMS = {
       },
       {
         name:"Advanced Options",
-        courses:["MATH 245","MATH 247","STAT 334","STAT 340","ACTSC 433","ACTSC 445","ACTSC 446","ACTSC 447"],
-        typical:{ "MATH 245":"2A","MATH 247":"2B","STAT 334":"3B","STAT 340":"3B","ACTSC 433":"4B","ACTSC 445":"4A","ACTSC 446":"4B" },
+        courses:["STAT 331","STAT 334","STAT 340","ACTSC 331","STAT 443","ACTSC 433","ACTSC 445","ACTSC 446","ACTSC 453","ACTSC 455","ACTSC 462","ACTSC 456","ACTSC 471"],
+        typical:{},
       },
     ],
   },

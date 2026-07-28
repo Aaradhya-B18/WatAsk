@@ -194,36 +194,41 @@ def suggest_plan(req: PlanRequest):
                 still_unplaced.append(code)
         unplaced = still_unplaced
 
-    # Phase 2 — suggest Advanced Options spread across 3A → 3B → 4A → 4B
-    # Cap at 2 per term so suggestions appear in every upper-year term, not piled in 3A
-    ADV_PER_TERM = 2
+    # Calculate non-math budget before Phase 2 so Phase 2 can reserve slots
+    MATH_FACULTY = {"CS","MATH","STAT","PMATH","AMATH","ACTSC","CO","MATBUS","DATSC"}
+    required_non_math = sum(
+        1 for c in all_required
+        if c.split()[0] not in MATH_FACULTY
+    )
+    non_math_left = max(0, 10 - required_non_math)
+    MAX_NON_MATH_PER_TERM = 2
+
+    # Phase 2 — suggest Advanced Options starting from 3A
+    # Reserve 1 slot per upper-year term for a non-math elective when budget remains
     adv_start_idx = term_index.get("3A", len(study_terms) // 2)
-    adv_per_term: dict[str, int] = {t: 0 for t in study_terms}
 
     for code in [c for c in advanced_pool if c not in already_done]:
         for i in range(adv_start_idx, len(study_terms)):
             t = study_terms[i]
-            if (prereqs_ok(code, i)
-                    and term_capacity(t) > 0
-                    and adv_per_term[t] < ADV_PER_TERM):
+            non_math_reserve = 1 if non_math_left > 0 else 0
+            if prereqs_ok(code, i) and term_capacity(t) > non_math_reserve:
                 schedule[t].append(code + "[suggested]")
-                adv_per_term[t] += 1
                 break
 
-    # Phase 3 — fill remaining open slots with Non-Math Elective then Free Elective
-    # BMath requires ≥5 non-math (non-Math-faculty) credits; rest are free electives
-    non_math_left = 5
+    # Phase 3 — fill remaining slots: Non-Math Elective (up to 2/term) then Free Elective
     lines = []
     for term in study_terms:
-        parts = list(schedule[term])
-        open_slots = term_capacity(term)  # already accounts for grid-placed
+        parts = list(grid_by_term.get(term, [])) + list(schedule[term])
+        open_slots = term_capacity(term)
+        non_math_this_term = 0
         for _ in range(open_slots):
-            if non_math_left > 0:
+            if non_math_left > 0 and non_math_this_term < MAX_NON_MATH_PER_TERM:
                 parts.append("Non-Math Elective")
                 non_math_left -= 1
+                non_math_this_term += 1
             else:
                 parts.append("Free Elective")
-        if parts:  # skip terms that are fully handled by the grid
+        if parts:
             lines.append(f"{term}: {', '.join(parts)}")
 
     return {"answer": "\n".join(lines)}
