@@ -362,13 +362,23 @@ header {
 }
 .card-rm:hover { color:var(--red); background:var(--red-muted); }
 .course-card.card-done {
-  border-left-color:var(--green); opacity:.75; cursor:default;
+  border-left-color:var(--green); opacity:.82;
   background:rgba(74,179,108,.06);
 }
-.course-card.card-done:hover { opacity:.9; }
-.card-done-badge {
-  font-size:10px; color:var(--green); margin-top:4px; font-weight:600;
+.course-card.card-done:hover { opacity:1; }
+.course-card.card-done-fail {
+  border-left-color:#e05555; background:rgba(220,80,80,.06);
 }
+.card-done-row {
+  display:flex; align-items:center; justify-content:space-between; margin-top:5px;
+}
+.card-grade {
+  font-size:10px; font-weight:700;
+}
+.card-grade.pass   { color:var(--green); }
+.card-grade.margin { color:#e0a83c; }
+.card-grade.low    { color:#e08a3c; }
+.card-grade.fail   { color:#e05555; }
 
 /* ════════════════════════════════════════
    CHAT BAR
@@ -1996,11 +2006,38 @@ function sidebarItem(code, isRequired = false) {
 function takenCourseCard(code) {
   const info = getCourseInfo(code);
   const grade = S.takenGrades?.[code];
-  const badge = grade !== undefined ? `✓ ${grade}%` : `✓ Completed`;
-  return `<div class="course-card card-done" data-code="${code}" data-term="" draggable="false">
+
+  // Grade badge with color by performance
+  let gradeCls = "", gradeIcon = "✓";
+  if (grade !== undefined) {
+    if      (grade >= 70) { gradeCls = "pass";   gradeIcon = "✓"; }
+    else if (grade >= 60) { gradeCls = "margin";  gradeIcon = "✓"; }
+    else if (grade >= 50) { gradeCls = "low";    gradeIcon = "✓"; }
+    else                  { gradeCls = "fail";   gradeIcon = "✗"; }
+  }
+  const gradeHtml = grade !== undefined
+    ? `<span class="card-grade ${gradeCls}">${gradeIcon} ${grade}% grade</span>`
+    : `<span class="card-grade pass">✓ Completed</span>`;
+
+  // UWFlow liked/easy — same as regular cards
+  const likedCls = info.liked >= 70 ? "g" : info.liked < 45 ? "r" : "";
+  const easyCls  = info.easy  >= 55 ? "g" : info.easy  < 35 ? "r" : "";
+  const statHtml = info.liked != null
+    ? `<div class="card-stats">
+        <span class="card-stat ${likedCls}">♥ ${info.liked}%</span>
+        <span class="card-stat ${easyCls}">${info.easy}% easy</span>
+      </div>` : "";
+
+  const failCls = (grade !== undefined && grade < 50) ? " card-done-fail" : "";
+
+  return `<div class="course-card card-done${failCls}" data-code="${code}" data-term="" draggable="false">
     <div class="card-code">${code}</div>
     <div class="card-name">${info.name}</div>
-    <div class="card-done-badge">${badge} · 0.5 units</div>
+    ${statHtml}
+    <div class="card-done-row">
+      ${gradeHtml}
+      <span class="units-lbl">0.5 u</span>
+    </div>
   </div>`;
 }
 
