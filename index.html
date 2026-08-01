@@ -2356,7 +2356,7 @@ async function doGeneratePlan(btn, thread) {
       }),
     });
     const data = await res.json();
-    el.innerHTML = `<div class="lbl">✦ Suggested Plan</div>${parsePlanToTable(data.answer)}`;
+    el.innerHTML = `<div class="lbl">✦ Suggested Plan</div><div style="font-size:11px;color:var(--muted);margin-bottom:8px">Planned at 5 courses/term (standard UW load). Taking 6+ requires advisor approval and a high average — most students stick to 5.</div>${parsePlanToTable(data.answer)}`;
   } catch(err) {
     el.innerHTML = `<div class="lbl">✦ Suggested Plan</div><em style="color:var(--red)">Error: ${err.message}</em>`;
   } finally {
