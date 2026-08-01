@@ -375,10 +375,9 @@ header {
 .card-grade {
   font-size:10px; font-weight:700;
 }
-.card-grade.pass   { color:var(--green); }
-.card-grade.margin { color:#e0a83c; }
-.card-grade.low    { color:#e08a3c; }
-.card-grade.fail   { color:#e05555; }
+.card-grade.pass { color:var(--green); }
+.card-grade.low  { color:#e08a3c; }
+.card-grade.fail { color:#e05555; }
 
 /* ════════════════════════════════════════
    CHAT BAR
@@ -2003,21 +2002,45 @@ function sidebarItem(code, isRequired = false) {
 // ══════════════════════════════════════════════════════
 //  TERM GRID
 // ══════════════════════════════════════════════════════
+function takenCardBlocked(code, grade) {
+  if (grade === undefined || typeof PREREQS === "undefined") return [];
+  const programCourses = new Set(
+    (PROGRAMS[S.program]?.groups || []).flatMap(g => g.courses || [])
+  );
+  const blocked = [];
+  for (const [down, groups] of Object.entries(PREREQS)) {
+    if (!programCourses.has(down)) continue;
+    for (const group of groups) {
+      for (const entry of group) {
+        const [c, minStr] = entry.split(":");
+        if (c === code && minStr && grade < parseInt(minStr))
+          blocked.push(`${down} (${minStr}%+)`);
+      }
+    }
+  }
+  return blocked;
+}
+
 function takenCourseCard(code) {
   const info = getCourseInfo(code);
   const grade = S.takenGrades?.[code];
 
-  // Grade badge with color by performance
-  let gradeCls = "", gradeIcon = "✓";
+  // Grade: green ≥70%, orange 50-69%, red <50%
+  let gradeCls = "pass", gradeIcon = "✓";
   if (grade !== undefined) {
-    if      (grade >= 70) { gradeCls = "pass";   gradeIcon = "✓"; }
-    else if (grade >= 60) { gradeCls = "margin";  gradeIcon = "✓"; }
-    else if (grade >= 50) { gradeCls = "low";    gradeIcon = "✓"; }
-    else                  { gradeCls = "fail";   gradeIcon = "✗"; }
+    if      (grade >= 70) { gradeCls = "pass"; gradeIcon = "✓"; }
+    else if (grade >= 50) { gradeCls = "low";  gradeIcon = "✓"; }
+    else                  { gradeCls = "fail"; gradeIcon = "✗"; }
   }
   const gradeHtml = grade !== undefined
     ? `<span class="card-grade ${gradeCls}">${gradeIcon} ${grade}% grade</span>`
     : `<span class="card-grade pass">✓ Completed</span>`;
+
+  // Program-aware prereq warning: only show if the blocked course is in THIS student's program
+  const blocked = takenCardBlocked(code, grade);
+  const blockWarn = blocked.length
+    ? `<div class="card-warn">⚠ retake to unlock: ${blocked.slice(0,2).join(", ")}</div>`
+    : "";
 
   // UWFlow liked/easy — same as regular cards
   const likedCls = info.liked >= 70 ? "g" : info.liked < 45 ? "r" : "";
@@ -2038,6 +2061,7 @@ function takenCourseCard(code) {
       ${gradeHtml}
       <span class="units-lbl">0.5 u</span>
     </div>
+    ${blockWarn}
   </div>`;
 }
 
