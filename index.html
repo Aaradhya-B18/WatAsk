@@ -1888,9 +1888,9 @@ function violations(code, termId) {
 //  SIDEBAR
 // ══════════════════════════════════════════════════════
 function statusOf(code) {
+  if (S.retaking?.includes(code)) return "retaking";  // retaking overrides taken
   if (S.taken.includes(code)) return "taken";
   if (Object.values(S.plan).some(arr => arr.includes(code))) return "planned";
-  if (S.retaking?.includes(code)) return "retaking";
   return "available";
 }
 
