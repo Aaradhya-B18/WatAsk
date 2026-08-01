@@ -714,13 +714,16 @@ const ANTIREQS = {
 // All listed courses are Math Faculty (CS, STAT, AMATH, PMATH, CO, ACTSC count as math credits).
 const INTEREST_TRACKS = {
   cs: [
-    { id:"ai-ml",    label:"AI & ML",          courses:["CS 480","CS 484","CS 485","CS 486","CS 489","CS 479","CS 370","CS 371","CS 338"] },
-    { id:"systems",  label:"Systems",           courses:["CS 350","CS 343","CS 444","CS 445","CS 446","CS 447","CS 452","CS 453","CS 454","CS 456"] },
-    { id:"theory",   label:"Theory",            courses:["CS 341","CS 360","CS 365","CS 466","CS 487"] },
-    { id:"software", label:"Software Eng",      courses:["CS 346","CS 348","CS 349","CS 431","CS 436","CS 442","CS 448","CS 451"] },
-    { id:"security", label:"Security & Privacy",courses:["CS 458","CS 487","CS 450","CS 454"] },
-    { id:"hci",      label:"HCI / UX",          courses:["CS 449","CS 492","CS 493","CS 349","CS 488"] },
-    { id:"bio",      label:"Bioinformatics",    courses:["CS 482","CS 485","CS 486","CS 480"] },
+    { id:"ai",       label:"Artificial Intelligence",  courses:["CS 480","CS 485","CS 486","CS 489","CS 487","CS 484","CS 479"] },
+    { id:"bio",      label:"Bioinformatics",           courses:["CS 482","CS 485","CS 486","CS 489","CS 480"] },
+    { id:"business", label:"Business",                 courses:["MATBUS 370","MATBUS 371","MATBUS 431","MATBUS 432","MATBUS 451","MATBUS 453","MATBUS 473"] },
+    { id:"cfa",      label:"Computational Fine Art",   courses:["CS 488","CS 484","CS 489","CS 349","CS 446"] },
+    { id:"hardware", label:"Digital Hardware",         courses:["CS 350","CS 452","CS 454","CS 456","CS 444","CS 445"] },
+    { id:"game",     label:"Game Design",              courses:["CS 488","CS 349","CS 346","CS 489","CS 484"] },
+    { id:"hci",      label:"Human-Computer Interaction",courses:["CS 449","CS 492","CS 493","CS 489","CS 349"] },
+    { id:"software", label:"Software Engineering",     courses:["CS 346","CS 431","CS 436","CS 442","CS 448","CS 451","CS 348"] },
+    { id:"theory",   label:"Theory & Algorithms",     courses:["CS 341","CS 360","CS 365","CS 466","CS 487"] },
+    { id:"security", label:"Security & Privacy",       courses:["CS 458","CS 487","CS 450","CS 454"] },
   ],
   "data-sci": [
     { id:"ml",    label:"ML / AI",       courses:["AMATH 445","STAT 441","STAT 444","AMATH 449","CS 479"] },
@@ -776,6 +779,7 @@ const PROGRAMS = {
           "CS 430","CS 431","CS 436","CS 442","CS 444","CS 445","CS 446","CS 447","CS 448","CS 449",
           "CS 450","CS 451","CS 452","CS 453","CS 454","CS 456","CS 458","CS 466",
           "CS 479","CS 480","CS 482","CS 484","CS 485","CS 486","CS 487","CS 488","CS 489","CS 492","CS 493",
+          "MATBUS 370","MATBUS 371","MATBUS 431","MATBUS 432","MATBUS 451","MATBUS 453","MATBUS 473",
         ],
         typical:{},
       },
