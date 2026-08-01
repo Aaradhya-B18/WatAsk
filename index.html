@@ -1649,11 +1649,33 @@ function obSelectTerm(term) {
 function obGradeInput() {
   const val = parseInt(document.getElementById("obGradeVal").value);
   const warn = document.getElementById("obGradeWarn");
-  if (!isNaN(val) && val < 50) {
+  if (isNaN(val)) { warn.style.display = "none"; return; }
+
+  if (val < 50) {
     warn.textContent = "Grade below 50% — if you didn't pass, use \"Currently retaking\" below instead.";
     warn.style.display = "block";
-  } else if (!isNaN(val) && val < 65) {
-    warn.textContent = "Grade below 65% — some follow-up courses need 60%+. If it blocks a prereq, use \"Currently retaking\" below.";
+    return;
+  }
+
+  // Find downstream courses that need this course with a grade minimum above what was entered
+  const blocked = [];
+  if (typeof PREREQS !== "undefined" && _obPickingCode) {
+    for (const [downCode, groups] of Object.entries(PREREQS)) {
+      for (const group of groups) {
+        for (const entry of group) {
+          const [c, minStr] = entry.split(":");
+          if (c === _obPickingCode && minStr) {
+            const min = parseInt(minStr);
+            if (val < min) blocked.push(`${downCode} (needs ${min}%+)`);
+          }
+        }
+      }
+    }
+  }
+
+  if (blocked.length > 0) {
+    const list = blocked.slice(0, 4).join(", ") + (blocked.length > 4 ? ` +${blocked.length - 4} more` : "");
+    warn.textContent = `${val}% is too low for: ${list}. Use "Currently retaking" below if you plan to redo this course.`;
     warn.style.display = "block";
   } else {
     warn.style.display = "none";
