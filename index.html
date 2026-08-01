@@ -354,6 +354,12 @@ header {
 .card-stat.g { color:var(--green); }
 .card-stat.r { color:var(--red); }
 .card-warn { font-size:10px; color:var(--red); margin-top:3px; }
+.card-retake-btn {
+  display:inline-block; margin-top:4px; padding:2px 7px; border-radius:4px;
+  font-size:10px; font-weight:600; cursor:pointer; border:1px solid rgba(224,138,60,.4);
+  background:rgba(224,138,60,.1); color:#e08a3c;
+}
+.card-retake-btn:hover { background:rgba(224,138,60,.22); }
 .card-hint { font-size:10px; color:var(--gold); opacity:.75; margin-top:3px; }
 .card-soft-warn { font-size:10px; color:#e8b43a; margin-top:3px; line-height:1.3; }
 .card-rm {
@@ -1516,6 +1522,12 @@ function loadState() {
 }
 function save() { localStorage.setItem("watask-v1", JSON.stringify(S)); }
 
+function markRetakeFromCard(code) {
+  if (!S.retaking) S.retaking = [];
+  if (!S.retaking.includes(code)) S.retaking.push(code);
+  save(); render();
+}
+
 // ══════════════════════════════════════════════════════
 //  ONBOARDING
 // ══════════════════════════════════════════════════════
@@ -2039,7 +2051,9 @@ function takenCourseCard(code) {
   // Program-aware prereq warning: only show if the blocked course is in THIS student's program
   const blocked = takenCardBlocked(code, grade);
   const blockWarn = blocked.length
-    ? `<div class="card-warn">⚠ retake to unlock: ${blocked.slice(0,2).join(", ")}</div>`
+    ? `<div class="card-warn">⚠ retake to unlock: ${blocked.slice(0,2).join(", ")}
+        ${!S.retaking?.includes(code) ? `<button class="card-retake-btn" onclick="markRetakeFromCard('${code}')">↻ Schedule retake</button>` : `<span style="color:var(--gold)">↻ drag from sidebar</span>`}
+       </div>`
     : "";
 
   // UWFlow liked/easy — same as regular cards
