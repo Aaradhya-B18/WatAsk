@@ -513,7 +513,7 @@ header {
             <button class="ob-skip-grade-btn" onclick="obFinalizeTaken(true)">Skip %</button>
           </div>
         </div>
-        <button class="ob-retake-btn" onclick="obMarkRetaking()">⚠ Currently retaking — didn't pass yet</button>
+        <button class="ob-retake-btn" onclick="obMarkRetaking()">⚠ Currently retaking — grade too low or didn't pass</button>
         <button class="ob-picker-cancel" onclick="obCancelPicker()">Cancel</button>
       </div>
       <div id="obTakenList"></div>
@@ -1651,6 +1651,9 @@ function obGradeInput() {
   const warn = document.getElementById("obGradeWarn");
   if (!isNaN(val) && val < 50) {
     warn.textContent = "Grade below 50% — if you didn't pass, use \"Currently retaking\" below instead.";
+    warn.style.display = "block";
+  } else if (!isNaN(val) && val < 65) {
+    warn.textContent = "Grade below 65% — some follow-up courses need 60%+. If it blocks a prereq, use \"Currently retaking\" below.";
     warn.style.display = "block";
   } else {
     warn.style.display = "none";
