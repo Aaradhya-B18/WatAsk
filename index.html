@@ -416,7 +416,7 @@ header {
       <p class="sub">Plan your UW degree, term by term. Let's set you up in 3 steps.</p>
       <label class="field-label">Your program</label>
       <select id="obProgram">
-        <option value="cs">Honours Computer Science</option>
+        <option value="cs">Computer Science (BCS)</option>
         <option value="se">Software Engineering</option>
         <option value="cs-math">Double: CS &amp; Math</option>
         <option value="stat">Statistics</option>
@@ -555,7 +555,7 @@ header {
   <header>
     <div class="logo">WatAsk<span>.</span></div>
     <select class="hdr-select" id="programSelect" onchange="changeProgram(this.value)">
-      <option value="cs">Honours CS</option>
+      <option value="cs">Computer Science (BCS)</option>
       <option value="se">Software Eng.</option>
       <option value="cs-math">CS &amp; Math</option>
       <option value="stat">Statistics</option>
@@ -755,7 +755,7 @@ const INTEREST_TRACKS = {
 // "COOP" appears multiple times intentionally — each occurrence is a work term slot
 const PROGRAMS = {
   cs: {
-    name:"Honours Computer Science",
+    name:"Computer Science (BCS Honours)",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
@@ -763,25 +763,29 @@ const PROGRAMS = {
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
       {
+        // BCS required: CS136L + CS341 + CS350 always; pick-1 groups for CS135/136/240/241/245/246/251
         name:"Core CS",
-        courses:["CS 135","CS 136","CS 136L","CS 241","CS 245","CS 246","CS 251","CS 240","CS 350","CS 370","CS 341","CS 360"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 241":"2A","CS 245":"2A","CS 246":"2B","CS 251":"2B","CS 240":"3A","CS 350":"3A","CS 370":"3A","CS 341":"3B","CS 360":"3B" },
+        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246","CS 251","CS 341","CS 350"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 241":"2A","CS 245":"2A","CS 246":"2B","CS 251":"2B","CS 240":"3A","CS 350":"3A","CS 341":"3B" },
       },
       {
+        // BCS math: MATH135/136/137/138 + MATH239 + STAT230/231 — MATH235/237 are NOT BCS required
         name:"Core Math",
-        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239","STAT 230","STAT 231"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","STAT 230":"2A","MATH 237":"2B","MATH 239":"2B","STAT 231":"2B" },
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 239","STAT 230","STAT 231"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","STAT 230":"2A","MATH 239":"2B","STAT 231":"2B" },
       },
       {
         name:"Advanced Options",
         courses:[
+          // CS electives: BCS needs 3 from CS340-489 + 2 from CS440-489 + 1 from CS440-498/CO487/STAT440
+          "CS 360","CS 370","MATH 235","MATH 237",
           "CS 343","CS 346","CS 348","CS 349","CS 365","CS 371",
           "CS 430","CS 431","CS 436","CS 442","CS 444","CS 445","CS 446","CS 447","CS 448","CS 449",
           "CS 450","CS 451","CS 452","CS 453","CS 454","CS 456","CS 458","CS 466",
           "CS 479","CS 480","CS 482","CS 484","CS 485","CS 486","CS 487","CS 488","CS 489","CS 492","CS 493",
           "MATBUS 370","MATBUS 371","MATBUS 431","MATBUS 432","MATBUS 451","MATBUS 453","MATBUS 473",
         ],
-        typical:{},
+        typical:{ "CS 360":"3B","CS 370":"3A","MATH 235":"2A","MATH 237":"2B" },
       },
     ],
   },
