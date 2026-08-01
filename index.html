@@ -2057,9 +2057,22 @@ function cardStatus(code, termId) {
   }
 
   // Factor 3: prereq grade barely meets threshold
+  // Only warn if no other option in the OR-group cleanly satisfies the prereq
   const groups = getPrereqs(code);
   if (groups) {
     for (const group of groups) {
+      // If any entry in this OR-group is taken with no grade minimum (or comfortably above),
+      // the group is cleanly satisfied — skip grade warnings for this group entirely
+      const cleanSatisfied = group.some(entry => {
+        const [c, minStr] = entry.split(":");
+        if (!S.taken.includes(c)) return false;
+        if (!minStr) return true;
+        const min = parseInt(minStr);
+        const grade = S.takenGrades?.[c];
+        return grade !== undefined && grade >= min + 8;
+      });
+      if (cleanSatisfied) continue;
+
       for (const entry of group) {
         const [c, minStr] = entry.split(":");
         if (!minStr || !S.taken.includes(c)) continue;
