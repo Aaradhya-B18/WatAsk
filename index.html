@@ -2251,6 +2251,18 @@ function onDrop(e, termId) {
   e.preventDefault();
   e.currentTarget.classList.remove("drag-over");
   if (!dragCode) return;
+  // Block retaking a course in the same term (or before) it was originally taken
+  if (S.retaking?.includes(dragCode)) {
+    const takenTerm = S.takenTerms?.[dragCode];
+    if (takenTerm) {
+      const allTerms = getTerms();
+      if (allTerms.indexOf(termId) <= allTerms.indexOf(takenTerm)) {
+        alert(`${dragCode} was already taken in ${takenTerm} — retake must go in a later term.`);
+        dragCode = null; dragFrom = null;
+        return;
+      }
+    }
+  }
   const conflict = (ANTIREQS[dragCode] || []).find(a => (S.plan[termId] || []).includes(a));
   if (conflict) {
     alert(`Can't add ${dragCode} — it's mutually exclusive with ${conflict} already in ${termId}.`);
