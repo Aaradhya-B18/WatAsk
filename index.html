@@ -2136,6 +2136,12 @@ function cardStatus(code, termId) {
   const info = getCourseInfo(code);
   if (violations(code, termId).length) return { cls: "", softWarn: null };
 
+  // Retaking: no timing penalty; only disqualify if liked% is very low
+  if (S.retaking?.includes(code)) {
+    const cls = (info.liked != null && info.liked < 45) ? "card-orange" : "card-green";
+    return { cls, softWarn: null };
+  }
+
   const warns = [];
   let score = 0;
 
