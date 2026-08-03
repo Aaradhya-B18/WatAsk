@@ -2074,7 +2074,7 @@ function takenCourseCard(code) {
     ${statHtml}
     <div class="card-done-row">
       ${gradeHtml}
-      <span class="units-lbl">0.5 u</span>
+      <span class="units-lbl">${grade !== undefined && grade < 50 ? "no credit" : "0.5 u"}</span>
     </div>
     ${blockWarn}
   </div>`;
@@ -2295,8 +2295,12 @@ function updateProgress() {
   document.getElementById("progressFill").style.width = pct + "%";
   document.getElementById("progressLbl").textContent = `${done} / ${all.length} req`;
 
-  // Units: only courses actually completed (taken) count toward earned units
-  const unitsDone = (S.taken.length * 0.5).toFixed(1);
+  // Units: exclude failed courses (grade < 50 = no credit earned)
+  const passedTaken = S.taken.filter(c => {
+    const g = S.takenGrades?.[c];
+    return g === undefined || g >= 50;
+  });
+  const unitsDone = (passedTaken.length * 0.5).toFixed(1);
   // Planned (in grid, not yet taken) count as in-progress
   const plannedCodes = new Set(Object.values(S.plan).flat());
   S.taken.forEach(c => plannedCodes.delete(c));
