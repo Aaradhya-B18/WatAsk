@@ -1853,7 +1853,8 @@ function coursesBefore(termId) {
 function violations(code, termId) {
   const v = [];
 
-  // Prereq violations
+  // Prereq violations — skip if retaking (prereqs were met when first taken)
+  if (S.retaking?.includes(code)) return v;
   const groups = getPrereqs(code);
   if (groups) {
     const before = coursesBefore(termId);
