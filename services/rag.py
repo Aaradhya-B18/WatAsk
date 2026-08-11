@@ -21,6 +21,11 @@ COURSE_WORDS = re.compile(
     re.IGNORECASE
 )
 
+PROFANITY = re.compile(
+    r'\b(fuck|shit|damn|ass|bitch|crap|wtf|stfu|idiot|stupid|dumb)\b',
+    re.IGNORECASE
+)
+
 
 def is_greeting(q: str) -> bool:
     ql = q.lower().strip("?!. ")
@@ -99,6 +104,11 @@ def answer(
 ) -> dict:
     if is_greeting(question):
         return {"question": question, "answer": GREETING_RESPONSE, "source_codes": [], "sources": []}
+
+    if PROFANITY.search(question):
+        cleaned = PROFANITY.sub("", question).strip()
+        if not looks_like_course_question(cleaned):
+            return {"question": question, "answer": "Let's keep it academic! Ask me anything about UW courses, prereqs, or your plan.", "source_codes": [], "sources": []}
 
     if not history and not looks_like_course_question(question):
         return {"question": question, "answer": OFF_TOPIC_RESPONSE, "source_codes": [], "sources": []}

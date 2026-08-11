@@ -102,9 +102,11 @@ body { font-family: system-ui,-apple-system,sans-serif; background:var(--bg); co
 .ob-picker-label { font-size:12px; color:var(--muted); margin-bottom:10px; }
 .ob-picker-btns { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
 .ob-picker-cancel {
-  background:none; border:none; color:var(--muted); font-size:12px;
-  cursor:pointer; padding:0; text-decoration:underline;
+  background:none; border:1px solid rgba(255,255,255,0.15); border-radius:5px;
+  color:rgba(255,255,255,0.6); font-size:12px;
+  cursor:pointer; padding:5px 12px; margin-top:6px; display:inline-block;
 }
+.ob-picker-cancel:hover { color:#fff; border-color:rgba(255,255,255,0.35); }
 .ob-retake-btn {
   width:100%; padding:8px 14px; margin-top:8px;
   background:rgba(224,138,60,.08); border:1px solid rgba(224,138,60,.3);
@@ -189,18 +191,28 @@ header {
 
 .hdr-select {
   background:var(--surface-2); border:1px solid var(--border); border-radius:8px;
-  color:var(--text); font-size:13px; padding:6px 28px 6px 10px; cursor:pointer;
-  appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888898'/%3E%3C/svg%3E");
-  background-repeat:no-repeat; background-position:right 8px center;
+  color:var(--text); font-size:13px; padding:6px 10px; cursor:text; min-width:180px;
 }
 .hdr-select:focus { outline:none; border-color:var(--gold); }
+.prog-search-wrap { position:relative; }
+.prog-dropdown {
+  position:absolute; top:calc(100% + 4px); left:0; right:0; z-index:300;
+  background:var(--surface-2); border:1px solid var(--border); border-radius:8px;
+  max-height:220px; overflow-y:auto; display:none;
+  box-shadow:0 6px 24px rgba(0,0,0,.6);
+}
+.prog-dropdown-item {
+  padding:9px 14px; font-size:13px; color:var(--text); cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.prog-dropdown-item:last-child { border-bottom:none; }
+.prog-dropdown-item:hover { background:rgba(255,213,74,0.08); color:var(--gold); }
 
 .progress-wrap { flex:1; display:flex; align-items:center; gap:10px; min-width:0; }
-.progress-bar { flex:1; height:4px; background:var(--border); border-radius:99px; overflow:hidden; }
+.progress-bar { flex:1; height:5px; background:rgba(255,255,255,0.08); border-radius:99px; overflow:hidden; }
 .progress-fill { height:100%; background:var(--gold); border-radius:99px; transition:width .35s; }
 .progress-lbl { font-size:12px; color:var(--muted); white-space:nowrap; }
-.units-lbl { font-size:12px; color:var(--gold); white-space:nowrap; opacity:.85; cursor:default; }
+.units-lbl { font-size:12px; color:var(--gold); white-space:nowrap; cursor:default; font-weight:600; }
 
 .btn-suggest {
   display:flex; align-items:center; gap:6px; background:var(--gold-muted);
@@ -218,6 +230,12 @@ header {
 }
 .int-chip:hover { border-color:var(--muted); color:var(--text); }
 .int-chip.active { background:rgba(218,165,32,0.12); border-color:var(--gold-border); color:var(--gold); }
+.spec-card {
+  padding:9px 14px; border:1px solid var(--border); border-radius:7px;
+  cursor:pointer; font-size:12px; transition:.15s all; user-select:none;
+}
+.spec-card:hover { border-color:var(--muted); }
+.spec-card.active { background:rgba(218,165,32,0.1); border-color:var(--gold); color:var(--gold); }
 
 /* Layout */
 .layout { display:flex; flex:1; overflow:hidden; }
@@ -230,14 +248,14 @@ header {
   border-right:1px solid var(--gold-border); overflow-y:auto; display:flex; flex-direction:column;
 }
 .sidebar-hdr {
-  padding:13px 16px 10px; font-size:10px; font-weight:700; letter-spacing:1px;
-  text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); flex-shrink:0;
+  padding:13px 16px 10px; font-size:10px; font-weight:700; letter-spacing:1.2px;
+  text-transform:uppercase; color:rgba(255,255,255,0.45); border-bottom:1px solid rgba(255,255,255,0.07); flex-shrink:0;
 }
-.req-group { border-bottom:1px solid var(--border); }
+.req-group { border-bottom:1px solid rgba(255,255,255,0.06); }
 .req-group-title {
   display:flex; align-items:center; justify-content:space-between;
   padding:10px 16px; font-size:10px; font-weight:700; letter-spacing:.9px;
-  text-transform:uppercase; color:var(--gold); opacity:.7; user-select:none;
+  text-transform:uppercase; color:var(--gold); user-select:none;
   cursor:pointer;
 }
 .req-group-title .chevron { transition:transform .15s; font-style:normal; }
@@ -271,6 +289,18 @@ header {
 
 /* ── Sidebar search + quick-add ── */
 .sidebar-search-wrap { padding:8px 8px 6px; border-bottom:1px solid var(--border); flex-shrink:0; }
+.elective-tray { padding:8px 10px; border-bottom:1px solid var(--border); flex-shrink:0; }
+.elective-drag-item {
+  display:flex; align-items:center; gap:8px; padding:7px 10px;
+  border:1px dashed rgba(255,255,255,0.22); border-radius:7px;
+  cursor:grab; font-size:11px; color:rgba(255,255,255,0.45);
+  transition:all .15s; user-select:none;
+}
+.elective-drag-item:hover { border-color:rgba(255,255,255,0.4); color:rgba(255,255,255,0.7); background:rgba(255,255,255,0.04); }
+.elective-drag-item:active { cursor:grabbing; }
+.elective-drag-item .edi-icon { font-size:15px; flex-shrink:0; }
+.elective-drag-item strong { display:block; font-size:11.5px; color:rgba(255,255,255,0.6); }
+.elective-drag-item span { display:block; font-size:10px; margin-top:1px; opacity:0.6; }
 .sidebar-search {
   width:100%; background:var(--surface-2); border:1px solid var(--border);
   border-radius:8px; color:var(--text); font-size:12px; padding:7px 10px;
@@ -304,42 +334,117 @@ header {
 /* ════════════════════════════════════════
    TERM CANVAS
 ════════════════════════════════════════ */
-.canvas { flex:1; overflow-x:auto; overflow-y:hidden; background:var(--bg); }
-.term-grid {
-  display:flex; height:100%; padding:16px 20px; gap:8px; align-items:flex-start;
-  min-width:max-content;
+.canvas { flex:1; overflow:hidden; background:var(--bg); }
+.term-grid { display:flex; flex-direction:column; height:100%; min-height:0; padding:0; gap:0; }
+.year-section { display:flex; flex-direction:column; flex:1; min-height:0; border-bottom:1px solid rgba(255,255,255,0.07); }
+.year-section:last-child { border-bottom:none; }
+.year-lbl {
+  flex-shrink:0; padding:5px 20px 3px;
+  font-size:9px; font-weight:800; letter-spacing:1.8px; text-transform:uppercase;
+  color:rgba(255,213,74,0.55);
+  display:flex; align-items:center; gap:10px;
 }
-.term-col { width:168px; min-width:168px; display:flex; flex-direction:column; height:100%; }
+.year-lbl::after { content:''; flex:1; height:1px; background:rgba(255,213,74,0.15); }
+.term-row {
+  display:flex; flex:1; min-height:0;
+  padding:4px 20px 8px; gap:0;
+  align-items:stretch; overflow:hidden;
+}
+.term-col {
+  flex:1; min-width:0; min-height:0;
+  display:flex; flex-direction:column;
+  border-right:1px solid rgba(255,255,255,0.09);
+}
+.term-col:last-child { border-right:none; }
+.term-col.coop {
+  flex:0 0 68px;
+  background:rgba(255,213,74,0.028);
+  border-right:1px solid rgba(255,255,255,0.09);
+}
 .term-lbl {
-  font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
-  color:var(--gold); opacity:.7; padding:6px 0; text-align:center;
-  border-bottom:1px solid var(--gold-border); margin-bottom:6px; flex-shrink:0;
+  font-size:10px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase;
+  color:var(--gold); padding:7px 0; text-align:center;
+  border-bottom:2px solid rgba(255,213,74,0.55); margin-bottom:6px; flex-shrink:0;
 }
-.term-col.coop .term-lbl { opacity:1; }
-.term-col.coop .term-lbl { color:var(--gold); border-color:var(--gold-border); }
+.term-col.coop .term-lbl {
+  font-size:8.5px; letter-spacing:.6px; padding:7px 2px;
+  color:rgba(255,213,74,0.6); border-bottom-color:rgba(255,213,74,0.3);
+}
 .term-drop {
-  flex:1; border:1.5px dashed transparent; border-radius:10px;
-  padding:6px; transition:border-color .15s, background .15s;
-  display:flex; flex-direction:column; gap:5px; overflow-y:auto;
+  flex:1; min-height:0; border:1.5px dashed transparent; border-radius:8px;
+  padding:5px; transition:border-color .15s, background .15s;
+  display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:min-content;
+  align-content:start; gap:4px; overflow-y:auto;
 }
 .term-drop.drag-over { border-color:var(--gold); background:var(--gold-muted); }
+.term-empty-hint {
+  grid-column:1/-1; text-align:center; padding:18px 0;
+  color:rgba(255,255,255,0.1); font-size:10px; letter-spacing:.6px;
+  pointer-events:none; user-select:none;
+}
 .coop-body {
   flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:6px; color:var(--muted); font-size:11px; opacity:.4;
+  gap:4px; color:var(--muted); font-size:9px; opacity:.35;
 }
-.coop-icon { font-size:22px; }
+.coop-icon { font-size:18px; }
 
 /* Course cards */
 .course-card {
   background:var(--surface); border:1px solid var(--border);
   border-left:3px solid var(--gold); border-radius:8px; padding:8px 10px;
-  cursor:grab; position:relative; transition:box-shadow .12s;
+  cursor:grab; position:relative;
+  transition:box-shadow .12s, padding .18s ease;
 }
 .course-card:hover { box-shadow:0 2px 10px rgba(0,0,0,.5); }
+
+/* ── Compact view: collapse to code-only chip when column is not hovered ── */
+.term-col:not(:hover) .course-card {
+  padding:4px 8px 4px 10px;
+  border-radius:6px;
+}
+.term-col:not(:hover) .card-rm { display:none; }
+
+/* Elements that slide in/out */
+.card-name, .card-stats, .card-warn, .card-soft-warn,
+.card-hint, .card-retake-btn, .card-done-row {
+  overflow:hidden;
+  transition:max-height .2s ease, opacity .18s, margin-top .18s;
+}
+.term-col:not(:hover) .card-name,
+.term-col:not(:hover) .card-stats,
+.term-col:not(:hover) .card-warn,
+.term-col:not(:hover) .card-soft-warn,
+.term-col:not(:hover) .card-hint,
+.term-col:not(:hover) .card-retake-btn,
+.term-col:not(:hover) .card-done-row {
+  max-height:0; opacity:0; margin-top:0 !important;
+}
+.term-col:hover .card-name        { max-height:32px;  opacity:1; }
+.term-col:hover .card-stats       { max-height:24px;  opacity:1; }
+.term-col:hover .card-warn        { max-height:48px;  opacity:1; }
+.term-col:hover .card-soft-warn   { max-height:48px;  opacity:1; }
+.term-col:hover .card-hint        { max-height:20px;  opacity:1; }
+.term-col:hover .card-retake-btn  { max-height:28px;  opacity:1; }
+.term-col:hover .card-done-row    { max-height:28px;  opacity:1; }
+
+/* ── Column highlight on hover ── */
+.term-col:not(.coop):hover {
+  background:rgba(255,255,255,0.018);
+  position:relative; z-index:5;
+}
+.term-col:not(.coop):hover .term-lbl {
+  border-bottom-color:var(--gold);
+  color:var(--gold);
+}
 .course-card.card-green  { border-left-color:var(--green); }
 .course-card.card-yellow { border-left-color:#e8b43a; }
 .course-card.card-orange { border-left-color:#e07840; }
 .course-card.bad         { border-left-color:var(--red) !important; border-left-width:4px !important; }
+.course-card.elective-card {
+  border-left-color:rgba(255,255,255,0.2); border-style:dashed;
+  background:transparent; opacity:.65;
+}
+.course-card.elective-card .card-code { font-style:italic; font-size:10.5px; color:rgba(255,255,255,0.6); }
 .card-code { font-size:11px; font-weight:700; }
 .req-group-filter-wrap { padding:4px 8px 2px; }
 .req-group-filter {
@@ -416,6 +521,18 @@ header {
 }
 .chat-row button:hover { background:var(--gold-deep); }
 .chat-row button:disabled { opacity:.5; cursor:default; }
+.chat-regen-action {
+  margin-top:8px; padding:8px 10px; border-radius:8px;
+  background:rgba(255,213,74,0.06); border:1px solid rgba(255,213,74,0.2);
+  display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+}
+.chat-regen-action span { font-size:11px; color:rgba(255,255,255,0.55); }
+.chat-regen-btn {
+  flex-shrink:0; background:rgba(255,213,74,0.12); border:1px solid var(--gold);
+  color:var(--gold); border-radius:6px; font-size:11.5px; font-weight:700;
+  padding:5px 12px; cursor:pointer; transition:all .15s; white-space:nowrap;
+}
+.chat-regen-btn:hover { background:var(--gold); color:#0c0c0f; }
 </style>
 </head>
 <body>
@@ -430,22 +547,16 @@ header {
       <h2>Welcome to WatAsk</h2>
       <p class="sub">Plan your UW degree, term by term. Let's set you up in 3 steps.</p>
       <label class="field-label">Your program</label>
-      <select id="obProgram">
-        <option value="cs">Computer Science (BCS)</option>
-        <option value="se">Software Engineering</option>
-        <option value="cs-math">Double: CS &amp; Math</option>
-        <option value="stat">Statistics</option>
-        <option value="data-sci">Data Science (BMath)</option>
-        <option value="comp-math">Computational Mathematics</option>
-        <option value="pure-math">Pure Mathematics</option>
-        <option value="math-finance">Mathematical Finance</option>
-        <option value="amath">Applied Mathematics</option>
-        <option value="actsc">Actuarial Science</option>
-        <option value="co">Combinatorics &amp; Optimization</option>
-        <option value="math-phys">Mathematical Physics</option>
-        <option value="farm">Financial Analysis &amp; Risk Mgmt</option>
-        <option value="math-studies">Mathematical Studies</option>
-      </select>
+      <div class="prog-search-wrap">
+        <input type="text" id="obProgramSearch" class="ob-search-input" style="font-size:13px"
+          placeholder="Search your program…" autocomplete="off"
+          value="Computer Science (BCS)"
+          oninput="progFilter('obProgramSearch','obProgramDrop','obProgram',this.value)"
+          onfocus="progOpen('obProgramSearch','obProgramDrop','obProgram')"
+          onblur="setTimeout(()=>{ progClose('obProgramDrop'); document.getElementById('obProgramSearch').value=progLabel(document.getElementById('obProgram').value); },160)">
+        <input type="hidden" id="obProgram" value="cs">
+        <div class="prog-dropdown" id="obProgramDrop"></div>
+      </div>
       <label class="field-label">Current term</label>
       <select id="obTerm">
         <option value="pre">Haven't started yet</option>
@@ -516,11 +627,8 @@ header {
         <div class="ob-picker-label">Which term did you complete <strong id="obPickerCode"></strong>?<span id="obPickerRetake" style="color:var(--gold);margin-left:6px;font-size:11px"></span></div>
         <div id="obTermPickerBtns" class="ob-picker-btns"></div>
         <div id="obGradeRow" class="ob-grade-row" style="display:none">
-          <div class="ob-grade-selected-term" id="obGradeSelectedTerm"></div>
-          <div class="ob-picker-label" style="margin-bottom:6px">What % did you get? <span class="ob-grade-optional">(optional — skip if unsure)</span></div>
           <div class="ob-grade-input-row">
-            <input type="number" id="obGradeVal" class="ob-grade-input" min="32" max="100" placeholder="e.g. 78" oninput="obGradeInput()">
-            <span class="ob-grade-pct">%</span>
+            <input type="number" id="obGradeVal" class="ob-grade-input" min="32" max="100" placeholder="Grade %" oninput="obGradeInput()">
           </div>
           <div id="obGradeWarn" class="ob-grade-warn" style="display:none"></div>
           <div class="ob-grade-actions">
@@ -528,8 +636,8 @@ header {
             <button class="ob-skip-grade-btn" onclick="obFinalizeTaken(true)">Skip %</button>
           </div>
         </div>
-        <button class="ob-retake-btn" onclick="obMarkRetaking()">⚠ Currently retaking — grade too low or didn't pass</button>
-        <button class="ob-picker-cancel" onclick="obCancelPicker()">Cancel</button>
+        <button class="ob-retake-btn" onclick="obMarkRetaking()">↻ Mark as retaking</button>
+        <button class="ob-picker-cancel" onclick="obCancelPicker()">← Change course</button>
       </div>
       <div id="obTakenList"></div>
       <div class="modal-footer">
@@ -548,9 +656,9 @@ header {
         <div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase">Quick tips</div>
         <div style="font-size:13px;color:var(--text);line-height:1.8">
           ✦ Drag a course from the sidebar into a term<br>
-          ✦ Click a course card to ask WatAsk about it<br>
+          ✦ Double-click a course card to ask WatAsk about it<br>
           ✦ Red border = prereq not satisfied yet<br>
-          ✦ Hit "Suggest my plan" for an AI-generated schedule
+          ✦ Hit "Generate plan" for a smart schedule based on your courses
         </div>
       </div>
       <div class="modal-footer">
@@ -569,28 +677,20 @@ header {
 
   <header>
     <div class="logo">WatAsk<span>.</span></div>
-    <select class="hdr-select" id="programSelect" onchange="changeProgram(this.value)">
-      <option value="cs">Computer Science (BCS)</option>
-      <option value="se">Software Eng.</option>
-      <option value="cs-math">CS &amp; Math</option>
-      <option value="stat">Statistics</option>
-      <option value="data-sci">Data Science</option>
-      <option value="comp-math">Comp. Math</option>
-      <option value="pure-math">Pure Math</option>
-      <option value="math-finance">Math Finance</option>
-      <option value="amath">Applied Math</option>
-      <option value="actsc">Actuarial Sci.</option>
-      <option value="co">Comb. &amp; Opt.</option>
-      <option value="math-phys">Math Physics</option>
-      <option value="farm">FARM</option>
-      <option value="math-studies">Math Studies</option>
-    </select>
+    <div class="prog-search-wrap">
+      <input type="text" class="hdr-select" id="hdrProgramSearch"
+        placeholder="Search program…" autocomplete="off"
+        oninput="progFilter('hdrProgramSearch','hdrProgramDrop','programSelect',this.value)"
+        onfocus="progOpen('hdrProgramSearch','hdrProgramDrop','programSelect')"
+        onblur="setTimeout(()=>{ progClose('hdrProgramDrop'); document.getElementById('hdrProgramSearch').value=progLabel(document.getElementById('programSelect').value); },160)">
+      <input type="hidden" id="programSelect" value="cs">
+      <div class="prog-dropdown" id="hdrProgramDrop"></div>
+    </div>
     <div class="progress-wrap">
       <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-      <div class="progress-lbl" id="progressLbl">0 / 0 req</div>
       <div class="units-lbl" id="unitsLbl">0.0 / 20.0 units</div>
     </div>
-    <button class="btn-suggest" id="suggestBtn" onclick="suggestPlan()">✦ Suggest my plan</button>
+    <button class="btn-suggest" id="suggestBtn" onclick="suggestPlan()">✦ Generate plan</button>
     <button class="btn-ghost" onclick="resetApp()">Reset</button>
   </header>
 
@@ -599,6 +699,16 @@ header {
       <div class="sidebar-hdr">Courses</div>
       <div class="sidebar-search-wrap">
         <input class="sidebar-search" id="sidebarSearch" placeholder="Search by code or name…" autocomplete="off" oninput="filterSidebar(this.value)">
+      </div>
+      <div class="elective-tray">
+        <div class="elective-drag-item" draggable="true" data-elective="Non-Math Elective"
+             title="Any non-Math-Faculty course — e.g. ECON, PSYCH, ENGL, SPCOM">
+          <span class="edi-icon">⊕</span>
+          <div>
+            <strong>Non-Math Elective</strong>
+            <span>Drag into any term</span>
+          </div>
+        </div>
       </div>
       <div id="sidebarContent"></div>
     </aside>
@@ -686,6 +796,55 @@ let PREREQS = {};
 })();
 
 // Mutually exclusive courses — cannot appear in the same term or plan
+const PROGRAM_LIST = [
+  { v:"cs",           l:"Computer Science (BCS)" },
+  { v:"cs-math",      l:"CS & Math" },
+  { v:"math",         l:"Honours Mathematics (BMath)" },
+  { v:"stat",         l:"Statistics" },
+  { v:"biostat",      l:"Biostatistics" },
+  { v:"data-sci",     l:"Data Science (BMath)" },
+  { v:"comp-math",    l:"Computational Mathematics" },
+  { v:"pure-math",    l:"Pure Mathematics" },
+  { v:"math-finance", l:"Mathematical Finance" },
+  { v:"amath",        l:"Applied Mathematics" },
+  { v:"amath-sml",   l:"Applied Mathematics — Scientific ML" },
+  { v:"actsc",        l:"Actuarial Science" },
+  { v:"co",           l:"Combinatorics & Optimization" },
+  { v:"math-phys",    l:"Mathematical Physics" },
+  { v:"farm",         l:"Financial Analysis & Risk Mgmt" },
+  { v:"math-studies", l:"Mathematical Studies" },
+];
+
+function progLabel(v) {
+  return (PROGRAM_LIST.find(p => p.v === v) || {}).l || v;
+}
+function progFilter(inputId, dropId, hiddenId, q) {
+  const drop = document.getElementById(dropId);
+  const matches = q.trim()
+    ? PROGRAM_LIST.filter(p => p.l.toLowerCase().includes(q.toLowerCase()))
+    : PROGRAM_LIST;
+  drop.innerHTML = matches.map(p =>
+    `<div class="prog-dropdown-item" onmousedown="progPick('${inputId}','${dropId}','${hiddenId}','${p.v}',event)">${p.l}</div>`
+  ).join("");
+  drop.style.display = matches.length ? "block" : "none";
+}
+function progOpen(inputId, dropId, hiddenId) {
+  document.getElementById(inputId).select();
+  progFilter(inputId, dropId, hiddenId, "");
+}
+function progClose(dropId) {
+  const d = document.getElementById(dropId);
+  if (d) d.style.display = "none";
+}
+function progPick(inputId, dropId, hiddenId, val, e) {
+  e && e.preventDefault();
+  const label = progLabel(val);
+  document.getElementById(inputId).value = label;
+  document.getElementById(hiddenId).value = val;
+  document.getElementById(dropId).style.display = "none";
+  if (hiddenId === "programSelect") changeProgram(val);
+}
+
 const ANTIREQS = {
   "CS 115":   ["CS 135","CS 145"],
   "CS 135":   ["CS 115","CS 145"],
@@ -756,7 +915,6 @@ const INTEREST_TRACKS = {
   ],
   stat: [
     { id:"ml",   label:"ML / AI",        courses:["STAT 441","STAT 444","STAT 340","STAT 442"] },
-    { id:"bio",  label:"Biostatistics",  courses:["STAT 430","STAT 431","STAT 433"] },
     { id:"comp", label:"Computational",  courses:["STAT 340","STAT 442","STAT 443"] },
     { id:"fin",  label:"Finance / Risk", courses:["STAT 433","STAT 440","STAT 444"] },
   ],
@@ -793,14 +951,14 @@ const PROGRAMS = {
         name:"Advanced Options",
         courses:[
           // CS electives: BCS needs 3 from CS340-489 + 2 from CS440-489 + 1 from CS440-498/CO487/STAT440
-          "CS 360","CS 370","MATH 235","MATH 237",
+          "CS 360","CS 370",
           "CS 343","CS 346","CS 348","CS 349","CS 365","CS 371",
           "CS 430","CS 431","CS 436","CS 442","CS 444","CS 445","CS 446","CS 447","CS 448","CS 449",
           "CS 450","CS 451","CS 452","CS 453","CS 454","CS 456","CS 458","CS 466",
           "CS 479","CS 480","CS 482","CS 484","CS 485","CS 486","CS 487","CS 488","CS 489","CS 492","CS 493",
           "MATBUS 370","MATBUS 371","MATBUS 431","MATBUS 432","MATBUS 451","MATBUS 453","MATBUS 473",
         ],
-        typical:{ "CS 360":"3B","CS 370":"3A","MATH 235":"2A","MATH 237":"2B" },
+        typical:{ "CS 360":"3B","CS 370":"3A" },
       },
     ],
   },
@@ -835,37 +993,6 @@ const PROGRAMS = {
           "AMATH 231","AMATH 250","AMATH 271","AMATH 331","AMATH 342","AMATH 353",
           "CO 250","CO 330","CO 342","CO 351","CO 353","CO 367",
           "STAT 330","STAT 331","STAT 332","STAT 333","STAT 334","STAT 340",
-        ],
-        typical:{},
-      },
-    ],
-  },
-  se: {
-    name:"Software Engineering",
-    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
-    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
-    groups:[
-      {
-        name:"Core CS",
-        // Required: same CS base as BMath CS + SE-specific: CS 343, CS 346 (List A), CS 445/446/447
-        courses:["CS 135","CS 136","CS 136L","CS 241","CS 245","CS 246","CS 251","CS 240","CS 350","CS 370","CS 341","CS 360","CS 343","CS 346","CS 445","CS 446","CS 447"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 241":"2A","CS 245":"2A","CS 246":"2B","CS 251":"2B","CS 240":"3A","CS 343":"3A","CS 350":"3A","CS 370":"3A","CS 341":"3B","CS 346":"3B","CS 360":"3B","CS 445":"3B","CS 446":"4A","CS 447":"4A" },
-      },
-      {
-        name:"Core Math",
-        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239","STAT 230","STAT 231"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","STAT 230":"2A","MATH 237":"2B","MATH 239":"2B","STAT 231":"2B" },
-      },
-      {
-        name:"Advanced Options",
-        // List B choices (pick 2) + other upper-year SE options
-        courses:[
-          "CS 348","CS 349","CS 365","CS 371",
-          "CS 442","CS 444","CS 448","CS 449","CS 450","CS 451","CS 452","CS 453",
-          "CS 454","CS 456","CS 457","CS 459","CS 466","CS 480","CS 484","CS 486","CS 488",
         ],
         typical:{},
       },
@@ -922,9 +1049,10 @@ const PROGRAMS = {
         typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
+        // STAT 330/331/332/333 are all mandatory; STAT 334/340 are pick-from electives
         name:"Core Statistics",
-        courses:["STAT 230","STAT 231","STAT 330","STAT 331","STAT 332","STAT 333","STAT 334","STAT 340"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 331":"3B","STAT 332":"3B","STAT 333":"3A","STAT 334":"3B","STAT 340":"3B" },
+        courses:["STAT 230","STAT 231","STAT 330","STAT 331","STAT 332","STAT 333"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 333":"3A","STAT 331":"3B","STAT 332":"3B" },
       },
       {
         name:"CS Requirement",
@@ -932,8 +1060,57 @@ const PROGRAMS = {
         typical:{ "CS 115":"1A","CS 116":"1B" },
       },
       {
+        name:"Communications",
+        courses:["ENGL 378"],
+        typical:{ "ENGL 378":"3A" },
+      },
+      {
         name:"Advanced Statistics Electives",
-        courses:["STAT 430","STAT 431","STAT 433","STAT 440","STAT 441","STAT 442","STAT 443","STAT 444"],
+        courses:["STAT 334","STAT 340","STAT 430","STAT 431","STAT 433","STAT 440","STAT 441","STAT 442","STAT 443","STAT 444"],
+        typical:{},
+      },
+    ],
+  },
+
+  biostat: {
+    name:"Biostatistics",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
+      },
+      {
+        name:"Core Statistics",
+        courses:["STAT 230","STAT 231","STAT 330","STAT 331","STAT 333"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 331":"3B","STAT 333":"3A" },
+      },
+      {
+        // STAT 337 (Clinical Trials) needed STAT 231 → 3A/3B
+        // STAT 430 needs STAT 331+332 → 4A; STAT 431 needs STAT 330+331 → 4A
+        // STAT 437/438 both need STAT 431 → 4B
+        name:"Biostatistics",
+        courses:["STAT 337","STAT 430","STAT 431","STAT 437","STAT 438"],
+        typical:{ "STAT 337":"3B","STAT 430":"4A","STAT 431":"4A","STAT 437":"4B","STAT 438":"4B" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Communications",
+        courses:["ENGL 378"],
+        typical:{ "ENGL 378":"3A" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["STAT 332","STAT 334","STAT 340","STAT 432","STAT 433","STAT 440","STAT 441","STAT 442","STAT 443","STAT 444"],
         typical:{},
       },
     ],
@@ -1050,10 +1227,11 @@ const PROGRAMS = {
       },
       {
         name:"Pure Mathematics Core",
-        // PMATH 333 (Real Analysis intro, needs MATH 138:60) anchors the 351/352 chain
-        // PMATH 351/352 need PMATH 333 or MATH 247; PMATH 330/347 need MATH 235
-        courses:["PMATH 330","PMATH 333","PMATH 347","PMATH 351","PMATH 352"],
-        typical:{ "PMATH 330":"2B","PMATH 333":"2A","PMATH 347":"3A","PMATH 351":"3A","PMATH 352":"3B" },
+        // PMATH 333 (Analysis, needs MATH 138:60) → 2B; PMATH 330/347 need MATH 235
+        // PMATH 348 (Fields/Galois, needs PMATH 347) → 3B; PMATH 365 (Diff Geometry) → 4A
+        // PMATH 351/352 need PMATH 333 → 3A/3B
+        courses:["PMATH 330","PMATH 333","PMATH 347","PMATH 348","PMATH 351","PMATH 352","PMATH 365"],
+        typical:{ "PMATH 330":"2B","PMATH 333":"2A","PMATH 347":"3A","PMATH 348":"3B","PMATH 351":"3A","PMATH 352":"3B","PMATH 365":"4A" },
       },
       {
         name:"Statistics",
@@ -1067,7 +1245,7 @@ const PROGRAMS = {
       },
       {
         name:"Advanced Options",
-        courses:["PMATH 331","PMATH 332","PMATH 334","PMATH 340","PMATH 345","PMATH 346","PMATH 354","PMATH 365",
+        courses:["PMATH 331","PMATH 332","PMATH 334","PMATH 340","PMATH 345","PMATH 346","PMATH 354",
                  "PMATH 440","PMATH 441","PMATH 445","PMATH 446","PMATH 450","PMATH 451","PMATH 453","PMATH 454"],
         typical:{},
       },
@@ -1088,22 +1266,65 @@ const PROGRAMS = {
         typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
-        name:"Actuarial Science",
-        // ACTSC 231 needs MATH 137(1A)+STAT 230(2A) → earliest 2B
-        // ACTSC 232 needs ACTSC 231:60(2B) → earliest 3A
-        // ACTSC 331 needs ACTSC 232:60(3A) → earliest 3B
-        courses:["ACTSC 231","ACTSC 232","ACTSC 331","ACTSC 362","ACTSC 363","ACTSC 371","ACTSC 372","ACTSC 431","ACTSC 432","ACTSC 433","ACTSC 445","ACTSC 446","ACTSC 447"],
-        typical:{ "ACTSC 231":"2B","ACTSC 232":"3A","ACTSC 331":"3B","ACTSC 362":"3A","ACTSC 363":"3B","ACTSC 371":"3A","ACTSC 372":"3B","ACTSC 431":"4A","ACTSC 432":"4A","ACTSC 433":"4B","ACTSC 445":"4A","ACTSC 446":"4B","ACTSC 447":"4B" },
+        name:"Pure Mathematics",
+        // PMATH 333 needs MATH 138:60 → 2B; prereq bridge since students take MATH 237 not MATH 247
+        // PMATH 351 needs PMATH 333 → 3A; PMATH 450 needs PMATH 351 → 4A; PMATH 451 needs PMATH 450:60 → 4B
+        courses:["PMATH 333","PMATH 351","PMATH 450","PMATH 451"],
+        typical:{ "PMATH 333":"2B","PMATH 351":"3A","PMATH 450":"4A","PMATH 451":"4B" },
       },
       {
-        name:"Core Statistics",
-        courses:["STAT 230","STAT 231","STAT 330","STAT 333","STAT 334"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 333":"3A","STAT 334":"3B" },
+        name:"Statistics",
+        // STAT 330 needs MATH 237(2A)+STAT 230:60(2A)+STAT 231(2B) → earliest 3A
+        // STAT 331 needs MATH 235(2A)+STAT 231:60(2B) → earliest 3B
+        // STAT 443 needs STAT 331 → earliest 4A
+        courses:["STAT 230","STAT 231","STAT 330","STAT 331","STAT 333","STAT 443"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 333":"3A","STAT 331":"3B","STAT 443":"4A" },
+      },
+      {
+        name:"Actuarial Science",
+        // ACTSC 231 needs MATH 137(1A)+STAT 230(2A) → earliest 2B
+        // ACTSC 372 needs ACTSC 231(2B)+MATH 235(2A)+MATH 237(2A) → earliest 3A (3B typical)
+        // ACTSC 445/446 need ACTSC 372(3B)+STAT 330/333 → earliest 4A
+        courses:["ACTSC 231","ACTSC 372","ACTSC 445","ACTSC 446"],
+        typical:{ "ACTSC 231":"2B","ACTSC 372":"3B","ACTSC 445":"4A","ACTSC 446":"4B" },
       },
       {
         name:"CS Requirement",
         courses:["CS 115","CS 116"],
         typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Applied & Computation",
+        // AMATH 250 (diff eq): needs MATH 136(1B)+MATH 138(1B) → 2B typical
+        // CS 335 (computation): needs CS 116(1B)+MATH 237(2A)+STAT 231(2B) → 3A earliest, 3B typical
+        courses:["AMATH 250","CS 335"],
+        typical:{ "AMATH 250":"2B","CS 335":"3B" },
+      },
+      {
+        name:"Business",
+        courses:["AFM 101","AFM 102","AFM 131"],
+        typical:{ "AFM 101":"1A","AFM 131":"1B","AFM 102":"3B" },
+      },
+      {
+        name:"Economics",
+        courses:["ECON 101","ECON 102","ECON 201"],
+        typical:{ "ECON 101":"2A","ECON 102":"3A","ECON 201":"3B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:[
+          // Required pick-1 electives from calendar
+          "AMATH 351","CO 250","CO 255","PMATH 352",
+          "AMATH 353","CO 372","CS 476","PMATH 453",
+          // Extra actuarial courses (for professional exam prep beyond degree minimum)
+          "ACTSC 232","ACTSC 331","ACTSC 362","ACTSC 363","ACTSC 371","ACTSC 431","ACTSC 432","ACTSC 433","ACTSC 447",
+          // Statistics electives
+          "STAT 332","STAT 334","STAT 340","STAT 430","STAT 431","STAT 440","STAT 444",
+          // Finance/business electives
+          "MATBUS 370","MATBUS 371","MATBUS 372","MATBUS 471","MATBUS 472",
+          "CO 355","CO 367","MATH 247",
+        ],
+        typical:{},
       },
     ],
   },
@@ -1144,6 +1365,47 @@ const PROGRAMS = {
     ],
   },
 
+  "amath-sml": {
+    name:"Applied Mathematics — Scientific ML",
+    terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
+    seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
+    groups:[
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 237":"2A","MATH 235":"2B" },
+      },
+      {
+        name:"Statistics",
+        courses:["STAT 230","STAT 231"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+      },
+      {
+        name:"Applied Mathematics",
+        courses:["AMATH 250","AMATH 231","AMATH 242","AMATH 271","AMATH 331","AMATH 342","AMATH 353"],
+        typical:{ "AMATH 250":"2B","AMATH 231":"3A","AMATH 242":"3A","AMATH 271":"3B","AMATH 331":"3B","AMATH 342":"3B","AMATH 353":"4A" },
+      },
+      {
+        name:"CS & Computing",
+        courses:["CS 115","CS 116","CS 234","CS 371"],
+        typical:{ "CS 115":"1A","CS 116":"1B","CS 234":"2A","CS 371":"3A" },
+      },
+      {
+        name:"Scientific ML Core",
+        courses:["AMATH 445","AMATH 446","AMATH 449","CS 479"],
+        typical:{ "AMATH 445":"4A","AMATH 446":"4A","AMATH 449":"4B","CS 479":"3B" },
+      },
+      {
+        name:"Advanced Options",
+        courses:["AMATH 332","AMATH 333","AMATH 343","AMATH 345","AMATH 391","STAT 441","STAT 444","CS 480","CS 485","CS 486","CS 487","CS 489","MATH 247","AMATH 251"],
+        typical:{},
+      },
+    ],
+  },
+
   actsc: {
     name:"Actuarial Science",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
@@ -1158,17 +1420,19 @@ const PROGRAMS = {
         typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
+        // STAT 330/331/333 are all mandatory for ACTSC (not just electives)
         name:"Statistics",
-        courses:["STAT 230","STAT 231"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+        courses:["STAT 230","STAT 231","STAT 330","STAT 331","STAT 333"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 333":"3A","STAT 331":"3B" },
       },
       {
         name:"Actuarial Science",
         // ACTSC 231 needs MATH 137(1A)+STAT 230(2A) → earliest 2B
         // ACTSC 232 needs ACTSC 231:60(2B) → earliest 3A
         // ACTSC 331 needs ACTSC 232:60(3A) → earliest 3B
+        // ACTSC 371 moved to 4A typical to free 3B slot for STAT 331
         courses:["ACTSC 231","ACTSC 232","ACTSC 331","ACTSC 362","ACTSC 371","ACTSC 372"],
-        typical:{ "ACTSC 231":"2B","ACTSC 232":"3A","ACTSC 331":"3B","ACTSC 362":"3A","ACTSC 371":"3B","ACTSC 372":"3B" },
+        typical:{ "ACTSC 231":"2B","ACTSC 232":"3A","ACTSC 331":"3B","ACTSC 362":"3A","ACTSC 371":"4A","ACTSC 372":"3B" },
       },
       {
         name:"CS Requirement",
@@ -1176,9 +1440,14 @@ const PROGRAMS = {
         typical:{ "CS 115":"1A","CS 116":"1B" },
       },
       {
+        name:"Communications",
+        courses:["ENGL 378"],
+        typical:{ "ENGL 378":"3B" },
+      },
+      {
         name:"Advanced Options",
-        courses:["MATH 247","STAT 330","STAT 333","STAT 334","ACTSC 431","ACTSC 432","ACTSC 433","ACTSC 445","ACTSC 446","ACTSC 453","ACTSC 455","ACTSC 456","ACTSC 462","ACTSC 471"],
-        typical:{ "STAT 330":"3A","STAT 333":"3B","STAT 334":"3B","ACTSC 431":"4A","ACTSC 432":"4A","ACTSC 433":"4B","ACTSC 445":"4A","ACTSC 446":"4B" },
+        courses:["MATH 247","STAT 334","ACTSC 431","ACTSC 432","ACTSC 433","ACTSC 445","ACTSC 446","ACTSC 453","ACTSC 455","ACTSC 456","ACTSC 462","ACTSC 471"],
+        typical:{ "ACTSC 431":"4A","ACTSC 432":"4A","ACTSC 433":"4B","ACTSC 445":"4A","ACTSC 446":"4B" },
       },
     ],
   },
@@ -1282,18 +1551,51 @@ const PROGRAMS = {
         typical:{ "STAT 230":"2A","STAT 231":"2B" },
       },
       {
-        name:"Finance & Risk",
-        courses:["ACTSC 231","ACTSC 232","ACTSC 371","ACTSC 372","STAT 330","STAT 333"],
-        typical:{ "ACTSC 231":"2B","ACTSC 232":"3A","ACTSC 371":"3A","ACTSC 372":"3B","STAT 330":"3A","STAT 333":"3B" },
+        name:"Finance Core",
+        // ACTSC 231 needs MATH 137+STAT 230 → 2B; ACTSC 372 needs ACTSC 231 → 3B
+        // STAT 334 = default for "STAT 334 OR (STAT 330+333)" pick; STAT 371 needs MATH 235+STAT 231:60 → 3A
+        courses:["ACTSC 231","ACTSC 372","STAT 334","STAT 371"],
+        typical:{ "ACTSC 231":"2B","ACTSC 372":"3B","STAT 334":"3A","STAT 371":"3A" },
       },
       {
-        name:"CS Requirement",
-        courses:["CS 115","CS 116"],
-        typical:{ "CS 115":"1A","CS 116":"1B" },
+        name:"Business & Accounting",
+        courses:["AFM 101","AFM 102","AFM 131","AFM 231"],
+        typical:{ "AFM 101":"1A","AFM 131":"1B","AFM 102":"2B","AFM 231":"2B" },
+      },
+      {
+        name:"Economics & Markets",
+        courses:["ECON 101","ECON 102","COMM 101"],
+        typical:{ "ECON 101":"2A","ECON 102":"3A","COMM 101":"2A" },
+      },
+      {
+        name:"CS & Systems",
+        // CS 115/116 from Table 1; CS 330 (Management Information Systems) is FARM-specific
+        courses:["CS 115","CS 116","CS 330"],
+        typical:{ "CS 115":"1A","CS 116":"1B","CS 330":"3B" },
+      },
+      {
+        name:"Applied & Optimization",
+        // AMATH 350 (DE for Business): needs MATH 136+138; CO 250 (pick-1: CO 250 or CO 255)
+        courses:["AMATH 350","CO 250"],
+        typical:{ "AMATH 350":"2B","CO 250":"3A" },
+      },
+      {
+        name:"Computation",
+        // pick 1: CS 335 or CS 476; CS 335 needs CS 116+MATH 237+STAT 231 → 3B typical
+        courses:["CS 335"],
+        typical:{ "CS 335":"3B" },
       },
       {
         name:"Advanced Options",
-        courses:["STAT 331","STAT 334","STAT 340","ACTSC 331","STAT 443","ACTSC 433","ACTSC 445","ACTSC 446","ACTSC 453","ACTSC 455","ACTSC 462","ACTSC 456","ACTSC 471"],
+        courses:[
+          // Specialization electives (pick one specialization)
+          "CO 372","COMM 321","COMM 421","COMM 433","MATBUS 471","ACTSC 445","MATBUS 472",
+          "AMATH 331","PMATH 331","CS 338","STAT 340","STAT 341",
+          // Alternative picks
+          "CO 255","CS 476","ACTSC 446","MATBUS 470",
+          "STAT 330","STAT 331","STAT 333","STAT 443",
+          "ACTSC 331","ACTSC 433","ACTSC 453","ACTSC 455","ACTSC 462","ACTSC 471",
+        ],
         typical:{},
       },
     ],
@@ -1324,8 +1626,15 @@ const PROGRAMS = {
       },
       {
         name:"Advanced Options",
-        courses:["MATH 237","MATH 245","MATH 247","STAT 240","STAT 241","PMATH 330","PMATH 340","AMATH 231","AMATH 250","CO 250"],
-        typical:{ "MATH 237":"2A","MATH 245":"2A","MATH 247":"2B","STAT 240":"2A","STAT 241":"2B","PMATH 330":"2A","PMATH 340":"2A","AMATH 231":"2B","AMATH 250":"2B","CO 250":"2A" },
+        // Math Studies = pick any 10 upper-year math courses — show the full menu
+        courses:[
+          "MATH 237","MATH 245","MATH 247",
+          "STAT 240","STAT 241","STAT 330","STAT 331","STAT 332","STAT 333","STAT 334","STAT 340",
+          "PMATH 330","PMATH 331","PMATH 332","PMATH 333","PMATH 334","PMATH 340","PMATH 345","PMATH 347","PMATH 351","PMATH 352",
+          "AMATH 231","AMATH 250","AMATH 271","AMATH 331","AMATH 342","AMATH 353",
+          "CO 250","CO 330","CO 342","CO 351","CO 353","CO 367",
+        ],
+        typical:{},
       },
     ],
   },
@@ -1463,7 +1772,7 @@ function filterSidebar(query) {
       dragCode = el.dataset.code; dragFrom = null;
       e.dataTransfer.effectAllowed = "move";
     });
-    el.addEventListener("click", () => askAbout(el.dataset.code));
+    el.addEventListener("dblclick", () => askAbout(el.dataset.code));
   });
 }
 
@@ -1664,7 +1973,6 @@ function obPickTerm(code) {
 
 function obSelectTerm(term) {
   _obSelectedTerm = term;
-  document.getElementById("obGradeSelectedTerm").textContent = `Term: ${term} — now enter your grade (or skip)`;
   document.getElementById("obGradeVal").value = "";
   document.getElementById("obGradeWarn").style.display = "none";
   document.getElementById("obGradeRow").style.display = "block";
@@ -1674,37 +1982,7 @@ function obSelectTerm(term) {
 function obGradeInput() {
   const val = parseInt(document.getElementById("obGradeVal").value);
   const warn = document.getElementById("obGradeWarn");
-  if (isNaN(val)) { warn.style.display = "none"; return; }
-
-  if (val < 50) {
-    warn.textContent = "Grade below 50% — if you didn't pass, use \"Currently retaking\" below instead.";
-    warn.style.display = "block";
-    return;
-  }
-
-  // Find downstream courses that need this course with a grade minimum above what was entered
-  const blocked = [];
-  if (typeof PREREQS !== "undefined" && _obPickingCode) {
-    for (const [downCode, groups] of Object.entries(PREREQS)) {
-      for (const group of groups) {
-        for (const entry of group) {
-          const [c, minStr] = entry.split(":");
-          if (c === _obPickingCode && minStr) {
-            const min = parseInt(minStr);
-            if (val < min) blocked.push(`${downCode} (needs ${min}%+)`);
-          }
-        }
-      }
-    }
-  }
-
-  if (blocked.length > 0) {
-    const list = blocked.slice(0, 4).join(", ") + (blocked.length > 4 ? ` +${blocked.length - 4} more` : "");
-    warn.textContent = `${val}% is too low for: ${list}. Use "Currently retaking" below if you plan to redo this course.`;
-    warn.style.display = "block";
-  } else {
-    warn.style.display = "none";
-  }
+  warn.style.display = "none";
 }
 
 function obFinalizeTaken(skipGrade) {
@@ -1713,11 +1991,16 @@ function obFinalizeTaken(skipGrade) {
   const grade = !skipGrade && gradeStr !== "" ? parseInt(gradeStr) : undefined;
   _obTaken = _obTaken.filter(t => t.code !== _obPickingCode);
   _obRetaking = _obRetaking.filter(c => c !== _obPickingCode);
-  _obTaken.push({ code: _obPickingCode, term: _obSelectedTerm });
-  if (grade !== undefined && !isNaN(grade)) {
-    _obGrades[_obPickingCode] = grade;
-  } else {
+  if (!skipGrade && grade !== undefined && !isNaN(grade) && grade < 50) {
+    _obRetaking.push(_obPickingCode);
     delete _obGrades[_obPickingCode];
+  } else {
+    _obTaken.push({ code: _obPickingCode, term: _obSelectedTerm });
+    if (grade !== undefined && !isNaN(grade)) {
+      _obGrades[_obPickingCode] = grade;
+    } else {
+      delete _obGrades[_obPickingCode];
+    }
   }
   _obTaken.sort((a, b) => a.code < b.code ? -1 : 1);
   _obPickingCode = null;
@@ -1797,11 +2080,12 @@ function obStep4() { showStep(4); }
 function launchApp() {
   const prog = document.getElementById("obProgram").value;
   const term = document.getElementById("obTerm").value;
-  const taken = _obTaken.map(t => t.code);
+  const retakingSet = new Set(_obRetaking);
+  const taken = _obTaken.filter(t => !retakingSet.has(t.code)).map(t => t.code);
   const takenTerms = Object.fromEntries(_obTaken.map(t => [t.code, t.term]));
   const takenGrades = { ..._obGrades };
   const chosenTerms = resolveTerms(PROGRAMS[prog], _obCoop, _obSeq);
-  S = { program:prog, currentTerm:term, taken, takenTerms, takenGrades, retaking:[..._obRetaking], plan:{}, coop:_obCoop, seq:_obSeq, terms:chosenTerms };
+  S = { program:prog, currentTerm:term, taken, takenTerms, takenGrades, retaking:[..._obRetaking], overload:false, plan:{}, coop:_obCoop, seq:_obSeq, terms:chosenTerms };
   save();
   startApp();
 }
@@ -1813,6 +2097,7 @@ function startApp() {
   document.getElementById("onboarding").classList.add("hidden");
   document.getElementById("app").classList.remove("hidden");
   document.getElementById("programSelect").value = S.program;
+  document.getElementById("hdrProgramSearch").value = progLabel(S.program);
   render();
 }
 
@@ -1843,7 +2128,8 @@ function render() {
 function coursesBefore(termId) {
   const terms = getTerms();
   const idx = terms.indexOf(termId);
-  const done = new Set(S.taken);
+  // Exclude retaking courses — they haven't been passed yet
+  const done = new Set(S.taken.filter(c => !S.retaking?.includes(c)));
   terms.forEach((t, i) => {
     if (i < idx && t !== "COOP") (S.plan[t] || []).forEach(c => done.add(c));
   });
@@ -1950,13 +2236,21 @@ function renderSidebar() {
   document.getElementById("sidebarContent").innerHTML = html;
   if (aside) aside.scrollTop = savedScroll;
 
-  // attach drag + click listeners
+  // attach drag + click listeners for courses
   document.querySelectorAll("#sidebarContent .req-item[data-status='available'], #sidebarContent .req-item[data-status='retaking']").forEach(el => {
     el.addEventListener("dragstart", e => {
       dragCode = el.dataset.code; dragFrom = null;
       e.dataTransfer.effectAllowed = "move";
     });
-    el.addEventListener("click", () => askAbout(el.dataset.code));
+    el.addEventListener("dblclick", () => askAbout(el.dataset.code));
+  });
+
+  // attach drag listeners for elective placeholders
+  document.querySelectorAll(".elective-drag-item").forEach(el => {
+    el.addEventListener("dragstart", e => {
+      dragCode = el.dataset.elective; dragFrom = null;
+      e.dataTransfer.effectAllowed = "copy";
+    });
   });
 }
 
@@ -2080,26 +2374,57 @@ function takenCourseCard(code) {
   </div>`;
 }
 
+function groupByYear(terms) {
+  // Resolve which academic year each term belongs to.
+  // Co-ops look ahead to the next study term to inherit its year.
+  const yearOf = terms.map((t, i) => {
+    if (t !== "COOP") return parseInt(t[0]) || 4;
+    for (let j = i + 1; j < terms.length; j++) {
+      if (terms[j] !== "COOP") return parseInt(terms[j][0]) || 4;
+    }
+    for (let j = i - 1; j >= 0; j--) {
+      if (terms[j] !== "COOP") return parseInt(terms[j][0]) || 4;
+    }
+    return 4;
+  });
+  const map = {};
+  terms.forEach((t, i) => {
+    const y = yearOf[i];
+    (map[y] = map[y] || []).push(t);
+  });
+  return Object.entries(map)
+    .sort(([a], [b]) => +a - +b)
+    .map(([y, ts]) => ({ year: +y, terms: ts }));
+}
+
 function renderGrid() {
+  const yearGroups = groupByYear(getTerms());
   let coopN = 0;
   let html = "";
-  getTerms().forEach(termId => {
-    const isCoop = termId === "COOP";
-    if (isCoop) { coopN++; }
-    const label = isCoop ? `Co-op ${coopN}` : termId;
-    html += `<div class="term-col${isCoop?" coop":""}">
-      <div class="term-lbl">${label}</div>`;
-    if (isCoop) {
-      html += `<div class="coop-body"><div class="coop-icon">💼</div><div>Work term</div></div>`;
-    } else {
-      const takenInTerm = Object.entries(S.takenTerms || {})
-        .filter(([, t]) => t === termId)
-        .map(([c]) => c);
-      const takenCards    = takenInTerm.map(code => takenCourseCard(code)).join("");
-      const plannedCards  = (S.plan[termId] || []).map(code => courseCard(code, termId)).join("");
-      html += `<div class="term-drop" data-term="${termId}">${takenCards}${plannedCards}</div>`;
-    }
-    html += `</div>`;
+
+  yearGroups.forEach(({ year, terms: rowTerms }) => {
+    html += `<div class="year-section">`;
+    html += `<div class="year-lbl">Year ${year}</div>`;
+    html += `<div class="term-row">`;
+    rowTerms.forEach(termId => {
+      const isCoop = termId === "COOP";
+      if (isCoop) coopN++;
+      const label = isCoop ? `Co-op ${coopN}` : termId;
+      html += `<div class="term-col${isCoop ? " coop" : ""}">
+        <div class="term-lbl">${label}</div>`;
+      if (isCoop) {
+        html += `<div class="coop-body"><div class="coop-icon">💼</div><div>Work</div></div>`;
+      } else {
+        const takenInTerm = Object.entries(S.takenTerms || {})
+          .filter(([, t]) => t === termId).map(([c]) => c);
+        const takenCards   = takenInTerm.map(code => takenCourseCard(code)).join("");
+        const plannedCards = (S.plan[termId] || []).map(code => courseCard(code, termId)).join("");
+        const emptyHint = (!takenCards && !plannedCards) ? `<div class="term-empty-hint">drop courses here</div>` : "";
+        html += `<div class="term-drop" data-term="${termId}">${takenCards}${plannedCards}${emptyHint}</div>`;
+      }
+      html += `</div>`;
+    });
+    html += `</div></div>`;
   });
   const grid = document.getElementById("termGrid");
   grid.innerHTML = html;
@@ -2118,109 +2443,65 @@ function renderGrid() {
     });
   });
   grid.querySelectorAll(".course-card").forEach(card => {
-    card.addEventListener("click", () => askAbout(card.dataset.code));
+    card.addEventListener("dblclick", () => askAbout(card.dataset.code));
   });
 
   grid.querySelectorAll(".card-rm").forEach(btn => {
     btn.addEventListener("click", e => {
       e.stopPropagation();
       const { code, term } = btn.dataset;
-      S.plan[term] = (S.plan[term] || []).filter(c => c !== code);
+      const plan = [...(S.plan[term] || [])];
+      const idx = plan.indexOf(code);
+      if (idx !== -1) plan.splice(idx, 1);
+      S.plan[term] = plan;
       save(); render();
     });
   });
 }
 
-// Returns {cls, softWarn} — cls is the card color class, softWarn is an explanation string or null
+// Returns {cls, softWarn} — color is based solely on placement timing, not ratings
 function cardStatus(code, termId) {
-  const info = getCourseInfo(code);
+  // Hard violations shown via .bad class — no additional color here
   if (violations(code, termId).length) return { cls: "", softWarn: null };
 
-  // Retaking: no timing penalty; only disqualify if liked% is very low
-  if (S.retaking?.includes(code)) {
-    const cls = (info.liked != null && info.liked < 45) ? "card-orange" : "card-green";
-    return { cls, softWarn: null };
+  // Elective placeholders and non-course strings — no color
+  const cleanCode = code.replace("[suggested]", "").trim();
+  if (!isRealCourse(cleanCode)) return { cls: "", softWarn: null };
+
+  // Retaking — always green (user has already met prereqs)
+  if (S.retaking?.includes(cleanCode)) return { cls: "card-green", softWarn: null };
+
+  // Timing vs. typical term drives the color
+  const typical = typicalTermFor(cleanCode);
+  if (!typical) return { cls: "card-green", softWarn: null };
+
+  const studyTerms = getTerms().filter(t => t !== "COOP");
+  const typIdx = studyTerms.indexOf(typical);
+  const curIdx = studyTerms.indexOf(termId);
+  if (typIdx === -1 || curIdx === -1) return { cls: "card-green", softWarn: null };
+
+  const diff = curIdx - typIdx;
+  if (diff < 0) {
+    return { cls: "card-yellow", softWarn: `Not recommended in ${termId} — typically taken in ${typical}` };
   }
-
-  const warns = [];
-  let score = 0;
-
-  // Factor 1: liked %
-  if (info.liked != null) {
-    if (info.liked >= 70) score += 1;
-    else if (info.liked < 45) score -= 1;
+  if (diff >= 2) {
+    return { cls: "card-yellow", softWarn: `Usually taken in ${typical} — scheduled ${diff} terms later` };
   }
-
-  // Factor 2: timing vs typical term
-  const typical = typicalTermFor(code);
-  if (typical) {
-    const studyTerms = getTerms().filter(t => t !== "COOP");
-    const typIdx = studyTerms.indexOf(typical);
-    const curIdx = studyTerms.indexOf(termId);
-    if (typIdx !== -1 && curIdx !== -1) {
-      const diff = curIdx - typIdx;
-      if (diff === 0) {
-        score += 1;  // exactly on time — green boost
-      } else if (diff < 0) {
-        warns.push(`Not recommended in ${termId} — typically taken in ${typical}`);
-        // no score change: yellow + explanation is enough signal
-      } else if (diff >= 2) {
-        score -= 1;
-        warns.push(`Usually taken in ${typical} — scheduled ${diff} terms later`);
-      }
-    }
-  }
-
-  // Factor 3: prereq grade barely meets threshold
-  // Only warn if no other option in the OR-group cleanly satisfies the prereq
-  const groups = getPrereqs(code);
-  if (groups) {
-    for (const group of groups) {
-      // If any entry in this OR-group is taken with no grade minimum (or comfortably above),
-      // the group is cleanly satisfied — skip grade warnings for this group entirely
-      const cleanSatisfied = group.some(entry => {
-        const [c, minStr] = entry.split(":");
-        if (!S.taken.includes(c)) return false;
-        if (!minStr) return true;
-        const min = parseInt(minStr);
-        const grade = S.takenGrades?.[c];
-        return grade !== undefined && grade >= min + 8;
-      });
-      if (cleanSatisfied) continue;
-
-      for (const entry of group) {
-        const [c, minStr] = entry.split(":");
-        if (!minStr || !S.taken.includes(c)) continue;
-        const min = parseInt(minStr);
-        const grade = S.takenGrades?.[c];
-        if (grade === undefined) continue;
-        if (grade < min + 8) {
-          score -= 1;
-          if (!warns.some(w => w.includes(c))) {
-            warns.push(`${c}: ${grade}% barely meets the ${min}%+ threshold`);
-          }
-        } else if (grade >= min + 15) {
-          score += 1;
-        }
-      }
-    }
-  }
-
-  const softWarn = warns.length ? warns[0] : null;
-
-  // If there are warnings, cap color at yellow (don't show conflicting green + "not recommended")
-  if (warns.length) {
-    return { cls: score <= -1 ? "card-orange" : "card-yellow", softWarn };
-  }
-
-  if (info.liked == null) return { cls: "", softWarn: null };
-  if (score >= 1)  return { cls: "card-green",  softWarn: null };
-  if (score <= -1) return { cls: "card-orange", softWarn: null };
-  return { cls: "card-yellow", softWarn: null };
+  return { cls: "card-green", softWarn: null };
 }
 
 
 function courseCard(code, termId) {
+  // Elective placeholder slots
+  const ELECTIVE_LABELS = { "Non-Math Elective": "Any non-Math-Faculty course", "Math Elective": "Any math faculty elective", "CS Elective": "Any CS elective" };
+  if (ELECTIVE_LABELS[code]) {
+    return `<div class="course-card elective-card" data-code="${code}" data-term="${termId}" draggable="true">
+      <button class="card-rm" data-code="${code}" data-term="${termId}">×</button>
+      <div class="card-code">${code}</div>
+      <div class="card-name">${ELECTIVE_LABELS[code]}</div>
+    </div>`;
+  }
+
   const info = getCourseInfo(code);
   const v = violations(code, termId);
   const { cls: rcls, softWarn } = cardStatus(code, termId);
@@ -2269,10 +2550,16 @@ function onDrop(e, termId) {
     dragCode = null; dragFrom = null;
     return;
   }
+  const ELECTIVE_PLACEHOLDERS = new Set(["Non-Math Elective", "Math Elective", "CS Elective"]);
   if (dragFrom && dragFrom !== termId) {
-    S.plan[dragFrom] = (S.plan[dragFrom] || []).filter(c => c !== dragCode);
+    // For placeholders, remove only the first occurrence (there may be multiple)
+    const fromPlan = [...(S.plan[dragFrom] || [])];
+    const idx = fromPlan.indexOf(dragCode);
+    if (idx !== -1) fromPlan.splice(idx, 1);
+    S.plan[dragFrom] = fromPlan;
   }
-  if (!(S.plan[termId] || []).includes(dragCode)) {
+  // Placeholders can appear multiple times in a term; real courses cannot
+  if (ELECTIVE_PLACEHOLDERS.has(dragCode) || !(S.plan[termId] || []).includes(dragCode)) {
     S.plan[termId] = [...(S.plan[termId] || []), dragCode];
   }
   dragCode = null; dragFrom = null;
@@ -2284,6 +2571,15 @@ function onDrop(e, termId) {
 // ══════════════════════════════════════════════════════
 // Honours BMath/BCS: 40 courses = 20.0 units (0.50 units per course)
 const DEGREE_UNITS = 20.0;
+const HALF_CREDIT_FE = new Set(["CS 136L"]);
+
+function courseUnits(code) {
+  return HALF_CREDIT_FE.has(code) ? 0.25 : 0.5;
+}
+
+function isRealCourse(s) {
+  return /^[A-Z]{2,6} \d{3}/.test(s);
+}
 
 function updateProgress() {
   const prog = PROGRAMS[S.program];
@@ -2293,21 +2589,40 @@ function updateProgress() {
   ).length;
   const pct = all.length ? Math.round(done / all.length * 100) : 0;
   document.getElementById("progressFill").style.width = pct + "%";
-  document.getElementById("progressLbl").textContent = `${done} / ${all.length} req`;
 
-  // Units: exclude failed courses (grade < 50 = no credit earned)
+  // Units earned: passed taken courses only, excluding retaking (not yet passed)
+  const retakingSet = new Set(S.retaking || []);
   const passedTaken = S.taken.filter(c => {
+    if (retakingSet.has(c)) return false;
     const g = S.takenGrades?.[c];
     return g === undefined || g >= 50;
   });
-  const unitsDone = (passedTaken.length * 0.5).toFixed(1);
-  // Planned (in grid, not yet taken) count as in-progress
-  const plannedCodes = new Set(Object.values(S.plan).flat());
-  S.taken.forEach(c => plannedCodes.delete(c));
-  const unitsPlanned = (plannedCodes.size * 0.5).toFixed(1);
+  const unitsTaken = passedTaken.reduce((s, c) => s + courseUnits(c), 0);
+
+  // Units in plan: real courses + elective placeholders, excluding already-taken (not retaking)
+  const takenSet = new Set(S.taken.filter(c => !retakingSet.has(c)));
+  const seenPlan = new Set();
+  let unitsPlanned = 0;
+  const ELECTIVE_LABELS = new Set(["Non-Math Elective", "Math Elective", "CS Elective"]);
+  for (const codes of Object.values(S.plan)) {
+    for (const raw of codes) {
+      if (ELECTIVE_LABELS.has(raw)) {
+        // Each elective placeholder = 0.5 units; allow duplicates (not deduplicated)
+        unitsPlanned += 0.5;
+        continue;
+      }
+      if (!isRealCourse(raw)) continue;
+      const code = raw.replace("[suggested]", "").trim();
+      if (takenSet.has(code) || seenPlan.has(code)) continue;
+      seenPlan.add(code);
+      unitsPlanned += courseUnits(code);
+    }
+  }
+
+  const totalUnits = (unitsTaken + unitsPlanned).toFixed(1);
   const el = document.getElementById("unitsLbl");
-  el.textContent = `${unitsDone} / ${DEGREE_UNITS.toFixed(1)} units`;
-  el.title = `${unitsDone} units earned · ${unitsPlanned} units in plan · ${DEGREE_UNITS.toFixed(1)} needed for Honours`;
+  el.textContent = `${totalUnits} / ${DEGREE_UNITS.toFixed(1)} units`;
+  el.title = `${unitsTaken.toFixed(1)} units earned · ${unitsPlanned.toFixed(1)} units in plan · ${DEGREE_UNITS.toFixed(1)} needed for Honours`;
 }
 
 // ══════════════════════════════════════════════════════
@@ -2372,13 +2687,132 @@ async function sendChat(preset) {
       body: JSON.stringify({ question:q, history:chatHistory, student_context:studentCtx }),
     });
     const data = await res.json();
-    bMsg.innerHTML = `<div class="lbl">WatAsk</div>${esc(data.answer)}`;
+
+    // Detect plan preference — offer rebuild if the user expressed one
+    const pref = detectPlanPref(q);
+    let regenHtml = "";
+    if (pref && wantsPlanChange(q)) {
+      regenHtml = `<div class="chat-regen-action">
+        <span>Want a plan that prioritises ${esc(pref.label)} courses?</span>
+        <button class="chat-regen-btn" onclick="regenWithPref('${pref.key}')">↺ Rebuild plan with ${esc(pref.label)} focus</button>
+      </div>`;
+    }
+
+    bMsg.innerHTML = `<div class="lbl">WatAsk</div>${esc(data.answer)}${regenHtml}`;
     chatHistory.push({ question:q, answer:data.answer });
     if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
   } catch(_) {
     bMsg.innerHTML = `<div class="lbl">WatAsk</div><em style="color:var(--red)">Couldn't reach server.</em>`;
   } finally {
     btn.disabled = false;
+    thread.scrollTop = thread.scrollHeight;
+  }
+}
+
+// ── Plan preference detection ─────────────────────────
+const PREF_MAP = [
+  { key:"math",  label:"Math",        prefixes:["MATH","PMATH","AMATH"] },
+  { key:"cs",    label:"CS",          prefixes:["CS"] },
+  { key:"stat",  label:"Statistics",  prefixes:["STAT"] },
+  { key:"actsc", label:"Actuarial",   prefixes:["ACTSC"] },
+  { key:"co",    label:"Combinatorics & Opt.", prefixes:["CO"] },
+];
+
+function detectPlanPref(msg) {
+  const m = msg.toLowerCase();
+  if (/\b(pure math|pmath|amath|mathematical|math side|more math|math.heavy|math focus)\b/.test(m)) return PREF_MAP[0];
+  if (/\b(cs side|more cs|computer|programming|coding|software|cs.heavy|cs focus)\b/.test(m)) return PREF_MAP[1];
+  if (/\b(stat|statistics|probability|data science)\b/.test(m)) return PREF_MAP[2];
+  if (/\b(actsc|actuari|insurance)\b/.test(m)) return PREF_MAP[3];
+  if (/\b(combinator|optimiz|co course|graph theory)\b/.test(m)) return PREF_MAP[4];
+  return null;
+}
+
+function wantsPlanChange(msg) {
+  // Also fires when the detected subject preference itself is the entire intent
+  // e.g. "I would something more mathematical" — "more" + "mathematical" is enough
+  return /\b(prefer|like|more|side|focus|interest|instead|lean|heavy|suggest|recommend|generate|rebuild|update|change|redo|new plan|want|something|would)\b/i.test(msg);
+}
+
+function prefCourses(pref) {
+  const prog = PROGRAMS[S.program];
+  // Search advanced pool first
+  const advGroup = prog.groups.find(g => g.name.startsWith("Advanced"));
+  const advMatches = (advGroup?.courses || []).filter(c =>
+    pref.prefixes.some(p => c.startsWith(p + " "))
+  );
+  if (advMatches.length) return advMatches;
+  // Fallback: search ALL groups for matching prefix (covers e.g. FARM where "math" → STAT/ACTSC are the maths)
+  return prog.groups.flatMap(g => g.courses).filter(c =>
+    pref.prefixes.some(p => c.startsWith(p + " "))
+  );
+}
+
+function applyPlanToGrid(planText) {
+  const studyTerms = new Set(getTerms().filter(t => t !== "COOP"));
+  const newPlan = {};
+  for (const line of planText.split("\n")) {
+    const m = line.match(/^([^:]+):\s*(.+)/);
+    if (!m) continue;
+    const term = m[1].trim();
+    if (!studyTerms.has(term)) continue;
+    newPlan[term] = m[2].split(/,\s*/).map(s => s.trim()).filter(Boolean);
+  }
+  S.plan = newPlan;
+  save(); render();
+}
+
+async function regenWithPref(prefKey) {
+  const pref = PREF_MAP.find(p => p.key === prefKey);
+  if (!pref) return;
+
+  const prog = PROGRAMS[S.program];
+  // Only pass courses that are in the advanced pool — required courses can't be reprioritised
+  const advGroup = prog.groups.find(g => g.name.startsWith("Advanced"));
+  const advSet = new Set(advGroup?.courses || []);
+  const courses = prefCourses(pref).filter(c => advSet.has(c));
+
+  const btn = document.getElementById("suggestBtn");
+  btn.textContent = "Generating…"; btn.disabled = true;
+
+  const thread = document.getElementById("chatThread");
+  const el = document.createElement("div");
+  el.className = "chat-msg b";
+  el.innerHTML = `<div class="lbl">✦ Rebuilding Plan</div><em style="color:var(--muted)">Generating ${esc(pref.label)}-focused plan…</em>`;
+  thread.appendChild(el);
+  thread.scrollTop = thread.scrollHeight;
+
+  const studyTerms = getTerms().filter(t => t !== "COOP");
+
+  function dedupeGroup(cs) {
+    const seen = new Set();
+    return cs.filter(c => { if ((ANTIREQS[c]||[]).some(a=>seen.has(a))) return false; seen.add(c); return true; });
+  }
+
+  try {
+    const res = await fetch("/plan", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        program: prog.name,
+        terms: studyTerms,
+        taken: S.taken,
+        groups: prog.groups.map(g => ({ name:g.name, courses:dedupeGroup(g.courses), typical:g.typical||{} })),
+        placed: {},
+        current_term: S.currentTerm,
+        specialization: courses.length ? courses : null,
+        retaking: S.retaking || [],
+        taken_grades: S.takenGrades || {},
+      }),
+    });
+    const data = await res.json();
+    el.innerHTML = `<div class="lbl">✦ Rebuilt Plan — ${esc(pref.label)} focus</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Applied to your planner grid.</div>
+      ${parsePlanToTable(data.answer)}`;
+    applyPlanToGrid(data.answer);
+  } catch(err) {
+    el.innerHTML = `<div class="lbl">✦ Rebuilding Plan</div><em style="color:var(--red)">Error: ${err.message}</em>`;
+  } finally {
+    btn.textContent = "✦ Generate plan"; btn.disabled = false;
     thread.scrollTop = thread.scrollHeight;
   }
 }
@@ -2436,16 +2870,29 @@ function parsePlanToTable(text) {
 }
 
 // ── Interest picker helpers ───────────────────────────────────────────
-function togglePlanInterest(el, id) {
-  el.classList.toggle("active");
-  if (!S.interests) S.interests = [];
-  const idx = S.interests.indexOf(id);
-  if (idx >= 0) S.interests.splice(idx, 1); else S.interests.push(id);
+function selectSpec(el, id) {
+  document.querySelectorAll(".spec-card:not([data-overload])").forEach(c => c.classList.remove("active"));
+
+  if (S.specialization === id) {
+    S.specialization = null;
+  } else {
+    el.classList.add("active");
+    S.specialization = id;
+  }
   save();
 }
 
+
+function selectOverload(val) {
+  S.overload = val;
+  save();
+  document.querySelectorAll("[data-overload]").forEach(c => {
+    c.classList.toggle("active", c.dataset.overload === String(val));
+  });
+}
+
 async function buildPlan() {
-  document.getElementById("planInterestPicker")?.remove();
+  document.getElementById("planSpecPicker")?.remove();
   const btn = document.getElementById("suggestBtn");
   btn.textContent = "Thinking…"; btn.disabled = true;
   await doGeneratePlan(btn, document.getElementById("chatThread"));
@@ -2458,7 +2905,7 @@ async function doGeneratePlan(btn, thread) {
 
   const el = document.createElement("div");
   el.className = "chat-msg b";
-  el.innerHTML = `<div class="lbl">✦ Suggested Plan</div><em style="color:var(--muted)">Generating…</em>`;
+  el.innerHTML = `<div class="lbl">✦ Generated Plan</div><em style="color:var(--muted)">Generating…</em>`;
   thread.appendChild(el);
   thread.scrollTop = thread.scrollHeight;
 
@@ -2471,17 +2918,11 @@ async function doGeneratePlan(btn, thread) {
     });
   }
 
-  // Move interest-matching courses to the front of the advanced pool
-  function sortedAdvanced(courses) {
-    const tracks = INTEREST_TRACKS[S.program] || [];
-    const selected = tracks.filter(t => (S.interests || []).includes(t.id));
-    if (!selected.length) return courses;
-    const preferred = new Set(selected.flatMap(t => t.courses));
-    return [
-      ...courses.filter(c => preferred.has(c)),
-      ...courses.filter(c => !preferred.has(c)),
-    ];
-  }
+  // Get chosen specialization courses (sent to backend for prioritisation)
+  const tracks = INTEREST_TRACKS[S.program] || [];
+  const specTrack = tracks.find(t => t.id === S.specialization);
+  const specCourses = specTrack ? specTrack.courses : null;
+  const specLabel = specTrack ? specTrack.label : null;
 
   try {
     const res = await fetch("/plan", {
@@ -2492,19 +2933,25 @@ async function doGeneratePlan(btn, thread) {
         taken: S.taken,
         groups: prog.groups.map(g => ({
           name: g.name,
-          courses: g.name.startsWith("Advanced") ? sortedAdvanced(dedupeGroup(g.courses)) : dedupeGroup(g.courses),
+          courses: dedupeGroup(g.courses),
           typical: g.typical || {},
         })),
-        placed: S.plan,
+        placed: {},
         current_term: S.currentTerm,
+        specialization: specCourses,
+        overload: S.overload || false,
+        retaking: S.retaking || [],
+        taken_grades: S.takenGrades || {},
       }),
     });
     const data = await res.json();
-    el.innerHTML = `<div class="lbl">✦ Suggested Plan</div><div style="font-size:11px;color:var(--muted);margin-bottom:8px">Planned at 5 courses/term (standard UW load). Taking 6+ requires advisor approval and a high average — most students stick to 5.</div>${parsePlanToTable(data.answer)}`;
+    const specNote = specLabel ? `<span style="color:var(--gold)">${esc(specLabel)} focus</span> · ` : "";
+    const overloadNote = S.overload ? ` · <span style="color:#e08a3c">↻ overload allowed</span>` : "";
+    el.innerHTML = `<div class="lbl">✦ Generated Plan</div><div style="font-size:11px;color:var(--muted);margin-bottom:8px">${specNote}Prereq-aware · ${S.overload ? 'up to 6' : '5'} courses/term${overloadNote}.</div>${parsePlanToTable(data.answer)}`;
   } catch(err) {
-    el.innerHTML = `<div class="lbl">✦ Suggested Plan</div><em style="color:var(--red)">Error: ${err.message}</em>`;
+    el.innerHTML = `<div class="lbl">✦ Generated Plan</div><em style="color:var(--red)">Error: ${err.message}</em>`;
   } finally {
-    btn.textContent = "✦ Suggest my plan"; btn.disabled = false;
+    btn.textContent = "✦ Generate plan"; btn.disabled = false;
     thread.scrollTop = thread.scrollHeight;
   }
 }
@@ -2517,33 +2964,64 @@ async function suggestPlan() {
   if (!bar.classList.contains("open")) bar.classList.add("open");
   const thread = document.getElementById("chatThread");
 
-  // Remove stale picker from a previous click
-  document.getElementById("planInterestPicker")?.remove();
+  document.getElementById("planSpecPicker")?.remove();
 
   const tracks = INTEREST_TRACKS[S.program];
-  if (tracks) {
-    // Show interest picker — always show so student can update preferences
-    const selected = S.interests || [];
+  const hasRetaking = S.retaking?.length > 0;
+
+  if ((tracks && tracks.length) || hasRetaking) {
+    const selected = S.specialization || null;
     const picker = document.createElement("div");
     picker.className = "chat-msg b";
-    picker.id = "planInterestPicker";
-    picker.innerHTML = `
-      <div class="lbl">✦ Tailor your plan</div>
-      <div style="color:var(--muted);font-size:12px;margin-bottom:10px">What topics interest you most? We'll prioritize matching electives.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
-        ${tracks.map(t => `<span class="int-chip${selected.includes(t.id) ? " active" : ""}" onclick="togglePlanInterest(this,'${t.id}')">${esc(t.label)}</span>`).join("")}
-      </div>
+    picker.id = "planSpecPicker";
+
+    let html = `<div class="lbl">✦ Plan preferences</div>`;
+
+    if (tracks && tracks.length) {
+      html += `
+        <div style="color:var(--muted);font-size:12px;margin-bottom:8px">Focus area — prioritizes these electives in your upper-year slots:</div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:14px">
+          ${tracks.map(t => `
+            <div class="spec-card${selected === t.id ? " active" : ""}" onclick="selectSpec(this,'${t.id}')">
+              <strong>${esc(t.label)}</strong>
+              <span style="color:var(--muted);font-size:11px;margin-left:8px">${t.courses.slice(0,3).join(', ')}${t.courses.length > 3 ? ` +${t.courses.length-3} more` : ''}</span>
+            </div>`).join("")}
+        </div>`;
+    }
+
+    if (hasRetaking) {
+      html += `
+        <div style="color:rgba(224,138,60,0.9);font-size:12px;margin-bottom:6px">
+          ↻ Retaking: <strong>${S.retaking.join(", ")}</strong>
+        </div>
+        <div style="color:var(--muted);font-size:11px;margin-bottom:8px">
+          By default the retake fills a free slot in your plan at no extra cost. If all your terms are already full, you can overload one term (requires 80%+ cumulative avg) — or the course shifts to a later term which may cost extra.
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:14px">
+          <div class="spec-card${!S.overload ? ' active' : ''}" data-overload="false" onclick="selectOverload(false)" style="flex:1">
+            <strong>Standard (5/term)</strong>
+            <div style="color:var(--muted);font-size:11px;margin-top:3px">Fit retake in a free slot — if no slot, shifts to a later term</div>
+          </div>
+          <div class="spec-card${S.overload ? ' active' : ''}" data-overload="true" onclick="selectOverload(true)" style="flex:1">
+            <strong>Allow overload (6/term)</strong>
+            <div style="color:var(--muted);font-size:11px;margin-top:3px">Use a 6th slot if needed — requires 80%+ cumulative avg</div>
+          </div>
+        </div>`;
+    }
+
+    html += `
       <div style="display:flex;gap:8px;align-items:center">
         <button class="btn-suggest" style="font-size:12px;padding:5px 14px" onclick="buildPlan()">Build my plan →</button>
         <span style="font-size:11px;color:var(--muted);cursor:pointer;text-decoration:underline" onclick="buildPlan()">Skip</span>
       </div>`;
+
+    picker.innerHTML = html;
     thread.appendChild(picker);
     thread.scrollTop = thread.scrollHeight;
-    btn.textContent = "✦ Suggest my plan"; btn.disabled = false;
+    btn.textContent = "✦ Generate plan"; btn.disabled = false;
     return;
   }
 
-  // No tracks for this program — generate immediately
   await doGeneratePlan(btn, thread);
 }
 
