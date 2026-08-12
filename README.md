@@ -13,7 +13,7 @@ A full-stack academic planning tool for University of Waterloo students. Combine
 - **Smart Plan Generator** — One-click plan generation that respects prereq chains, co-op sequences, and non-math elective budgets.
 - **Grade-Aware Prereqs** — Enter your grades; the planner warns if a low grade blocks a downstream course (program-specific — e.g. MATH 136 at 56% warns BMath students about MATH 235 but not BCS students).
 - **Retake Scheduling** — Mark a course for retake; it appears as a draggable card you can slot into any future term.
-- **17 Programs** — Statistics, CS (BCS), Applied Math, Pure Math, CO, Actuarial Science, Computational Math, Math Finance, Math Physics, Data Science, SE, and more.
+- **16 Programs** — Statistics, CS (BCS), Applied Math, Pure Math, CO, Actuarial Science, Computational Math, Math Finance, Math Physics, Data Science, and more.
 
 ---
 
