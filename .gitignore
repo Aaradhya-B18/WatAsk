@@ -5,3 +5,4 @@ waterloo_data.json
 data_generated.py
 .claude
 .github
+.DS_Store
