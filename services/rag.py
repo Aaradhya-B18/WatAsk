@@ -1,8 +1,11 @@
+import logging
 import re
 from typing import Optional
 from supabase import Client
 
 from services.embeddings import embed, get_client
+
+logger = logging.getLogger(__name__)
 
 GREETING_TRIGGERS = [
     "hi", "hello", "hey", "yo", "help",
@@ -149,8 +152,14 @@ def answer(
         gemini = get_client()
         response = gemini.models.generate_content(model="gemini-3.1-flash-lite", contents=prompt)
         answer_text = response.text
-    except Exception as e:
-        return {"question": question, "answer": f"API error: {e}", "source_codes": [], "sources": []}
+    except Exception:
+        logger.exception("Gemini generate_content failed")
+        return {
+            "question": question,
+            "answer": "I'm having trouble reaching the advisor service right now — please try again in a moment.",
+            "source_codes": [],
+            "sources": [],
+        }
 
     answer_upper = answer_text.upper()
     mentioned = [s["code"] for s in sources if s["code"].upper() in answer_upper]
@@ -159,4 +168,4 @@ def answer(
         "answer": answer_text,
         "source_codes": mentioned or [s["code"] for s in sources],
         "sources": sources,
-    }
+  } 

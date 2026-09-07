@@ -3,10 +3,13 @@ import json
 from typing import List, Optional
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 from supabase import create_client
 
 from services.rag import answer
@@ -19,7 +22,11 @@ supabase = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
 with open("data/prereqs.json") as f:
     PREREQS: dict = json.load(f)
 
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI()
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -69,7 +76,8 @@ def get_courses():
 
 
 @app.post("/ask")
-def ask(req: AskRequest):
+@limiter.limit("15/minute")
+def ask(request: Request, req: AskRequest):
     return answer(
         question=req.question,
         history=req.history or [],
@@ -79,7 +87,8 @@ def ask(req: AskRequest):
 
 
 @app.post("/plan")
-def suggest_plan(req: PlanRequest):
+@limiter.limit("30/minute")
+def suggest_plan(request: Request, req: PlanRequest):
     result = generate_plan(
         program=req.program,
         terms=req.terms,
