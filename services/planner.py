@@ -74,7 +74,10 @@ def generate_plan(
         return "No study terms found."
 
     term_index = {t: i for i, t in enumerate(study_terms)}
-    current_term_idx = term_index.get(current_term, 0) if current_term and current_term != "pre" else 0
+    # Always generate the full idealized 1A-4B plan rather than gating scheduling
+    # by current_term — that caused required courses missing from an under-logged
+    # past term to cascade into every later term instead of staying put.
+    current_term_idx = 0
     schedule: dict[str, list[str]] = {t: [] for t in study_terms}
 
     def placed_before(term_idx: int) -> set[str]:

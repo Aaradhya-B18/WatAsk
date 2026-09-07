@@ -2993,24 +2993,6 @@ async function doGeneratePlan(btn, thread) {
   }
 }
 
-function findThinPastTerms() {
-  // Terms before your current term with suspiciously few logged courses —
-  // usually means courses were forgotten during onboarding, not that a
-  // near-empty term load actually happened.
-  const studyTerms = getTerms().filter(t => t !== "COOP");
-  const currentIdx = studyTerms.indexOf(S.currentTerm);
-  if (currentIdx <= 0) return [];
-  const countByTerm = {};
-  for (const term of Object.values(S.takenTerms || {})) {
-    countByTerm[term] = (countByTerm[term] || 0) + 1;
-  }
-  const thin = [];
-  for (let i = 0; i < currentIdx; i++) {
-    if ((countByTerm[studyTerms[i]] || 0) < 3) thin.push(studyTerms[i]);
-  }
-  return thin;
-}
-
 async function suggestPlan() {
   const btn = document.getElementById("suggestBtn");
   btn.textContent = "Thinking…"; btn.disabled = true;
@@ -3020,28 +3002,6 @@ async function suggestPlan() {
   const thread = document.getElementById("chatThread");
 
   document.getElementById("planSpecPicker")?.remove();
-
-  const thinTerms = findThinPastTerms();
-  if (thinTerms.length && !S._ignoreThinTermsWarning) {
-    const warnEl = document.createElement("div");
-    warnEl.className = "chat-msg b";
-    const termList = thinTerms.map(esc).join(", ");
-    warnEl.innerHTML = `
-      <div class="lbl">⚠ Double check your course history</div>
-      <div style="color:var(--muted);font-size:12px;margin-bottom:10px">
-        You're set as currently in <strong>${esc(S.currentTerm)}</strong>, but ${thinTerms.length === 1 ? "term" : "terms"}
-        <strong>${termList}</strong> ${thinTerms.length === 1 ? "has" : "have"} fewer than 3 completed courses logged.
-        If that's accurate, ignore this. Otherwise, any courses you forgot to log there will get pushed into
-        later terms instead of staying where you actually took them — hit Reset (top right) to log them properly.
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-suggest" style="font-size:12px;padding:5px 14px" onclick="S._ignoreThinTermsWarning=true; this.closest('.chat-msg').remove(); suggestPlan();">Generate anyway</button>
-      </div>`;
-    thread.appendChild(warnEl);
-    thread.scrollTop = thread.scrollHeight;
-    btn.textContent = "✦ Generate plan"; btn.disabled = false;
-    return;
-  }
 
   const tracks = INTEREST_TRACKS[S.program];
   const hasRetaking = S.retaking?.length > 0;
