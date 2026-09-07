@@ -1508,26 +1508,37 @@ const PROGRAMS = {
         typical:{ "STAT 230":"2A","STAT 231":"2B" },
       },
       {
+        // Calendar requirement is "Complete all: AMATH231, AMATH271, AMATH353,
+        // AMATH361, AMATH473" plus four separate "Complete 1 of" choices. The
+        // planner has no "pick exactly 1 of N" primitive, so each choice below
+        // is resolved to one sensible default course rather than listed as a
+        // free-form Advanced pool — AMATH353 needs AMATH250 as a prereq, so the
+        // default must be scheduled as a real required course, not a suggestion,
+        // or AMATH353 can never satisfy its own prereq chain.
         name:"Applied Mathematics",
-        courses:["AMATH 231","AMATH 250","AMATH 271","AMATH 351","AMATH 361"],
-        typical:{ "AMATH 231":"2B","AMATH 250":"2B","AMATH 271":"2B","AMATH 351":"3A","AMATH 361":"3B" },
+        courses:["AMATH 231","AMATH 242","AMATH 250","AMATH 271","AMATH 353","AMATH 361","AMATH 473"],
+        typical:{ "AMATH 231":"2B","AMATH 242":"2B","AMATH 250":"2B","AMATH 271":"2B","AMATH 353":"3B","AMATH 361":"3B","AMATH 473":"4A" },
       },
       {
+        // Alternatives to AMATH 242 (computational math): AMATH 345, AMATH 391, AMATH 445, CS 371
+        // Alternatives to AMATH 250 (differential equations): AMATH 251
         name:"Pure Mathematics",
-        // PMATH 333 (needs MATH 138:60) can go 2A/2B; schedules to 3A since 2B is full
-        // PMATH 332 needs MATH 237 (done 2A) → 3A
+        // PMATH 333 (real analysis) alternatives: AMATH 331, PMATH 331, PMATH 351
+        // PMATH 332 (complex analysis) alternatives: AMATH 332, PMATH 352
         courses:["PMATH 332","PMATH 333"],
         typical:{ "PMATH 332":"3A","PMATH 333":"2B" },
+      },
+      {
+        // Term placement is a best-effort estimate — the official term-by-term
+        // sequence chart for Math Physics wasn't available to verify exact terms.
+        name:"Physics Core",
+        courses:["PHYS 122","PHYS 223","PHYS 234","PHYS 242"],
+        typical:{ "PHYS 122":"1B","PHYS 242":"2A","PHYS 223":"2A","PHYS 234":"2B" },
       },
       {
         name:"CS Requirement",
         courses:["CS 115","CS 116"],
         typical:{ "CS 115":"1A","CS 116":"1B" },
-      },
-      {
-        name:"Advanced Options",
-        courses:["MATH 245","MATH 247","AMATH 431","AMATH 432","AMATH 433","AMATH 442","AMATH 453","AMATH 455","PMATH 440","PMATH 450","PMATH 451"],
-        typical:{ "MATH 245":"2A","MATH 247":"2B","AMATH 431":"4A","AMATH 432":"4B","AMATH 442":"4A" },
       },
     ],
   },
@@ -2823,7 +2834,10 @@ async function regenWithPref(prefKey) {
 function parsePlanToTable(text) {
   const PLACEHOLDERS = new Set(["Non-Math Elective", "Free Elective"]);
   const rows = [];
+  let unscheduled = "";
   for (const line of text.split("\n")) {
+    const unschedMatch = line.match(/^UNSCHEDULED:\s*(.+)/);
+    if (unschedMatch) { unscheduled = unschedMatch[1].trim(); continue; }
     const m = line.match(/^([\w\s&]+?):\s*(.+)/);
     if (!m) continue;
     const term = m[1].trim();
@@ -2866,7 +2880,13 @@ function parsePlanToTable(text) {
     <span style="font-style:italic;opacity:.6">Dashed = placeholder to fill</span>
   </div>`;
 
-  return `<table style="width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:8px">${rowsHtml}</table>${legend}`;
+  const warning = unscheduled
+    ? `<div style="margin-bottom:8px;padding:6px 10px;border:1px solid var(--red);border-radius:6px;font-size:11px;color:var(--red)">
+        ⚠ Couldn't fit into your plan (prereq chain unresolved with current course data): ${esc(unscheduled)}
+      </div>`
+    : "";
+
+  return `${warning}<table style="width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:8px">${rowsHtml}</table>${legend}`;
 }
 
 // ── Interest picker helpers ───────────────────────────────────────────

@@ -205,4 +205,7 @@ def generate_plan(
         if parts:
             lines.append(f"{term}: {', '.join(parts)}")
 
+    if unplaced:
+        lines.append(f"UNSCHEDULED: {', '.join(unplaced)}")
+
     return "\n".join(lines)

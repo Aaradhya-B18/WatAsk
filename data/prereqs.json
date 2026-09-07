@@ -665,12 +665,6 @@
     [
       "AMATH 231",
       "PMATH 343"
-    ],
-    [
-      "AMATH 373"
-    ],
-    [
-      "PHYS 334"
     ]
   ],
   "AMATH 474": [
@@ -1823,11 +1817,6 @@
       "ECON 120W"
     ]
   ],
-  "MATH 106": [
-    [
-      "MATH 103"
-    ]
-  ],
   "MATH 118": [
     [
       "MATH 116",
@@ -1844,11 +1833,6 @@
       "MATH 127",
       "MATH 137",
       "MATH 147"
-    ]
-  ],
-  "MATH 127": [
-    [
-      "MATH 104"
     ]
   ],
   "MATH 128": [
@@ -2009,6 +1993,1054 @@
     [
       "MATH 136",
       "MATH 146"
+    ]
+  ],
+  "PHYS 112": [
+    [
+      "PHYS 111",
+      "PHYS 121"
+    ]
+  ],
+  "PHYS 122": [
+    [
+      "PHYS 111:70",
+      "PHYS 115",
+      "PHYS 121",
+      "ECE 105"
+    ]
+  ],
+  "PHYS 124": [
+    [
+      "PHYS 111:70",
+      "PHYS 115",
+      "PHYS 121",
+      "ECE 105"
+    ]
+  ],
+  "PHYS 125": [
+    [
+      "PHYS 115"
+    ]
+  ],
+  "PHYS 175": [
+    [
+      "PHYS 111",
+      "PHYS 115",
+      "PHYS 121"
+    ],
+    [
+      "MATH 116",
+      "MATH 117",
+      "MATH 127",
+      "MATH 137",
+      "MATH 147"
+    ]
+  ],
+  "PHYS 222": [
+    [
+      "PHYS 111",
+      "PHYS 121"
+    ],
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "MATH 127",
+      "MATH 137",
+      "MATH 147"
+    ],
+    [
+      "MATH 118",
+      "MATH 119",
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ]
+  ],
+  "PHYS 223": [
+    [
+      "AMATH 271",
+      "ECE 105",
+      "PHYS 115",
+      "PHYS 121"
+    ],
+    [
+      "ECE 205",
+      "MATH 116",
+      "MATH 117",
+      "MATH 127",
+      "MATH 137",
+      "MATH 147"
+    ]
+  ],
+  "PHYS 224": [
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "MATH 118",
+      "MATH 119",
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ]
+  ],
+  "PHYS 225": [
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "MATH 116",
+      "MATH 117",
+      "MATH 127",
+      "MATH 137",
+      "MATH 147"
+    ],
+    [
+      "CS 114",
+      "CS 116",
+      "CS 136",
+      "CS 146"
+    ]
+  ],
+  "PHYS 226": [
+    [
+      "PHYS 111",
+      "PHYS 121"
+    ],
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "MATH 107",
+      "MATH 127",
+      "MATH 137",
+      "MATH 147"
+    ],
+    [
+      "MATH 108",
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ]
+  ],
+  "PHYS 232L": [
+    [
+      "PHYS 122L"
+    ]
+  ],
+  "PHYS 233": [
+    [
+      "PHYS 112",
+      "PHYS 122",
+      "PHYS 125",
+      "ECE 106"
+    ],
+    [
+      "MATH 118",
+      "MATH 119",
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ]
+  ],
+  "PHYS 234": [
+    [
+      "PHYS 122"
+    ],
+    [
+      "MATH 114",
+      "MATH 136",
+      "PHYS 249"
+    ],
+    [
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ]
+  ],
+  "PHYS 236": [
+    [
+      "PHYS 111",
+      "PHYS 121"
+    ]
+  ],
+  "PHYS 239": [
+    [
+      "PHYS 139",
+      "PHYS 236",
+      "CS 115",
+      "CS 121",
+      "CS 122",
+      "CS 123",
+      "CS 125",
+      "CS 131",
+      "CS 132",
+      "CS 133",
+      "CS 135",
+      "CS 145",
+      "CHE 121",
+      "CIVE 121",
+      "ECE 150",
+      "MTE 121",
+      "GENE 121",
+      "NE 113",
+      "SYDE 121"
+    ]
+  ],
+  "PHYS 241": [
+    [
+      "PHYS 111",
+      "PHYS 121"
+    ],
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ]
+  ],
+  "PHYS 242": [
+    [
+      "PHYS 122"
+    ],
+    [
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ],
+    [
+      "AMATH 231",
+      "MATH 227"
+    ]
+  ],
+  "PHYS 246": [
+    [
+      "PHYS 111",
+      "PHYS 121"
+    ],
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "MATH 107",
+      "MATH 127",
+      "MATH 137",
+      "MATH 147"
+    ],
+    [
+      "MATH 108",
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ]
+  ],
+  "PHYS 249": [
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ]
+  ],
+  "PHYS 256": [
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ]
+  ],
+  "PHYS 258": [
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "MATH 227",
+      "MATH 237",
+      "MATH 247"
+    ],
+    [
+      "MATH 228",
+      "AMATH 250"
+    ]
+  ],
+  "PHYS 260A": [
+    [
+      "PHYS 122L"
+    ]
+  ],
+  "PHYS 260B": [
+    [
+      "PHYS 260A"
+    ]
+  ],
+  "PHYS 260L": [
+    [
+      "PHYS 232L",
+      "PHYS 256L"
+    ]
+  ],
+  "PHYS 263": [
+    [
+      "PHYS 122"
+    ],
+    [
+      "MATH 108",
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ],
+    [
+      "MATH 228",
+      "AMATH 250",
+      "AMATH 251"
+    ]
+  ],
+  "PHYS 267": [
+    [
+      "PHYS 122"
+    ],
+    [
+      "MATH 227",
+      "MATH 237",
+      "MATH 247"
+    ],
+    [
+      "PHYS 236",
+      "CS 114",
+      "CS 116",
+      "CS 136",
+      "CS 146"
+    ]
+  ],
+  "PHYS 270": [
+    [
+      "PHYS 256",
+      "ECE 404"
+    ]
+  ],
+  "PHYS 270L": [
+    [
+      "PHYS 256",
+      "ECE 404"
+    ]
+  ],
+  "PHYS 334": [
+    [
+      "PHYS 234",
+      "CHEM 356"
+    ],
+    [
+      "MATH 228",
+      "AMATH 250",
+      "AMATH 251"
+    ],
+    [
+      "MATH 227",
+      "MATH 237",
+      "MATH 247"
+    ]
+  ],
+  "PHYS 335": [
+    [
+      "PHYS 358"
+    ],
+    [
+      "AMATH 231",
+      "PHYS 364"
+    ],
+    [
+      "CHEM 356",
+      "PHYS 234"
+    ]
+  ],
+  "PHYS 339": [
+    [
+      "PHYS 139",
+      "CS 115",
+      "CS 121",
+      "CS 122",
+      "CS 123",
+      "CS 125",
+      "CS 131",
+      "CS 132",
+      "CS 133",
+      "CS 135",
+      "CS 145",
+      "CHE 121",
+      "ECE 150",
+      "GENE 121",
+      "NE 113",
+      "SYDE 121"
+    ]
+  ],
+  "PHYS 342": [
+    [
+      "PHYS 242"
+    ],
+    [
+      "MATH 228",
+      "AMATH 250",
+      "AMATH 251"
+    ]
+  ],
+  "PHYS 349": [
+    [
+      "PHYS 234"
+    ],
+    [
+      "PHYS 242"
+    ],
+    [
+      "AMATH 271",
+      "PHYS 263"
+    ],
+    [
+      "PHYS 267",
+      "PHYS 236",
+      "PHYS 249"
+    ]
+  ],
+  "PHYS 352": [
+    [
+      "PHYS 222",
+      "PHYS 241",
+      "PHYS 252"
+    ]
+  ],
+  "PHYS 356": [
+    [
+      "AMATH 250",
+      "AMATH 251",
+      "MATH 228"
+    ],
+    [
+      "MATH 118",
+      "MATH 119",
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ],
+    [
+      "PHYS 223",
+      "PHYS 122"
+    ],
+    [
+      "ECE 106:80",
+      "PHYS 122:80",
+      "PHYS 112:80"
+    ]
+  ],
+  "PHYS 357": [
+    [
+      "AMATH 250",
+      "AMATH 251",
+      "MATH 228"
+    ],
+    [
+      "ECE 206",
+      "MATH 212",
+      "MATH 217",
+      "MATH 227",
+      "MATH 237",
+      "MATH 247",
+      "NE 217"
+    ],
+    [
+      "PHYS 267",
+      "STAT 220",
+      "STAT 230",
+      "STAT 240"
+    ],
+    [
+      "AMATH 271",
+      "PHYS 121",
+      "PHYS 111:80"
+    ]
+  ],
+  "PHYS 358": [
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "MATH 227",
+      "MATH 237",
+      "MATH 247"
+    ],
+    [
+      "MATH 228",
+      "AMATH 250",
+      "AMATH 251"
+    ]
+  ],
+  "PHYS 359": [
+    [
+      "PHYS 236",
+      "CS 114",
+      "CS 116",
+      "CS 136",
+      "CS 146"
+    ],
+    [
+      "PHYS 358",
+      "ECE 403",
+      "CHEM 254",
+      "ME 250"
+    ],
+    [
+      "PHYS 233",
+      "PHYS 234",
+      "CHEM 356"
+    ]
+  ],
+  "PHYS 360A": [
+    [
+      "MNS 201L",
+      "PHYS 260L",
+      "PHYS 270L"
+    ]
+  ],
+  "PHYS 360B": [
+    [
+      "PHYS 360A"
+    ]
+  ],
+  "PHYS 363": [
+    [
+      "PHYS 236",
+      "CS 114",
+      "CS 116",
+      "CS 136",
+      "CS 146"
+    ],
+    [
+      "PHYS 263",
+      "AMATH 271"
+    ],
+    [
+      "MATH 227",
+      "MATH 237",
+      "MATH 247"
+    ],
+    [
+      "MATH 228",
+      "AMATH 250",
+      "AMATH 251"
+    ]
+  ],
+  "PHYS 364": [
+    [
+      "MATH 227"
+    ],
+    [
+      "PHYS 236",
+      "CS 114",
+      "CS 116",
+      "CS 136",
+      "CS 146"
+    ],
+    [
+      "MATH 228",
+      "AMATH 250",
+      "AMATH 251"
+    ]
+  ],
+  "PHYS 365": [
+    [
+      "MATH 227"
+    ],
+    [
+      "MATH 228",
+      "AMATH 250",
+      "AMATH 251"
+    ]
+  ],
+  "PHYS 370L": [
+    [
+      "PHYS 267"
+    ],
+    [
+      "PHYS 270L"
+    ]
+  ],
+  "PHYS 375": [
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "PHYS 236",
+      "CS 114",
+      "CS 116",
+      "CS 136",
+      "CS 146"
+    ],
+    [
+      "PHYS 234",
+      "PHYS 242",
+      "PHYS 256",
+      "PHYS 275",
+      "PHYS 358",
+      "AMATH 271"
+    ],
+    [
+      "PHYS 234",
+      "PHYS 242",
+      "PHYS 256",
+      "PHYS 275",
+      "PHYS 358",
+      "AMATH 271"
+    ]
+  ],
+  "PHYS 376": [
+    [
+      "PHYS 242"
+    ],
+    [
+      "AMATH 231",
+      "ECE 206",
+      "MATH 212",
+      "MATH 227",
+      "NE 217"
+    ],
+    [
+      "AMATH 271",
+      "PHYS 263"
+    ]
+  ],
+  "PHYS 380": [
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "CHEM 123",
+      "CHEM 125"
+    ]
+  ],
+  "PHYS 381": [
+    [
+      "PHYS 111",
+      "PHYS 121"
+    ],
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "CHEM 120",
+      "CHEM 121"
+    ],
+    [
+      "CHEM 123",
+      "CHEM 125"
+    ]
+  ],
+  "PHYS 383": [
+    [
+      "PHYS 112",
+      "PHYS 122"
+    ],
+    [
+      "MATH 118",
+      "MATH 119",
+      "MATH 128",
+      "MATH 138",
+      "MATH 148"
+    ],
+    [
+      "PHYS 280",
+      "BIOL 280"
+    ]
+  ],
+  "PHYS 391": [
+    [
+      "PHYS 122",
+      "PHYS 224",
+      "PHYS 242"
+    ]
+  ],
+  "PHYS 392": [
+    [
+      "PHYS 122",
+      "PHYS 224",
+      "PHYS 242"
+    ]
+  ],
+  "PHYS 393": [
+    [
+      "PHYS 256",
+      "ECE 404"
+    ],
+    [
+      "PHYS 225",
+      "PHYS 364",
+      "AMATH 353"
+    ]
+  ],
+  "PHYS 394": [
+    [
+      "PHYS 256",
+      "ECE 404"
+    ],
+    [
+      "PHYS 364",
+      "AMATH 353"
+    ]
+  ],
+  "PHYS 395": [
+    [
+      "PHYS 112",
+      "PHYS 122",
+      "PHYS 125",
+      "ECE 106"
+    ],
+    [
+      "BIOL 130",
+      "BIOL 239",
+      "CHEM 123",
+      "CHEM 125",
+      "PHARM 141",
+      "PHYS 280",
+      "BIOL 280",
+      "PHYS 380"
+    ]
+  ],
+  "PHYS 396": [
+    [
+      "PHYS 112",
+      "PHYS 122",
+      "PHYS 125",
+      "ECE 106"
+    ],
+    [
+      "MATH 128",
+      "MATH 138",
+      "MATH 148",
+      "SYDE 111",
+      "SYDE 112"
+    ],
+    [
+      "PHYS 224",
+      "PHYS 233",
+      "PHYS 234",
+      "PHYS 242",
+      "PHYS 256",
+      "PHYS 280",
+      "PHYS 380",
+      "ECE 209",
+      "ECE 370",
+      "ECE 375",
+      "NE 232",
+      "NE 241",
+      "SYDE 283",
+      "AMATH 231",
+      "AMATH 373",
+      "CS 473",
+      "CHEM 209",
+      "CHEM 356"
+    ]
+  ],
+  "PHYS 432": [
+    [
+      "PHYS 335",
+      "ECE 209",
+      "NE 242"
+    ]
+  ],
+  "PHYS 434": [
+    [
+      "PHYS 334",
+      "AMATH 373"
+    ],
+    [
+      "PHYS 364",
+      "AMATH 351",
+      "AMATH 353"
+    ]
+  ],
+  "PHYS 435": [
+    [
+      "PHYS 335"
+    ],
+    [
+      "PHYS 359"
+    ],
+    [
+      "PHYS 334",
+      "AMATH 373"
+    ]
+  ],
+  "PHYS 436": [
+    [
+      "AMATH 231",
+      "PHYS 364"
+    ],
+    [
+      "CHEM 356",
+      "PHYS 234"
+    ],
+    [
+      "PHYS 357",
+      "PHYS 358"
+    ]
+  ],
+  "PHYS 437B": [
+    [
+      "PHYS 437A"
+    ]
+  ],
+  "PHYS 441A": [
+    [
+      "PHYS 252",
+      "PHYS 241"
+    ],
+    [
+      "PHYS 253",
+      "PHYS 241"
+    ],
+    [
+      "PHYS 364",
+      "AMATH 332"
+    ],
+    [
+      "PHYS 364",
+      "AMATH 351"
+    ],
+    [
+      "PHYS 364",
+      "AMATH 353"
+    ],
+    [
+      "PHYS 365",
+      "AMATH 332"
+    ],
+    [
+      "PHYS 365",
+      "AMATH 351"
+    ],
+    [
+      "PHYS 365",
+      "AMATH 353"
+    ]
+  ],
+  "PHYS 441B": [
+    [
+      "PHYS 441A"
+    ]
+  ],
+  "PHYS 442": [
+    [
+      "PHYS 342"
+    ],
+    [
+      "PHYS 364",
+      "AMATH 351",
+      "AMATH 353"
+    ]
+  ],
+  "PHYS 444": [
+    [
+      "PHYS 334",
+      "AMATH 373"
+    ],
+    [
+      "PHYS 363"
+    ],
+    [
+      "PHYS 364",
+      "AMATH 332",
+      "AMATH 351",
+      "AMATH 353"
+    ],
+    [
+      "PHYS 365",
+      "AMATH 332",
+      "AMATH 351",
+      "AMATH 353"
+    ]
+  ],
+  "PHYS 445": [
+    [
+      "PHYS 256"
+    ]
+  ],
+  "PHYS 449": [
+    [
+      "PHYS 236",
+      "PHYS 349"
+    ]
+  ],
+  "PHYS 454": [
+    [
+      "AMATH 231",
+      "PMATH 343",
+      "AMATH 373",
+      "PHYS 334"
+    ]
+  ],
+  "PHYS 456": [
+    [
+      "AMATH 353",
+      "PHYS 364"
+    ],
+    [
+      "ECE 404",
+      "PHYS 256",
+      "PHYS 356"
+    ]
+  ],
+  "PHYS 457": [
+    [
+      "PHYS 357"
+    ],
+    [
+      "AMATH 373",
+      "CHEM 356",
+      "PHYS 233",
+      "PHYS 234"
+    ],
+    [
+      "CS 114",
+      "CS 116",
+      "CS 136",
+      "CS 146"
+    ]
+  ],
+  "PHYS 460A": [
+    [
+      "PHYS 360A"
+    ]
+  ],
+  "PHYS 460B": [
+    [
+      "PHYS 460A"
+    ]
+  ],
+  "PHYS 461": [
+    [
+      "PHYS 335",
+      "ECE 231"
+    ]
+  ],
+  "PHYS 464": [
+    [
+      "PHYS 334"
+    ],
+    [
+      "PHYS 342"
+    ],
+    [
+      "PHYS 363"
+    ],
+    [
+      "AMATH 332",
+      "PHYS 365",
+      "PMATH 332"
+    ],
+    [
+      "AMATH 353",
+      "PHYS 364"
+    ]
+  ],
+  "PHYS 467": [
+    [
+      "MATH 114",
+      "MATH 115",
+      "MATH 235",
+      "MATH 245",
+      "PHYS 334"
+    ]
+  ],
+  "PHYS 468": [
+    [
+      "CO 481",
+      "CS 467",
+      "PHYS 467",
+      "PHYS 334"
+    ]
+  ],
+  "PHYS 474": [
+    [
+      "AMATH 261",
+      "AMATH 271",
+      "PHYS 263"
+    ],
+    [
+      "PHYS 375"
+    ]
+  ],
+  "PHYS 475": [
+    [
+      "AMATH 261",
+      "AMATH 271",
+      "PHYS 263"
+    ]
+  ],
+  "PHYS 476": [
+    [
+      "AMATH 261",
+      "AMATH 271",
+      "PHYS 263"
+    ],
+    [
+      "AMATH 231",
+      "MATH 227"
+    ]
+  ],
+  "PHYS 480": [
+    [
+      "MATH 228"
+    ],
+    [
+      "PHYS 267"
+    ],
+    [
+      "PHYS 380"
+    ],
+    [
+      "BIOL 280",
+      "PHYS 280"
+    ]
+  ],
+  "PHYS 482": [
+    [
+      "MATH 227",
+      "MATH 237",
+      "MATH 247"
+    ],
+    [
+      "PHYS 234"
+    ],
+    [
+      "PHYS 241",
+      "PHYS 252"
+    ]
+  ],
+  "PHYS 484": [
+    [
+      "AMATH 473",
+      "PHYS 454"
+    ]
+  ],
+  "PHYS 491": [
+    [
+      "PHYS 380",
+      "PHYS 383",
+      "PHYS 395",
+      "PHYS 396"
     ]
   ],
   "PMATH 320": [

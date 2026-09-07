@@ -22,7 +22,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(ROOT, "data")
 
 UWFLOW_URL = "https://uwflow.com/graphql"
-SUBJECTS = ["cs", "math", "stat", "amath", "co", "pmath", "actsc"]
+SUBJECTS = ["cs", "math", "stat", "amath", "co", "pmath", "actsc", "phys"]
 
 QUERY = """
 query GetBySubject($prefix: String!) {

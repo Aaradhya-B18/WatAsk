@@ -47,6 +47,10 @@ Rules:
 - Grade minimums: append ":N" (MATH138 with at least 60% → "MATH 138:60")
 - Ignore: program restrictions, average requirements, high school courses
 - If no university-course prereqs: use []
+- If a group offers a choice between a university course and a high school course
+  (e.g. "MATH104 or 4U Calculus and Vectors"), we can't verify the high school side,
+  so drop that ENTIRE group rather than keeping the university course as a hard
+  requirement — a satisfiable-either-way group must never collapse into a forced one
 - "CS246/CS246E" or "CS246 or CS246E" → same group
 
 Examples:
@@ -56,6 +60,8 @@ Examples:
 "(AMATH242/CS371 or CS370) and (One of AMATH250,AMATH251)" → [["AMATH 242","CS 371","CS 370"],["AMATH 250","AMATH 251"]]
 "Honours Mathematics students only" → []
 "4U Calculus and Vectors" → []
+"MATH104 or 4U Calculus and Vectors" → []
+"CS135; MATH104 or 4U Calculus and Vectors" → [["CS 135"]]
 
 Now parse ALL of the following courses. Output a single JSON object mapping each course code to its parsed prereqs:
 
