@@ -96,23 +96,26 @@ body { font-family: system-ui,-apple-system,sans-serif; background:var(--bg); co
 .ob-result-name { font-size:12px; color:var(--muted); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .ob-result-badge { font-size:10px; color:var(--green); font-weight:600; white-space:nowrap; }
 .ob-term-picker {
-  background:rgba(230,179,80,.06); border:1px solid var(--gold-border);
+  background:var(--surface-2); border:1px solid var(--border);
   border-radius:8px; padding:12px 14px; margin-bottom:12px;
 }
 .ob-picker-label { font-size:12px; color:var(--muted); margin-bottom:10px; }
 .ob-picker-btns { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+.ob-picker-action {
+  padding:7px 14px; border-radius:6px; font-size:12px; font-weight:600;
+  font-family:inherit; cursor:pointer; text-align:center;
+}
+.ob-picker-action:hover { opacity:.85; }
 .ob-picker-cancel {
-  background:none; border:1px solid rgba(255,255,255,0.15); border-radius:5px;
-  color:rgba(255,255,255,0.6); font-size:12px;
-  cursor:pointer; padding:5px 12px; margin-top:6px; display:inline-block;
+  width:100%; margin-top:6px;
+  background:none; border:1px solid var(--border); color:var(--text);
 }
-.ob-picker-cancel:hover { color:#fff; border-color:rgba(255,255,255,0.35); }
+.ob-picker-cancel:hover { border-color:rgba(255,255,255,0.35); opacity:1; }
 .ob-retake-btn {
-  width:100%; padding:8px 14px; margin-top:8px;
-  background:rgba(224,138,60,.08); border:1px solid rgba(224,138,60,.3);
-  border-radius:6px; color:#e08a3c; font-size:12px; cursor:pointer; text-align:left;
+  width:100%; margin-top:8px;
+  background:rgba(224,138,60,.08); border:1px solid rgba(224,138,60,.3); color:#e08a3c;
 }
-.ob-retake-btn:hover { background:rgba(224,138,60,.18); }
+.ob-retake-btn:hover { background:rgba(224,138,60,.18); opacity:1; }
 .ob-taken-retaking { border-color:rgba(224,138,60,.4) !important; }
 .ob-taken-retaking .ob-taken-code { color:#e08a3c; }
 .ob-taken-retake-badge {
@@ -151,13 +154,13 @@ body { font-family: system-ui,-apple-system,sans-serif; background:var(--bg); co
 .ob-grade-pct { font-size:13px; color:var(--muted); }
 .ob-grade-selected-term { font-size:12px; color:var(--gold); font-weight:600; margin-bottom:6px; }
 .ob-grade-warn { font-size:11px; color:#e08a3c; margin-bottom:7px; }
-.ob-grade-actions { display:flex; gap:10px; align-items:center; }
+.ob-grade-actions { display:flex; gap:8px; align-items:stretch; }
 .ob-confirm-btn {
-  padding:6px 14px; background:var(--gold); border:none; border-radius:6px;
-  color:#1a1208; font-size:12px; font-weight:700; cursor:pointer;
+  flex:1; background:var(--gold); border:none; color:#1a1208;
 }
-.ob-confirm-btn:hover { opacity:.85; }
-.ob-skip-grade-btn { background:none; border:none; color:var(--muted); font-size:12px; cursor:pointer; text-decoration:underline; padding:0; }
+.ob-skip-grade-btn {
+  flex:1; background:none; border:1px solid var(--border); color:var(--text);
+}
 .ob-taken-grade {
   font-size:11px; color:var(--muted); background:var(--surface-2);
   border:1px solid var(--border); border-radius:4px; padding:2px 6px;
@@ -637,12 +640,12 @@ header {
           </div>
           <div id="obGradeWarn" class="ob-grade-warn" style="display:none"></div>
           <div class="ob-grade-actions">
-            <button class="ob-confirm-btn" onclick="obFinalizeTaken()">Add course</button>
-            <button class="ob-skip-grade-btn" onclick="obFinalizeTaken(true)">Skip %</button>
+            <button class="ob-picker-action ob-confirm-btn" onclick="obFinalizeTaken()">Add course</button>
+            <button class="ob-picker-action ob-skip-grade-btn" onclick="obFinalizeTaken(true)">Skip %</button>
           </div>
         </div>
-        <button class="ob-retake-btn" onclick="obMarkRetaking()">↻ Mark as retaking</button>
-        <button class="ob-picker-cancel" onclick="obCancelPicker()">← Change course</button>
+        <button class="ob-picker-action ob-retake-btn" onclick="obMarkRetaking()">↻ Mark as retaking</button>
+        <button class="ob-picker-action ob-picker-cancel" onclick="obCancelPicker()">← Change course</button>
       </div>
       <div id="obTakenList"></div>
       <div class="modal-footer">
