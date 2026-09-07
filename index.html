@@ -549,16 +549,17 @@ header {
       <label class="field-label">Your program</label>
       <div class="prog-search-wrap">
         <input type="text" id="obProgramSearch" class="ob-search-input" style="font-size:13px"
-          placeholder="Search your program…" autocomplete="off"
-          value="Computer Science (BCS)"
+          placeholder="Choose your program…" autocomplete="off"
+          value=""
           oninput="progFilter('obProgramSearch','obProgramDrop','obProgram',this.value)"
           onfocus="progOpen('obProgramSearch','obProgramDrop','obProgram')"
           onblur="setTimeout(()=>{ progClose('obProgramDrop'); document.getElementById('obProgramSearch').value=progLabel(document.getElementById('obProgram').value); },160)">
-        <input type="hidden" id="obProgram" value="cs">
+        <input type="hidden" id="obProgram" value="">
         <div class="prog-dropdown" id="obProgramDrop"></div>
       </div>
       <label class="field-label">Current term</label>
       <select id="obTerm">
+        <option value="" disabled selected>Choose your term…</option>
         <option value="pre">Haven't started yet</option>
         <option value="1A">1A</option>
         <option value="1B">1B</option>
@@ -569,6 +570,7 @@ header {
         <option value="4A">4A</option>
         <option value="4B">4B</option>
       </select>
+      <div id="obStep1Warn" style="display:none;color:var(--red);font-size:11px;margin-top:8px"></div>
       <div class="modal-footer">
         <div class="step-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
         <button class="btn-gold" onclick="obStep2()">Next →</button>
@@ -1903,6 +1905,15 @@ function getTerms() {
 }
 
 function obStep2() {
+  const warn = document.getElementById("obStep1Warn");
+  const program = document.getElementById("obProgram").value;
+  const term = document.getElementById("obTerm").value;
+  if (!program || !term) {
+    warn.textContent = !program ? "Please choose your program." : "Please choose your current term.";
+    warn.style.display = "block";
+    return;
+  }
+  warn.style.display = "none";
   _obCoop = "coop";
   _obSeq = "1";
   document.querySelectorAll("#coopToggle .seq-btn").forEach((b,i) => b.classList.toggle("active", i===0));
