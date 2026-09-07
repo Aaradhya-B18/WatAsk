@@ -1961,14 +1961,14 @@ function rankedCourseSearch(q, limit) {
 }
 
 function obSearchCourses(q) {
-  q = q.trim().toLowerCase();
+  const raw = q.trim();
+  q = raw.toLowerCase();
   const dropdown = document.getElementById("obSearchDropdown");
   if (q.length < 2) { dropdown.style.display = "none"; return; }
   const results = rankedCourseSearch(q, 9);
-  if (!results.length) { dropdown.style.display = "none"; return; }
   const takenCodes = new Set(_obTaken.map(t => t.code));
   const retakingCodes = new Set(_obRetaking);
-  dropdown.innerHTML = results.map(c => {
+  let html = results.map(c => {
     const passed = takenCodes.has(c.code);
     const retaking = retakingCodes.has(c.code);
     const badge = passed ? `<span class="ob-result-badge">✓ passed</span>`
@@ -1980,6 +1980,23 @@ function obSearchCourses(q) {
       ${badge}
     </div>`;
   }).join("");
+
+  // Courses from subjects we haven't catalogued (ECE, SE, AFM, etc.) won't show
+  // up above — if the typed text looks like a real course code, let the student
+  // log it anyway so it still counts toward prereqs even without a title/rating.
+  const codeMatch = raw.match(/^([A-Za-z]{2,10})\s*(\d{2,4}[A-Za-z]{0,2})$/);
+  if (codeMatch) {
+    const normalized = `${codeMatch[1].toUpperCase()} ${codeMatch[2].toUpperCase()}`;
+    if (!results.some(c => c.code === normalized)) {
+      html += `<div class="ob-result" onclick="obPickTerm('${esc(normalized)}')">
+        <span class="ob-result-code">${esc(normalized)}</span>
+        <span class="ob-result-name" style="font-style:italic">Not in our catalog — add anyway</span>
+      </div>`;
+    }
+  }
+
+  if (!html) { dropdown.style.display = "none"; return; }
+  dropdown.innerHTML = html;
   dropdown.style.display = "block";
 }
 
