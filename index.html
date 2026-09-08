@@ -894,18 +894,54 @@ const ANTIREQS = {
 
 // Interest tracks — courses to prioritize for each track when sorting advanced options.
 // All listed courses are Math Faculty (CS, STAT, AMATH, PMATH, CO, ACTSC count as math credits).
+// Course lists match the official 2026-Present CS specialization checklists
+// (cs.uwaterloo.ca/checklists). `required` = the specialization's actual
+// mandatory additions (get scheduled as real requirements once selected).
+// `courses` = the full flavor set shown in the picker, required ∪ suggested.
+// Many checklists offer a CS-or-ECE/SE either-or for a slot; `required`
+// defaults to the CS side to avoid needing an entirely separate faculty's
+// course data for a single interchangeable option. "Theory & Algorithms" and
+// "Security & Privacy" were removed — they aren't among the 8 official BCS
+// specializations currently listed, unlike the other 8 which all have a real
+// checklist.
 const INTEREST_TRACKS = {
   cs: [
-    { id:"ai",       label:"Artificial Intelligence",  courses:["CS 480","CS 485","CS 486","CS 489","CS 487","CS 484","CS 479"] },
-    { id:"bio",      label:"Bioinformatics",           courses:["CS 482","CS 485","CS 486","CS 489","CS 480"] },
-    { id:"business", label:"Business",                 courses:["MATBUS 370","MATBUS 371","MATBUS 431","MATBUS 432","MATBUS 451","MATBUS 453","MATBUS 473"] },
-    { id:"cfa",      label:"Computational Fine Art",   courses:["CS 488","CS 484","CS 489","CS 349","CS 446"] },
-    { id:"hardware", label:"Digital Hardware",         courses:["CS 350","CS 452","CS 454","CS 456","CS 444","CS 445"] },
-    { id:"game",     label:"Game Design",              courses:["CS 488","CS 349","CS 346","CS 489","CS 484"] },
-    { id:"hci",      label:"Human-Computer Interaction",courses:["CS 449","CS 492","CS 493","CS 489","CS 349"] },
-    { id:"software", label:"Software Engineering",     courses:["CS 346","CS 431","CS 436","CS 442","CS 448","CS 451","CS 348"] },
-    { id:"theory",   label:"Theory & Algorithms",     courses:["CS 341","CS 360","CS 365","CS 466","CS 487"] },
-    { id:"security", label:"Security & Privacy",       courses:["CS 458","CS 487","CS 450","CS 454"] },
+    { id:"ai",       label:"Artificial Intelligence",
+      // CS 370 isn't a List A pick itself - it's a bridge course needed to
+      // unlock CS 484's prereq (same role CFA's CS 370 addition plays there)
+      required:["CS 480","CS 486","CS 492","CS 452","CS 479","CS 370","CS 484","BIOL 487"],
+      typical:{ "CS 479":"2B", "CS 370":"2B", "CS 452":"3A", "CS 484":"3A", "BIOL 487":"3A", "CS 480":"3B", "CS 492":"3A", "CS 486":"4A" },
+      courses:["CS 480","CS 486","CS 492","CS 452","CS 479","CS 484","BIOL 487","CS 485"] },
+    { id:"bio",      label:"Bioinformatics",
+      required:["CS 482","BIOL 130","BIOL 239","BIOL 365"],
+      typical:{ "BIOL 130":"1B", "BIOL 239":"2A", "BIOL 365":"2B", "CS 482":"3A" },
+      courses:["CS 482","BIOL 130","BIOL 239","BIOL 365","BIOL 308","CHEM 120"] },
+    { id:"business", label:"Business",
+      required:["CS 348","CS 490","ACTSC 231","AFM 101","AFM 102","ECON 101","ECON 102"],
+      typical:{ "AFM 101":"1A", "ECON 101":"1A", "AFM 102":"1B", "ECON 102":"1B", "ACTSC 231":"2A", "CS 348":"2B", "CS 490":"3B" },
+      courses:["CS 348","CS 490","ACTSC 231","AFM 101","AFM 102","ECON 101","ECON 102"] },
+    { id:"cfa",      label:"Computational Fine Art",
+      required:["CS 349","CS 370","CS 383","CS 488","FINE 100","FINE 228"],
+      typical:{ "FINE 100":"1A", "FINE 228":"1B", "CS 349":"2A", "CS 370":"2B", "CS 383":"3A", "CS 488":"3B" },
+      courses:["CS 349","CS 370","CS 383","CS 488","FINE 100","FINE 228","FINE 130","FINE 247"] },
+    { id:"hardware", label:"Digital Hardware",
+      required:["GENE 123","ECE 124","ECE 222","ECE 224","ECE 327","ECE 423","CS 450","CS 452","CS 454"],
+      typical:{ "GENE 123":"1B", "ECE 124":"2A", "ECE 222":"2B", "CS 450":"3A", "CS 452":"3A", "ECE 224":"3A", "ECE 327":"3B", "CS 454":"3B", "ECE 423":"4A" },
+      courses:["GENE 123","ECE 124","ECE 222","ECE 224","ECE 327","ECE 423","CS 450","CS 452","CS 454","CS 456","CS 457"] },
+    { id:"game",     label:"Game Design",
+      required:["CS 449","CS 454","FINE 100","FINE 247","GSJ 205"],
+      typical:{ "FINE 100":"1A", "FINE 247":"1B", "GSJ 205":"2A", "CS 449":"2B", "CS 454":"3A" },
+      courses:["CS 449","CS 454","FINE 100","FINE 247","GSJ 205","CS 488"] },
+    { id:"hci",      label:"Human-Computer Interaction",
+      // MATH 235 and STAT 331 aren't List B picks themselves - they're
+      // bridge courses needed to unlock STAT 430's prereq
+      required:["CS 480","CS 486","CS 492","MATH 235","STAT 331","STAT 332","STAT 430"],
+      typical:{ "MATH 235":"1B", "STAT 331":"2B", "STAT 332":"2B", "CS 492":"3A", "STAT 430":"3A", "CS 480":"3B", "CS 486":"4A" },
+      courses:["CS 480","CS 486","CS 492","STAT 332","STAT 430","CS 445","CS 446","CS 447","CS 484","CS 488"] },
+    { id:"software", label:"Software Engineering",
+      required:["CS 343","CS 346","CS 442","CS 444","CS 445","CS 446","CS 447"],
+      typical:{ "CS 346":"2B", "CS 442":"2B", "CS 343":"3A", "CS 444":"3A", "CS 445":"3A", "CS 446":"3B", "CS 447":"4A" },
+      courses:["CS 343","CS 346","CS 442","CS 444","CS 445","CS 446","CS 447","CS 348","CS 349","CS 450"] },
   ],
   "data-sci": [
     { id:"ml",    label:"ML / AI",       courses:["AMATH 445","STAT 441","STAT 444","AMATH 449","CS 479"] },
@@ -2834,6 +2870,11 @@ async function regenWithPref(prefKey) {
     return cs.filter(c => { if ((ANTIREQS[c]||[]).some(a=>seen.has(a))) return false; seen.add(c); return true; });
   }
 
+  const specTrackForRebuild = (INTEREST_TRACKS[S.program] || []).find(t => t.id === S.specialization);
+  const rebuildSpecGroups = specTrackForRebuild && specTrackForRebuild.required?.length
+    ? [{ name: `Specialization: ${specTrackForRebuild.label}`, courses: dedupeGroup(specTrackForRebuild.required), typical: specTrackForRebuild.typical || {} }]
+    : [];
+
   try {
     const res = await fetch("/plan", {
       method:"POST", headers:{"Content-Type":"application/json"},
@@ -2841,7 +2882,10 @@ async function regenWithPref(prefKey) {
         program: prog.name,
         terms: studyTerms,
         taken: S.taken,
-        groups: prog.groups.map(g => ({ name:g.name, courses:dedupeGroup(g.courses), typical:g.typical||{} })),
+        groups: [
+          ...prog.groups.map(g => ({ name:g.name, courses:dedupeGroup(g.courses), typical:g.typical||{} })),
+          ...rebuildSpecGroups,
+        ],
         placed: {},
         current_term: S.currentTerm,
         specialization: courses.length ? courses : null,
@@ -2974,11 +3018,15 @@ async function doGeneratePlan(btn, thread) {
     });
   }
 
-  // Get chosen specialization courses (sent to backend for prioritisation)
+  // Get chosen specialization courses (required ones become real scheduled
+  // requirements; the rest of `courses` just prioritises the Advanced pool)
   const tracks = INTEREST_TRACKS[S.program] || [];
   const specTrack = tracks.find(t => t.id === S.specialization);
   const specCourses = specTrack ? specTrack.courses : null;
   const specLabel = specTrack ? specTrack.label : null;
+  const specGroups = specTrack && specTrack.required?.length
+    ? [{ name: `Specialization: ${specTrack.label}`, courses: dedupeGroup(specTrack.required), typical: specTrack.typical || {} }]
+    : [];
 
   try {
     const res = await fetch("/plan", {
@@ -2987,11 +3035,14 @@ async function doGeneratePlan(btn, thread) {
         program: prog.name,
         terms: studyTerms,
         taken: S.taken,
-        groups: prog.groups.map(g => ({
-          name: g.name,
-          courses: dedupeGroup(g.courses),
-          typical: g.typical || {},
-        })),
+        groups: [
+          ...prog.groups.map(g => ({
+            name: g.name,
+            courses: dedupeGroup(g.courses),
+            typical: g.typical || {},
+          })),
+          ...specGroups,
+        ],
         placed: {},
         current_term: S.currentTerm,
         specialization: specCourses,

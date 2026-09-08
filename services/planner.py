@@ -171,7 +171,12 @@ def generate_plan(
     # Phase 2 — advanced pool from 3A, spread evenly across remaining terms
     import math as _math
     adv_start_idx = max(term_index.get("3A", len(study_terms) // 2), current_term_idx)
-    avail_adv = [c for c in advanced_pool if c not in already_done or c in retaking_set]
+    # A course scheduled as required this run (e.g. a specialization's own
+    # required group overlapping the Advanced pool) shouldn't be suggested
+    # again - already_done alone only reflects pre-existing history
+    scheduled_this_run = {c for t in study_terms for c in schedule[t]}
+    avail_adv = [c for c in advanced_pool
+                 if (c not in already_done and c not in scheduled_this_run) or c in retaking_set]
     n_adv_terms = len(study_terms) - adv_start_idx
     # Spread pool evenly AND cap at (capacity - reserve) so elective slots remain
     spread_cap = _math.ceil(len(avail_adv) / n_adv_terms) if n_adv_terms > 0 else MAX_PER_TERM
