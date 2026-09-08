@@ -1,13 +1,7 @@
 {
   "functions": {
-    "api/index.py": {
-      "includeFiles": "data/**"
+    "server.py": {
+      "includeFiles": ["data/**", "index.html"]
     }
-  },
-  "rewrites": [
-    { "source": "/prereqs", "destination": "/api/index" },
-    { "source": "/courses", "destination": "/api/index" },
-    { "source": "/ask", "destination": "/api/index" },
-    { "source": "/plan", "destination": "/api/index" }
-  ]
+  }
 }
