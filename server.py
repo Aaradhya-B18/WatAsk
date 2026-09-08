@@ -2,6 +2,7 @@ import os
 import json
 from typing import List, Optional
 
+import sentry_sdk
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,6 +18,9 @@ from services.planner import generate_plan
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(ROOT, ".env"))
+
+# No-ops safely if SENTRY_DSN isn't set (e.g. local dev)
+sentry_sdk.init(dsn=os.getenv("SENTRY_DSN"), traces_sample_rate=0.1, send_default_pii=False)
 
 supabase = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
 

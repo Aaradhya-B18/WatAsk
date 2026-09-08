@@ -1,11 +1,15 @@
 import logging
 import re
 from typing import Optional
+
+import sentry_sdk
 from supabase import Client
 
 from services.embeddings import embed, get_client
 
 logger = logging.getLogger(__name__)
+
+UNAVAILABLE_RESPONSE = "I'm having trouble reaching the advisor service right now — please try again in a moment."
 
 GREETING_TRIGGERS = [
     "hi", "hello", "hey", "yo", "help",
@@ -119,23 +123,28 @@ def answer(
     clean_question = normalize_query(question)
     search_text = (normalize_query(history[-1].question) + " " + clean_question) if history else clean_question
 
-    question_vector = embed(search_text)
-    result = supabase.rpc("match_courses", {"query_embedding": question_vector, "match_count": 4}).execute()
+    try:
+        question_vector = embed(search_text)
+        result = supabase.rpc("match_courses", {"query_embedding": question_vector, "match_count": 4}).execute()
 
-    sources = []
-    seen_codes: set[str] = set()
-    for row in result.data:
-        code = row.get("code")
-        if code and code not in seen_codes:
-            sources.append({"code": code, "text": row["text"]})
-            seen_codes.add(code)
+        sources = []
+        seen_codes: set[str] = set()
+        for row in result.data:
+            code = row.get("code")
+            if code and code not in seen_codes:
+                sources.append({"code": code, "text": row["text"]})
+                seen_codes.add(code)
 
-    for code in find_codes(clean_question):
-        exact = supabase.table("courses").select("code,text").eq("code", code).execute()
-        for row in exact.data:
-            if row["code"] not in seen_codes:
-                sources.insert(0, {"code": row["code"], "text": row["text"]})
-                seen_codes.add(row["code"])
+        for code in find_codes(clean_question):
+            exact = supabase.table("courses").select("code,text").eq("code", code).execute()
+            for row in exact.data:
+                if row["code"] not in seen_codes:
+                    sources.insert(0, {"code": row["code"], "text": row["text"]})
+                    seen_codes.add(row["code"])
+    except Exception:
+        logger.exception("Course retrieval failed (embedding or Supabase)")
+        sentry_sdk.capture_exception()
+        return {"question": question, "answer": UNAVAILABLE_RESPONSE, "source_codes": [], "sources": []}
 
     context = "\n\n".join(s["text"] for s in sources)
     convo = "".join(f"Student: {t.question}\nWatAsk: {t.answer}\n\n" for t in history)
