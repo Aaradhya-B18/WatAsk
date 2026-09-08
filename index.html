@@ -2847,6 +2847,7 @@ async function regenWithPref(prefKey) {
         specialization: courses.length ? courses : null,
         retaking: S.retaking || [],
         taken_grades: S.takenGrades || {},
+        taken_terms: S.takenTerms || {},
       }),
     });
     const data = await res.json();
@@ -2997,6 +2998,7 @@ async function doGeneratePlan(btn, thread) {
         overload: S.overload || false,
         retaking: S.retaking || [],
         taken_grades: S.takenGrades || {},
+        taken_terms: S.takenTerms || {},
       }),
     });
     const data = await res.json();

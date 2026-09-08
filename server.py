@@ -61,6 +61,7 @@ class PlanRequest(BaseModel):
     specialization: Optional[List[str]] = None
     overload: Optional[bool] = False
     retaking: Optional[List[str]] = []
+    taken_terms: Optional[dict] = {}
     taken_grades: Optional[dict] = {}
 
 
@@ -107,5 +108,6 @@ def suggest_plan(request: Request, req: PlanRequest):
         extra_slots=len(req.retaking or []) if req.overload else 0,
         retaking=req.retaking or [],
         taken_grades={k: float(v) for k, v in (req.taken_grades or {}).items()},
+        taken_terms=req.taken_terms or {},
     )
     return {"answer": result}

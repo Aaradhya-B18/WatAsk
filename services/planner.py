@@ -24,6 +24,7 @@ def generate_plan(
     extra_slots: int = 0,
     retaking: Optional[list[str]] = None,
     taken_grades: Optional[dict] = None,
+    taken_terms: Optional[dict] = None,
 ) -> str:
     """
     Greedy 3-phase course scheduler.
@@ -63,6 +64,7 @@ def generate_plan(
             placed_flat.update(clean)
 
     retaking_set = set(retaking or [])
+    taken_terms = taken_terms or {}
     grades = taken_grades or {}
 
     already_done = set(taken) | placed_flat
@@ -152,6 +154,10 @@ def generate_plan(
         for code in unplaced:
             target = typical.get(code, study_terms[-1])
             start_idx = max(term_index.get(target, 0), current_term_idx)
+            if code in retaking_set and code in taken_terms:
+                # A retake can't land in or before the term it originally failed in
+                original_idx = term_index.get(taken_terms[code], -1)
+                start_idx = max(start_idx, original_idx + 1)
             placed_flag = False
             for i in range(start_idx, len(study_terms)):
                 if prereqs_ok(code, i) and term_capacity(study_terms[i]) > min_cap:
@@ -165,7 +171,7 @@ def generate_plan(
     # Phase 2 — advanced pool from 3A, spread evenly across remaining terms
     import math as _math
     adv_start_idx = max(term_index.get("3A", len(study_terms) // 2), current_term_idx)
-    avail_adv = [c for c in advanced_pool if c not in already_done]
+    avail_adv = [c for c in advanced_pool if c not in already_done or c in retaking_set]
     n_adv_terms = len(study_terms) - adv_start_idx
     # Spread pool evenly AND cap at (capacity - reserve) so elective slots remain
     spread_cap = _math.ceil(len(avail_adv) / n_adv_terms) if n_adv_terms > 0 else MAX_PER_TERM
@@ -268,6 +274,8 @@ def generate_plan(
         if root_causes:
             lines.append("UNSCHEDULED (fix these to unblock the rest): " + " | ".join(root_causes))
         else:
-            lines.append(f"UNSCHEDULED: {', '.join(unplaced)}")
+            # No prereq-based cause found — it's a scheduling/capacity problem
+            # instead (e.g. a retake forced past the last available term)
+            lines.append(f"UNSCHEDULED (no term slot available, not a prereq issue): {', '.join(unplaced)}")
 
     return "\n".join(lines)
