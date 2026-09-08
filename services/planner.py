@@ -81,7 +81,9 @@ def generate_plan(
     schedule: dict[str, list[str]] = {t: [] for t in study_terms}
 
     def placed_before(term_idx: int) -> set[str]:
-        result = set(taken)
+        # A retaking course isn't "done" just because it's in taken history —
+        # it only counts once its rescheduled attempt actually lands somewhere
+        result = set(taken) - retaking_set
         for j in range(term_idx):
             t = study_terms[j]
             result.update(grid_by_term.get(t, []))
@@ -111,6 +113,11 @@ def generate_plan(
                 min_grade = int(parts[1]) if len(parts) > 1 else 50
                 if req_course not in done:
                     continue
+                # Being retaken — the old failing grade shouldn't count against
+                # a fresh attempt, regardless of whether it's still recorded
+                if req_course in retaking_set:
+                    group_satisfied = True
+                    break
                 # Course is done — check if grade meets the minimum
                 if req_course in grades:
                     # Known grade from history: verify it meets the minimum
@@ -213,7 +220,7 @@ def generate_plan(
         # Everything actually completed or successfully scheduled anywhere —
         # used to tell a genuine root cause (bad grade, missing prereq) apart
         # from a course that's merely stuck waiting on another blocked one.
-        satisfiable = set(already_done)
+        satisfiable = set(already_done) - retaking_set
         for t in study_terms:
             satisfiable.update(c.replace("[suggested]", "").strip() for c in schedule[t])
 
@@ -235,6 +242,9 @@ def generate_plan(
                     req_course, min_grade = parts[0], (int(parts[1]) if len(parts) > 1 else 50)
                     if req_course in unplaced_set:
                         pending_on_cascade = True
+                        break
+                    if req_course in retaking_set:
+                        blockers = []
                         break
                     if req_course not in satisfiable:
                         blockers.append(f"{req_course} (not completed)")
