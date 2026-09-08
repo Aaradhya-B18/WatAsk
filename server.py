@@ -15,11 +15,12 @@ from supabase import create_client
 from services.rag import answer
 from services.planner import generate_plan
 
-load_dotenv()
+ROOT = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(ROOT, ".env"))
 
 supabase = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
 
-with open("data/prereqs.json") as f:
+with open(os.path.join(ROOT, "data", "prereqs.json")) as f:
     PREREQS: dict = json.load(f)
 
 limiter = Limiter(key_func=get_remote_address)
@@ -61,7 +62,7 @@ class PlanRequest(BaseModel):
 
 @app.get("/")
 def home():
-    return FileResponse("index.html")
+    return FileResponse(os.path.join(ROOT, "index.html"))
 
 
 @app.get("/prereqs")
@@ -71,7 +72,7 @@ def get_prereqs():
 
 @app.get("/courses")
 def get_courses():
-    with open("data/course_catalog.json") as f:
+    with open(os.path.join(ROOT, "data", "course_catalog.json")) as f:
         return json.load(f)
 
 

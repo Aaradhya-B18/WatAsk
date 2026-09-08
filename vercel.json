@@ -1,0 +1,14 @@
+{
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.12",
+      "includeFiles": "data/**"
+    }
+  },
+  "rewrites": [
+    { "source": "/prereqs", "destination": "/api/index" },
+    { "source": "/courses", "destination": "/api/index" },
+    { "source": "/ask", "destination": "/api/index" },
+    { "source": "/plan", "destination": "/api/index" }
+  ]
+}
