@@ -209,6 +209,55 @@ def generate_plan(
             lines.append(f"{term}: {', '.join(parts)}")
 
     if unplaced:
-        lines.append(f"UNSCHEDULED: {', '.join(unplaced)}")
+        unplaced_set = set(unplaced)
+        # Everything actually completed or successfully scheduled anywhere —
+        # used to tell a genuine root cause (bad grade, missing prereq) apart
+        # from a course that's merely stuck waiting on another blocked one.
+        satisfiable = set(already_done)
+        for t in study_terms:
+            satisfiable.update(c.replace("[suggested]", "").strip() for c in schedule[t])
+
+        def independent_blockers(code: str) -> Optional[list[str]]:
+            """Returns reason texts for the first prereq group that's both
+            unsatisfied AND not just waiting on another stuck course — i.e. a
+            genuine independent cause, not a downstream cascade. None means
+            code has no independent cause of its own (pure cascade, or its
+            prereqs are actually fine and it's just a scheduling/capacity
+            casualty)."""
+            chain = prereqs.get(code)
+            if not chain:
+                return None
+            for group in chain:
+                blockers = []
+                pending_on_cascade = False
+                for entry in group:
+                    parts = entry.split(":")
+                    req_course, min_grade = parts[0], (int(parts[1]) if len(parts) > 1 else 50)
+                    if req_course in unplaced_set:
+                        pending_on_cascade = True
+                        break
+                    if req_course not in satisfiable:
+                        blockers.append(f"{req_course} (not completed)")
+                    elif req_course in grades and grades[req_course] < min_grade:
+                        blockers.append(f"{req_course} (have {grades[req_course]}%, need {min_grade}%)")
+                    else:
+                        blockers = []  # this group IS satisfied
+                        break
+                if pending_on_cascade:
+                    continue  # this group will resolve once the cascade's root is fixed
+                if blockers:
+                    return blockers
+            return None
+
+        root_causes = []
+        for code in unplaced:
+            blockers = independent_blockers(code)
+            if blockers:
+                root_causes.append(f"{code} needs one of: {', '.join(blockers)}")
+
+        if root_causes:
+            lines.append("UNSCHEDULED (fix these to unblock the rest): " + " | ".join(root_causes))
+        else:
+            lines.append(f"UNSCHEDULED: {', '.join(unplaced)}")
 
     return "\n".join(lines)

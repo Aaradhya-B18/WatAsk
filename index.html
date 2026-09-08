@@ -2870,7 +2870,7 @@ function parsePlanToTable(text) {
   const rows = [];
   let unscheduled = "";
   for (const line of text.split("\n")) {
-    const unschedMatch = line.match(/^UNSCHEDULED:\s*(.+)/);
+    const unschedMatch = line.match(/^UNSCHEDULED[^:]*:\s*(.+)/);
     if (unschedMatch) { unscheduled = unschedMatch[1].trim(); continue; }
     const m = line.match(/^([\w\s&]+?):\s*(.+)/);
     if (!m) continue;
@@ -2916,7 +2916,8 @@ function parsePlanToTable(text) {
 
   const warning = unscheduled
     ? `<div style="margin-bottom:8px;padding:6px 10px;border:1px solid var(--red);border-radius:6px;font-size:11px;color:var(--red)">
-        ⚠ Couldn't fit into your plan (prereq chain unresolved with current course data): ${esc(unscheduled)}
+        ⚠ Couldn't fit into your plan:
+        ${unscheduled.split(" | ").map(reason => `<div style="margin-top:3px">• ${esc(reason)}</div>`).join("")}
       </div>`
     : "";
 
