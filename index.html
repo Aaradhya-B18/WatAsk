@@ -120,7 +120,7 @@ body { font-family: system-ui,-apple-system,sans-serif; background:var(--bg); co
 }
 .modal select {
   width:100%; background:var(--surface-2); border:1px solid var(--border);
-  border-radius:8px; color:var(--text); font-size:15px; padding:10px 14px;
+  border-radius:8px; color:var(--text); font-family:inherit; font-size:14px; padding:10px 14px;
   margin-bottom:20px; appearance:none; cursor:pointer;
 }
 .modal select:focus { outline:none; border-color:var(--gold); }
@@ -621,7 +621,7 @@ header {
       <p class="sub">Plan your UW degree, term by term. Let's set you up in 3 steps.</p>
       <label class="field-label">Your program</label>
       <div class="prog-search-wrap">
-        <input type="text" id="obProgramSearch" class="ob-search-input" style="font-size:13px"
+        <input type="text" id="obProgramSearch" class="ob-search-input"
           placeholder="Choose your program…" autocomplete="off"
           value=""
           oninput="progFilter('obProgramSearch','obProgramDrop','obProgram',this.value)"
