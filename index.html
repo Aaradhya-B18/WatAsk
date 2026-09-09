@@ -605,7 +605,7 @@ header {
     <div class="splash-word">WatAsk</div>
     <div class="splash-tag">Your UW degree, planned in minutes.</div>
     <div class="splash-cta">
-      <button class="btn-gold" onclick="dismissWelcomeSplash()" style="padding:12px 28px;font-size:14px">Get started →</button>
+      <button class="btn-gold" id="splashCtaBtn" onclick="dismissWelcomeSplash()" style="padding:12px 28px;font-size:14px">Get started →</button>
     </div>
   </div>
 </div>
@@ -3305,6 +3305,7 @@ function stopWelcomeCanvas() {
 }
 
 function showWelcomeSplash() {
+  document.getElementById("splashCtaBtn").textContent = S ? "Continue to planner →" : "Get started →";
   document.getElementById("welcomeSplash").classList.remove("hidden");
   startWelcomeCanvas();
 }
@@ -3312,7 +3313,11 @@ function showWelcomeSplash() {
 function dismissWelcomeSplash() {
   const splash = document.getElementById("welcomeSplash");
   splash.classList.add("splash-out");
-  document.getElementById("onboarding").classList.remove("hidden");
+  if (S) {
+    startApp();
+  } else {
+    document.getElementById("onboarding").classList.remove("hidden");
+  }
   setTimeout(() => {
     splash.classList.add("hidden");
     stopWelcomeCanvas();
@@ -3338,11 +3343,7 @@ document.getElementById("chatInput").addEventListener("keydown", e => {
 
 S = loadState();
 loadAllCourses().then(() => {
-  if (S) {
-    startApp();
-  } else {
-    showWelcomeSplash();
-  }
+  showWelcomeSplash();
 });
 </script>
 </body>
