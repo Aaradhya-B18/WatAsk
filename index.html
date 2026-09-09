@@ -1051,9 +1051,13 @@ const PROGRAMS = {
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
       {
+        // Per "2026-Present: Bachelor of Mathematics (Computer Science)" checklist
+        // (uwaterloo.ca/computer-science) - this is the BMath CS plan, distinct from
+        // the BCS Honours plan ("cs" key). "CS 360 or CS 365" and "CS 370 or CS 371"
+        // are real pick-1 groups - defaulting to CS 360/CS 370 (lighter prereqs).
         name:"Core CS",
-        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 245":"2A","CS 241":"2A","CS 246":"2B","CS 240":"3A" },
+        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246","CS 251","CS 341","CS 350","CS 360","CS 370"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 245":"2A","CS 241":"2A","CS 246":"2B","CS 251":"2B","CS 240":"3A","CS 370":"3A","CS 341":"3B","CS 360":"3B","CS 350":"4A" },
       },
       {
         name:"Core Math",
@@ -1068,7 +1072,7 @@ const PROGRAMS = {
       {
         name:"Advanced Options",
         courses:[
-          "CS 341","CS 343","CS 346","CS 348","CS 350","CS 360","CS 365","CS 370","CS 371",
+          "CS 343","CS 346","CS 348","CS 365","CS 371",
           "CS 430","CS 431","CS 436","CS 442","CS 444","CS 445","CS 446","CS 480","CS 486","CS 489",
           "PMATH 330","PMATH 331","PMATH 333","PMATH 340","PMATH 345","PMATH 347",
           "AMATH 231","AMATH 250","CO 250","CO 342",
@@ -1231,16 +1235,25 @@ const PROGRAMS = {
       },
       {
         name:"Statistics",
-        courses:["STAT 230","STAT 231"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B" },
+        courses:["STAT 230","STAT 231","STAT 331","STAT 341"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 331":"3A","STAT 341":"3A" },
+      },
+      {
+        name:"Computational Mathematics Core",
+        // Per uwaterloo.ca/math/future-undergraduates/programs/computational-mathematics
+        // (marketing page listing "upper-year courses" - not a full checklist PDF, MEDIUM
+        // confidence). AMATH 250 is a bridge: AMATH 342 needs AMATH 242 + one of
+        // AMATH 250/251/350/MATH 218/228. STAT 331 (added above) bridges STAT 444.
+        courses:["AMATH 250","AMATH 242","AMATH 342","CS 479","STAT 444"],
+        typical:{ "AMATH 250":"2A","AMATH 242":"2B","AMATH 342":"3A","CS 479":"3B","STAT 444":"4A" },
       },
       {
         name:"Advanced Options",
         courses:[
           "CS 341","CS 350","CS 360","CS 370","CS 371","CS 442","CS 444","CS 445","CS 450","CS 480",
-          "AMATH 231","AMATH 242","AMATH 250","AMATH 271","AMATH 331","AMATH 342","AMATH 353",
-          "CO 250","CO 351","CO 367",
-          "STAT 330","STAT 331","STAT 340",
+          "AMATH 231","AMATH 271","AMATH 331","AMATH 353",
+          "CO 250","CO 351","CO 367","CO 372",
+          "STAT 330","STAT 340",
         ],
         typical:{},
       },
@@ -1265,8 +1278,8 @@ const PROGRAMS = {
         // PMATH 333 (Analysis, needs MATH 138:60) → 2B; PMATH 330/347 need MATH 235
         // PMATH 348 (Fields/Galois, needs PMATH 347) → 3B; PMATH 365 (Diff Geometry) → 4A
         // PMATH 351/352 need PMATH 333 → 3A/3B
-        courses:["PMATH 330","PMATH 333","PMATH 347","PMATH 348","PMATH 351","PMATH 352","PMATH 365"],
-        typical:{ "PMATH 330":"2B","PMATH 333":"2A","PMATH 347":"3A","PMATH 348":"3B","PMATH 351":"3A","PMATH 352":"3B","PMATH 365":"4A" },
+        courses:["PMATH 330","PMATH 333","PMATH 347","PMATH 348","PMATH 351","PMATH 352","PMATH 365","PMATH 441"],
+        typical:{ "PMATH 330":"2B","PMATH 333":"2A","PMATH 347":"3A","PMATH 348":"3B","PMATH 351":"3A","PMATH 352":"3B","PMATH 365":"4A","PMATH 441":"4A" },
       },
       {
         name:"Statistics",
@@ -1281,7 +1294,7 @@ const PROGRAMS = {
       {
         name:"Advanced Options",
         courses:["PMATH 331","PMATH 332","PMATH 334","PMATH 340","PMATH 345","PMATH 346","PMATH 354",
-                 "PMATH 440","PMATH 441","PMATH 445","PMATH 446","PMATH 450","PMATH 451","PMATH 453","PMATH 454"],
+                 "PMATH 440","PMATH 445","PMATH 446","PMATH 450","PMATH 451","PMATH 453","PMATH 454"],
         typical:{},
       },
     ],
