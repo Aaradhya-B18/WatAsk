@@ -22794,5 +22794,49 @@
     "_liked": null,
     "_easy": null,
     "_ratings": 0
+  },
+  {
+    "code": "MTHEL 131",
+    "title": "Introduction to Actuarial Practice",
+    "description": "Individual life insurance products. Introduction to property and casualty insurance. Introductory risk management, insurance pricing and valuation. Pension plan design.",
+    "requirements": "Prereq: 4U Calculus and Vectors",
+    "subject": "MTHEL",
+    "catalogNumber": "131",
+    "termsOffered": [],
+    "_source": "uwflow",
+    "_liked": 0.40559440559440557,
+    "_easy": 0.5967741935483871,
+    "_useful": 0.6329787234042553,
+    "_ratings": 143
+  },
+  {
+    "code": "MGMT 244",
+    "title": "Principles of Marketing",
+    "description": "This course is designed to provide a broad understanding of the field of marketing, including consumer behaviour, segmentation, targeting, positioning, branding, and the marketing mix. Students will gain an understanding of how organizations identify the needs of potential consumers and create and deliver value to these consumers through the marketing process.",
+    "requirements": "Prereq: Level at least 2B.. Antireq: BUS 352W, ECON 344/ARBUS 302, ENBUS 211/311, GBDA 304",
+    "subject": "MGMT",
+    "catalogNumber": "244",
+    "termsOffered": [],
+    "_source": "uwflow",
+    "_liked": 0.5555555555555556,
+    "_easy": 0.6041666666666666,
+    "_useful": 0.3541666666666667,
+    "_ratings": 27,
+    "_antireq_text": "BUS 352W, ECON 344/ARBUS 302, ENBUS 211/311, GBDA 304"
+  },
+  {
+    "code": "HRM 200",
+    "title": "Basic Human Resources Management",
+    "description": "Examines the major areas of human resources administration including recruiting, salary administration, labour relations, benefits administration, employee relations, labour law, and organizational behaviour.",
+    "requirements": "Prereq: Level at least 2A.. Antireq: BUS354W/BUS454W",
+    "subject": "HRM",
+    "catalogNumber": "200",
+    "termsOffered": [],
+    "_source": "uwflow",
+    "_liked": 0.5769230769230769,
+    "_easy": 0.8324468085106383,
+    "_useful": 0.46102150537634407,
+    "_ratings": 286,
+    "_antireq_text": "BUS354W/BUS454W"
   }
 ]

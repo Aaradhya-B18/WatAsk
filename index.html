@@ -1093,10 +1093,11 @@ const PROGRAMS = {
         typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
       {
-        // STAT 330/331/332/333 are all mandatory; STAT 334/340 are pick-from electives
+        // Real requirement is "three of STAT 330/331/332/333", not all four -
+        // 332 moved to the elective pool below
         name:"Core Statistics",
-        courses:["STAT 230","STAT 231","STAT 330","STAT 331","STAT 332","STAT 333"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 333":"3A","STAT 331":"3B","STAT 332":"3B" },
+        courses:["STAT 230","STAT 231","STAT 330","STAT 331","STAT 333"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 333":"3A","STAT 331":"3B" },
       },
       {
         name:"CS Requirement",
@@ -1110,7 +1111,7 @@ const PROGRAMS = {
       },
       {
         name:"Advanced Statistics Electives",
-        courses:["STAT 334","STAT 340","STAT 430","STAT 431","STAT 433","STAT 440","STAT 441","STAT 442","STAT 443","STAT 444"],
+        courses:["STAT 332","STAT 334","STAT 340","STAT 430","STAT 431","STAT 433","STAT 440","STAT 441","STAT 442","STAT 443","STAT 444"],
         typical:{},
       },
     ],
@@ -1137,10 +1138,11 @@ const PROGRAMS = {
       {
         // STAT 337 (Clinical Trials) needed STAT 231 → 3A/3B
         // STAT 430 needs STAT 331+332 → 4A; STAT 431 needs STAT 330+331 → 4A
-        // STAT 437/438 both need STAT 431 → 4B
+        // STAT 437/438 both need STAT 431 → 4B. BIOL 239 (or HLTH 101) is the
+        // real checklist's required science-course pick, not previously here.
         name:"Biostatistics",
-        courses:["STAT 337","STAT 430","STAT 431","STAT 437","STAT 438"],
-        typical:{ "STAT 337":"3B","STAT 430":"4A","STAT 431":"4A","STAT 437":"4B","STAT 438":"4B" },
+        courses:["STAT 332","STAT 337","STAT 430","STAT 431","STAT 437","STAT 438","BIOL 239"],
+        typical:{ "BIOL 239":"2A", "STAT 332":"3B", "STAT 337":"3B","STAT 430":"4A","STAT 431":"4A","STAT 437":"4B","STAT 438":"4B" },
       },
       {
         name:"CS Requirement",
@@ -1182,8 +1184,10 @@ const PROGRAMS = {
         name:"Data Science Core",
         // Required per BMath Data Science academic calendar (uwaterloo.ca)
         // CS 230/231/234/338/431 are DS-specific replacements for standard CS 241/245/246
-        courses:["CS 135","CS 136","CS 136L","CS 230","CS 231","CS 234","CS 338","CS 431","DATSC 401"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 230":"2A","CS 231":"2A","CS 234":"2B","CS 338":"3A","CS 431":"3B","DATSC 401":"4B" },
+        // CS 330 isn't itself a Data Science requirement - it's a bridge
+        // course needed to unlock CS 431's prereq (needs CS 251/251E/330)
+        courses:["CS 135","CS 136","CS 136L","CS 230","CS 231","CS 234","CS 330","CS 338","CS 431","DATSC 401"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 230":"2A","CS 231":"2A","CS 234":"2B","CS 330":"2B","CS 338":"3A","CS 431":"3B","DATSC 401":"4B" },
       },
       {
         name:"Applied Math & Optimization",
@@ -1459,24 +1463,35 @@ const PROGRAMS = {
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
       {
+        // Real 2025-2026 checklist needs MATH 237, not MATH 239 (that's the
+        // C&O/CS combinatorics track) - Actuarial Science uses AMATH 250 for
+        // its differential equations requirement instead
         name:"Core Math",
-        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
-        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A" },
       },
       {
-        // STAT 330/331/333 are all mandatory for ACTSC (not just electives)
+        // STAT 330/331/333 are all mandatory for ACTSC (not just electives);
+        // STAT 341 is the checklist's Predictive Analytics specialization pick
         name:"Statistics",
-        courses:["STAT 230","STAT 231","STAT 330","STAT 331","STAT 333"],
-        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 333":"3A","STAT 331":"3B" },
+        courses:["STAT 230","STAT 231","STAT 330","STAT 331","STAT 333","STAT 341"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","STAT 330":"3A","STAT 333":"3A","STAT 331":"3B","STAT 341":"3B" },
       },
       {
+        // Real checklist requires ACTSC 363 + 431 + 446, not 362/371 (362 is
+        // just an elective option, not core; 371 doesn't appear at all).
+        // ECON 101/102, AFM 101, MTHEL 131, and AMATH 250 (diff eq) are
+        // required additions that were missing entirely.
         name:"Actuarial Science",
         // ACTSC 231 needs MATH 137(1A)+STAT 230(2A) → earliest 2B
         // ACTSC 232 needs ACTSC 231:60(2B) → earliest 3A
         // ACTSC 331 needs ACTSC 232:60(3A) → earliest 3B
-        // ACTSC 371 moved to 4A typical to free 3B slot for STAT 331
-        courses:["ACTSC 231","ACTSC 232","ACTSC 331","ACTSC 362","ACTSC 371","ACTSC 372"],
-        typical:{ "ACTSC 231":"2B","ACTSC 232":"3A","ACTSC 331":"3B","ACTSC 362":"3A","ACTSC 371":"4A","ACTSC 372":"3B" },
+        // ACTSC 363 needs nothing extra; 431 needs 363+330+331 → 4A; 446 needs 372+333 → 4B
+        courses:["ACTSC 231","ACTSC 232","ACTSC 331","ACTSC 363","ACTSC 372","ACTSC 431","ACTSC 446",
+                 "ECON 101","ECON 102","AFM 101","MTHEL 131","AMATH 250"],
+        typical:{ "MTHEL 131":"1A", "AFM 101":"1A", "ECON 101":"1A", "ECON 102":"1B", "AMATH 250":"2A",
+                  "ACTSC 231":"2B","ACTSC 232":"3A","ACTSC 363":"3A","ACTSC 331":"3B","ACTSC 372":"3B",
+                  "ACTSC 431":"4A","ACTSC 446":"4B" },
       },
       {
         name:"CS Requirement",
@@ -1490,8 +1505,8 @@ const PROGRAMS = {
       },
       {
         name:"Advanced Options",
-        courses:["MATH 247","STAT 334","ACTSC 431","ACTSC 432","ACTSC 433","ACTSC 445","ACTSC 446","ACTSC 453","ACTSC 455","ACTSC 456","ACTSC 462","ACTSC 471"],
-        typical:{ "ACTSC 431":"4A","ACTSC 432":"4A","ACTSC 433":"4B","ACTSC 445":"4A","ACTSC 446":"4B" },
+        courses:["MATH 247","STAT 334","ACTSC 362","ACTSC 432","ACTSC 433","ACTSC 445","ACTSC 453","ACTSC 455","ACTSC 456","ACTSC 462","ACTSC 471"],
+        typical:{ "ACTSC 432":"4A","ACTSC 433":"4B","ACTSC 445":"4A" },
       },
     ],
   },
@@ -1515,10 +1530,14 @@ const PROGRAMS = {
         typical:{ "STAT 230":"2A","STAT 231":"2B" },
       },
       {
+        // Real checklist needs CO 330-or-342 (pick 1, not both) and
+        // CO 351-or-353-or-367 (pick 1, not all 3) - defaulted to 330/351.
+        // MATH 237 is a bridge course (not itself required) that unlocks the
+        // PMATH 332/AMATH 331 options in the "3 from" list below; CO&O
+        // students otherwise only take MATH 239, not 237.
         name:"Combinatorics & Optimization",
-        // CO 255 is an alternative to CO 250 (enriched), not an additional requirement
-        courses:["CO 250","CO 330","CO 342","CO 351","CO 353","CO 367"],
-        typical:{ "CO 250":"2A","CO 330":"2B","CO 342":"3A","CO 351":"3A","CO 353":"3B","CO 367":"3B" },
+        courses:["CO 250","CO 330","CO 351","MATH 237","PMATH 336","PMATH 332","PMATH 333","AMATH 331"],
+        typical:{ "CO 250":"2A","MATH 237":"2B","CO 330":"3A","PMATH 336":"3A","PMATH 333":"3A","PMATH 332":"3B","AMATH 331":"3B","CO 351":"3B" },
       },
       {
         name:"CS Requirement",
@@ -1527,7 +1546,7 @@ const PROGRAMS = {
       },
       {
         name:"Advanced Options",
-        courses:["MATH 245","MATH 247","STAT 240","STAT 241","CO 430","CO 434","CO 442","CO 450","CO 452","CO 454","CO 456","CO 463","CO 466","CO 471","CO 480","CO 485","CO 487"],
+        courses:["MATH 245","MATH 247","STAT 240","STAT 241","CO 342","CO 353","CO 367","CO 430","CO 434","CO 442","CO 450","CO 452","CO 454","CO 456","CO 463","CO 466","CO 471","CO 485","CO 487"],
         typical:{ "MATH 245":"2A","MATH 247":"2B","CO 430":"4A","CO 434":"4A","CO 442":"4A","CO 450":"4B","CO 452":"4A","CO 454":"4B" },
       },
     ],
@@ -1631,23 +1650,34 @@ const PROGRAMS = {
       {
         name:"Applied & Optimization",
         // AMATH 350 (DE for Business): needs MATH 136+138; CO 250 (pick-1: CO 250 or CO 255)
-        courses:["AMATH 350","CO 250"],
-        typical:{ "AMATH 350":"2B","CO 250":"3A" },
+        // CO 372, MATBUS 470/471 are common-to-both-specializations requirements
+        // that were previously only sitting in the flexible Advanced pool
+        courses:["AMATH 350","CO 250","CO 372","MATBUS 470","MATBUS 471"],
+        typical:{ "AMATH 350":"2B","CO 250":"3A","CO 372":"4A","MATBUS 470":"4B","MATBUS 471":"4A" },
       },
       {
         name:"Computation",
-        // pick 1: CS 335 or CS 476; CS 335 needs CS 116+MATH 237+STAT 231 → 3B typical
-        courses:["CS 335"],
-        typical:{ "CS 335":"3B" },
+        // pick 1: CS 335 or CS 476; CS 335 needs CS 116+MATH 237+STAT 231 → done by 3A
+        // CS 338 is a separate common requirement, not an alternative to CS 335
+        courses:["CS 335","CS 338"],
+        typical:{ "CS 335":"4B","CS 338":"4B" },
+      },
+      {
+        // Defaulted to the CFA specialization's 4 required courses + 1 of its
+        // "money and markets" picks (PRM is the other valid specialization,
+        // not modeled - a student would need to swap this group for that one)
+        // COMM 421 and COMM 433 both require COMM 321 as a prereq - it must
+        // land a term earlier than either, not alongside them
+        name:"CFA Specialization",
+        courses:["COMM 321","COMM 421","COMM 433","MGMT 244","ECON 206"],
+        typical:{ "ECON 206":"3A", "MGMT 244":"3B", "COMM 321":"4A", "COMM 421":"4B", "COMM 433":"4B" },
       },
       {
         name:"Advanced Options",
         courses:[
-          // Specialization electives (pick one specialization)
-          "CO 372","COMM 321","COMM 421","COMM 433","MATBUS 471","ACTSC 445","MATBUS 472",
-          "AMATH 331","PMATH 331","CS 338","STAT 340","STAT 341",
-          // Alternative picks
-          "CO 255","CS 476","ACTSC 446","MATBUS 470",
+          "ACTSC 445","MATBUS 472",
+          "AMATH 331","PMATH 331","STAT 340","STAT 341",
+          "CO 255","CS 476","ACTSC 446",
           "STAT 330","STAT 331","STAT 333","STAT 443",
           "ACTSC 331","ACTSC 433","ACTSC 453","ACTSC 455","ACTSC 462","ACTSC 471",
         ],
