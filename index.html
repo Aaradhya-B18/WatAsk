@@ -1442,13 +1442,17 @@ const PROGRAMS = {
         typical:{ "CS 115":"1A","CS 116":"1B","CS 234":"2A","CS 371":"3A" },
       },
       {
+        // STAT 341 is a bridge: STAT 444 needs it (per uwaterloo.ca/future-students/
+        // programs/applied-mathematics-scientific-computing, which lists STAT 444
+        // alongside AMATH 445/449 as core to this specialization - MEDIUM confidence,
+        // sample-schedule page rather than a dedicated checklist PDF)
         name:"Scientific ML Core",
-        courses:["AMATH 445","AMATH 446","AMATH 449","CS 479"],
-        typical:{ "AMATH 445":"4A","AMATH 446":"4A","AMATH 449":"4B","CS 479":"3B" },
+        courses:["AMATH 445","AMATH 446","AMATH 449","CS 479","STAT 331","STAT 341","STAT 444"],
+        typical:{ "AMATH 445":"4A","AMATH 446":"4A","AMATH 449":"4B","CS 479":"3B","STAT 331":"3A","STAT 341":"3A","STAT 444":"4A" },
       },
       {
         name:"Advanced Options",
-        courses:["AMATH 332","AMATH 333","AMATH 343","AMATH 345","AMATH 391","STAT 441","STAT 444","CS 480","CS 485","CS 486","CS 487","CS 489","MATH 247","AMATH 251"],
+        courses:["AMATH 332","AMATH 333","AMATH 343","AMATH 345","AMATH 391","STAT 441","CS 480","CS 485","CS 486","CS 487","CS 489","MATH 247","AMATH 251"],
         typical:{},
       },
     ],
