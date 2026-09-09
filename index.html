@@ -3181,7 +3181,10 @@ async function doGeneratePlan(btn, thread) {
     el.innerHTML = `<div class="lbl">✦ Generated Plan</div><em style="color:var(--red)">Error: ${err.message}</em>`;
   } finally {
     btn.textContent = "✦ Generate plan"; btn.disabled = false;
-    thread.scrollTop = thread.scrollHeight;
+    // The generated plan table is usually taller than the chat panel — scroll
+    // to its top (1A first) instead of the thread's bottom, same reasoning
+    // as the specialization picker above.
+    el.scrollIntoView({ block: "start", behavior: "smooth" });
   }
 }
 
@@ -3246,7 +3249,11 @@ async function suggestPlan() {
 
     picker.innerHTML = html;
     thread.appendChild(picker);
-    thread.scrollTop = thread.scrollHeight;
+    // Scroll to the top of this message, not the bottom of the thread — it's
+    // often taller than the visible chat panel, so scrolling to the bottom
+    // would show the buttons first and force the user to scroll back up to
+    // read the specialization list from the beginning.
+    picker.scrollIntoView({ block: "start", behavior: "smooth" });
     btn.textContent = "✦ Generate plan"; btn.disabled = false;
     return;
   }
