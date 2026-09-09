@@ -1182,43 +1182,30 @@ const PROGRAMS = {
       },
       {
         name:"Data Science Core",
-        // Required per BMath Data Science academic calendar (uwaterloo.ca)
-        // CS 230/231/234/338/431 are DS-specific replacements for standard CS 241/245/246
-        // CS 330 isn't itself a Data Science requirement - it's a bridge
-        // course needed to unlock CS 431's prereq (needs CS 251/251E/330)
-        courses:["CS 135","CS 136","CS 136L","CS 230","CS 231","CS 234","CS 330","CS 338","CS 431","DATSC 401"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 230":"2A","CS 231":"2A","CS 234":"2B","CS 330":"2B","CS 338":"3A","CS 431":"3B","DATSC 401":"4B" },
-      },
-      {
-        name:"Applied Math & Optimization",
-        // AMATH 250/251 pick 1; CO 250/255 pick 1 — default to most common
-        // CO 250 in 3A keeps 2B to 4 courses; AMATH 250 after MATH 137 (prereq) done in 1B
-        courses:["AMATH 250","CO 250"],
-        typical:{ "AMATH 250":"3A","CO 250":"3A" },
+        // Per real "Data Science (BMath) Checklist" PDF (uwaterloo.ca/statistics-and-actuarial-science,
+        // vintage F2018-F23 - most current source found). Replaces an earlier, incorrect
+        // substitution of the CS-for-other-faculties stream (CS 230/231/234/338).
+        // CS 431 is a "One Of: CS 431, CS 451" pick - defaulting to CS 431 (lighter prereqs).
+        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246","CS 251","CS 341","CS 348","CS 431","DATSC 401"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 241":"2A","CS 245":"2A","CS 246":"2B","CS 240":"3A","CS 251":"3A","CS 341":"3B","CS 348":"4A","CS 431":"4A","DATSC 401":"4B" },
       },
       {
         name:"Statistics Requirements",
-        // STAT 330 always required; 331 always required; 332 required; 341 + 442 also required
-        courses:["STAT 330","STAT 331","STAT 332","STAT 341","STAT 442"],
-        typical:{ "STAT 330":"3A","STAT 331":"3B","STAT 332":"3B","STAT 341":"4A","STAT 442":"4A" },
+        // STAT 330/331/332/333/341 mandatory; STAT 441 is the "One Of: CS 480/485/486, STAT 441"
+        // default; STAT 431 + STAT 440 default the "Two Of" mandatory-with-options pool
+        courses:["STAT 330","STAT 331","STAT 332","STAT 333","STAT 341","STAT 441","STAT 431","STAT 440"],
+        typical:{ "STAT 330":"3A","STAT 331":"3A","STAT 332":"3B","STAT 333":"3B","STAT 341":"3B","STAT 441":"4A","STAT 431":"4B","STAT 440":"4B" },
       },
       {
         name:"Ethics & Communication",
-        courses:["ENGL 378","PHIL 228"],
-        typical:{ "ENGL 378":"3A","PHIL 228":"3B" },
+        courses:["ENGL 378"],
+        typical:{ "ENGL 378":"4A" },
       },
       {
         name:"Advanced Options",
-        courses:[
-          // Pick 2: applied math electives
-          "AMATH 345","AMATH 391","CO 353","CO 365","CO 367","CO 370",
-          // Pick 2: ML / stats electives
-          "AMATH 445","STAT 441","STAT 443","STAT 444",
-          // Alternatives for required pick-1 slots
-          "AMATH 231","AMATH 251","CO 255","CS 146","MATH 247",
-          // Nested stats specialization (STAT 330 cluster + STAT 332 cluster + neural nets)
-          "STAT 430","STAT 431","STAT 440","STAT 454","AMATH 449","CS 479",
-        ],
+        // Real alternatives for the "One Of"/"Two Of" mandatory-with-options pools,
+        // in case a student wants a different pick than our CS 431/STAT 441/431/440 defaults
+        courses:["CS 480","CS 485","CS 486","CS 451","STAT 442","STAT 443","STAT 444"],
         typical:{},
       },
     ],
