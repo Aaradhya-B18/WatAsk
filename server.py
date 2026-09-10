@@ -4,7 +4,7 @@ from typing import List, Optional
 
 import sentry_sdk
 from dotenv import load_dotenv
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, File, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
@@ -15,6 +15,7 @@ from supabase import create_client
 
 from services.rag import answer
 from services.planner import generate_plan
+from services.transcript import parse_transcript
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(ROOT, ".env"))
@@ -79,6 +80,14 @@ def get_prereqs():
 def get_courses():
     with open(os.path.join(ROOT, "data", "course_catalog.json")) as f:
         return json.load(f)
+
+
+@app.post("/parse-transcript")
+@limiter.limit("5/minute")
+async def parse_transcript_endpoint(request: Request, file: UploadFile = File(...)):
+    file_bytes = await file.read()
+    result = parse_transcript(file_bytes, file.content_type)
+    return JSONResponse(result)
 
 
 @app.post("/ask")

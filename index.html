@@ -708,6 +708,14 @@ header {
     <div class="modal-step" id="step3">
       <h2>Courses completed</h2>
       <p class="sub">Search for courses you've already finished and pick the term. Skip if you're starting fresh.</p>
+
+      <input type="file" id="obTranscriptFile" accept=".pdf,image/png,image/jpeg,image/webp" style="display:none" onchange="obUploadTranscript(this.files[0])">
+      <button type="button" class="ob-picker-action" id="obTranscriptBtn" onclick="document.getElementById('obTranscriptFile').click()" style="width:100%;margin-bottom:10px">📄 Upload transcript (auto-fill from PDF)</button>
+      <div id="obTranscriptStatus" style="font-size:11px;color:var(--muted);margin-bottom:10px;display:none"></div>
+      <div id="obTranscriptReview" style="display:none;margin-bottom:16px"></div>
+
+      <div style="text-align:center;font-size:11px;color:var(--muted);margin:6px 0 14px;text-transform:uppercase;letter-spacing:.5px">— or add manually —</div>
+
       <div class="ob-search-box">
         <input type="text" id="obCourseSearch" class="ob-search-input"
                placeholder="Search by code or name…" autocomplete="off"
@@ -2219,6 +2227,104 @@ function obStep3() {
   document.getElementById("obTermPicker").style.display = "none";
   renderObTakenList();
   showStep(3);
+}
+
+// ── Transcript upload (auto-fill courses/grades from a PDF/image) ──────────
+const OB_VALID_TERMS = ["1A","1B","2A","2B","3A","3B","4A","4B","5A","5B"];
+let _obTranscriptRows = [];   // [{code, term, grade, include}]
+
+async function obUploadTranscript(file) {
+  if (!file) return;
+  const btn = document.getElementById("obTranscriptBtn");
+  const status = document.getElementById("obTranscriptStatus");
+  document.getElementById("obTranscriptReview").style.display = "none";
+  btn.disabled = true;
+  status.style.display = "block";
+  status.style.color = "var(--muted)";
+  status.textContent = "Reading your transcript…";
+
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/parse-transcript", { method: "POST", body: formData });
+    const data = await res.json();
+    if (data.error) {
+      status.style.color = "var(--red)";
+      status.textContent = data.error;
+      return;
+    }
+    if (!data.courses || !data.courses.length) {
+      status.style.color = "var(--red)";
+      status.textContent = "Couldn't find any completed courses in that file — try adding manually below.";
+      return;
+    }
+    _obTranscriptRows = data.courses.map(c => ({
+      code: c.code,
+      term: OB_VALID_TERMS.includes(c.term) ? c.term : "",
+      grade: (typeof c.grade === "number") ? c.grade : null,
+      include: true,
+    }));
+    status.style.color = "var(--green)";
+    status.textContent = `Found ${_obTranscriptRows.length} course${_obTranscriptRows.length !== 1 ? "s" : ""} — review below, then add.`;
+    renderTranscriptReview();
+  } catch (err) {
+    status.style.color = "var(--red)";
+    status.textContent = "Something went wrong reading that file — try again or add courses manually.";
+  } finally {
+    btn.disabled = false;
+    document.getElementById("obTranscriptFile").value = "";
+  }
+}
+
+function renderTranscriptReview() {
+  const box = document.getElementById("obTranscriptReview");
+  if (!_obTranscriptRows.length) { box.style.display = "none"; return; }
+  const rows = _obTranscriptRows.map((r, i) => `
+    <div class="ob-transcript-row" style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--border)">
+      <input type="checkbox" ${r.include ? "checked" : ""} onchange="_obTranscriptRows[${i}].include=this.checked">
+      <span style="flex:1;font-size:13px;font-weight:600">${esc(r.code)}</span>
+      <select onchange="_obTranscriptRows[${i}].term=this.value" style="width:70px;font-size:12px;padding:4px;background:var(--surface-2);border:1px solid ${r.term ? "var(--border)" : "var(--red)"};border-radius:5px;color:var(--text)">
+        <option value="" ${!r.term ? "selected" : ""}>term?</option>
+        ${OB_VALID_TERMS.map(t => `<option value="${t}" ${r.term===t?"selected":""}>${t}</option>`).join("")}
+      </select>
+      <input type="number" min="0" max="100" placeholder="grade" value="${r.grade ?? ""}"
+             oninput="_obTranscriptRows[${i}].grade=this.value===''?null:parseInt(this.value)"
+             style="width:60px;font-size:12px;padding:4px;background:var(--surface-2);border:1px solid var(--border);border-radius:5px;color:var(--text)">
+    </div>`).join("");
+  box.innerHTML = `
+    <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:12px;max-height:260px;overflow-y:auto">${rows}</div>
+    <div style="font-size:10px;color:var(--muted);margin:6px 0">Rows with a red "term?" box need a term picked before they can be added.</div>
+    <button class="ob-picker-action ob-confirm-btn" style="width:100%;margin-top:4px" onclick="obConfirmTranscriptImport()">Add checked courses</button>
+  `;
+  box.style.display = "block";
+}
+
+function obConfirmTranscriptImport() {
+  let added = 0, skipped = 0;
+  for (const r of _obTranscriptRows) {
+    if (!r.include) continue;
+    if (!r.term) { skipped++; continue; }
+    _obTaken = _obTaken.filter(t => t.code !== r.code);
+    _obRetaking = _obRetaking.filter(c => c !== r.code);
+    if (r.grade !== null && r.grade < 50) {
+      _obRetaking.push(r.code);
+      delete _obGrades[r.code];
+    } else {
+      _obTaken.push({ code: r.code, term: r.term });
+      if (r.grade !== null) _obGrades[r.code] = r.grade;
+      else delete _obGrades[r.code];
+    }
+    added++;
+  }
+  _obTaken.sort((a, b) => a.code < b.code ? -1 : 1);
+  _obTranscriptRows = [];
+  document.getElementById("obTranscriptReview").style.display = "none";
+  const status = document.getElementById("obTranscriptStatus");
+  status.style.color = "var(--green)";
+  status.textContent = skipped
+    ? `Added ${added} course${added !== 1 ? "s" : ""} — skipped ${skipped} missing a term.`
+    : `Added ${added} course${added !== 1 ? "s" : ""}.`;
+  renderObTakenList();
 }
 
 // Ranked search: code-prefix first, then code-contains, then title-contains
