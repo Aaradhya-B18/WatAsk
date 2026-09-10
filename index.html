@@ -2516,10 +2516,27 @@ function takenCardBlocked(code, grade) {
   const programCourses = new Set(
     (PROGRAMS[S.program]?.groups || []).flatMap(g => g.courses || [])
   );
+  // Full "done" set (taken minus anything being retaken, plus everything
+  // currently placed anywhere in the plan) — used to check whether a group
+  // is already satisfied through some OTHER alternative before flagging
+  // this course's own grade as the blocker. Groups are OR-of-alternatives:
+  // one low grade in one alternative should never warn if a sibling
+  // alternative in the same group is already satisfied.
+  const done = new Set(S.taken.filter(c => !S.retaking?.includes(c)));
+  Object.values(S.plan || {}).forEach(arr => (arr || []).forEach(c => done.add(c)));
+
   const blocked = [];
   for (const [down, groups] of Object.entries(PREREQS)) {
     if (!programCourses.has(down)) continue;
     for (const group of groups) {
+      const satisfiedByOther = group.some(entry => {
+        const [c, minStr] = entry.split(":");
+        if (c === code || !done.has(c)) return false;
+        if (!minStr) return true;
+        const g2 = S.takenGrades?.[c];
+        return g2 === undefined || g2 >= parseInt(minStr);
+      });
+      if (satisfiedByOther) continue;
       for (const entry of group) {
         const [c, minStr] = entry.split(":");
         if (c === code && minStr && grade < parseInt(minStr))
