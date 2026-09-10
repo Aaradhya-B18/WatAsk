@@ -1,4 +1,5 @@
 """
+Active pipeline script.
 Embed all courses from data/course_catalog.json into Supabase pgvector.
 Skips courses that already have embeddings in the DB (safe to re-run).
 
