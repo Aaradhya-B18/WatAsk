@@ -1,5 +1,5 @@
 """
-Fetch courses for additional subjects from UWFlow GraphQL API.
+Active pipeline script. Fetch courses for additional subjects from UWFlow GraphQL API.
 No API key required. Merges results into planner_courses.json.
 
 Subjects fetched:
