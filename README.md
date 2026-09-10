@@ -155,20 +155,14 @@ $$;
 
 ```
 WatAsk/
-├── server.py                    # FastAPI app: route definitions only, no business logic.
-│                                 # Loads prereqs.json at startup, wires up Sentry + slowapi
-│                                 # rate limiting, delegates each endpoint to services/.
-├── index.html                    # The entire frontend: onboarding flow, drag-and-drop term
-│                                 # grid, sidebar course browser, and chat UI. Single file,
-│                                 # vanilla JS, no build step, no framework.
+├── server.py                    # FastAPI routes only; delegates all logic to services/.
+├── index.html                    # Whole frontend: onboarding, term grid, sidebar, chat UI.
 │
 ├── services/                    # Backend business logic — see services/README.md
-│   ├── rag.py                    # /ask: embed query → retrieve via Supabase pgvector →
-│   │                             # generate answer with Gemini, grounded in real reviews.
+│   ├── rag.py                    # /ask: retrieve UWFlow reviews, generate a grounded answer.
 │   ├── planner.py                 # /plan: the 3-phase greedy course scheduler.
 │   ├── embeddings.py               # Shared Gemini client + embedding helper.
-│   └── transcript.py               # /parse-transcript: multimodal Gemini call that reads a
-│                                   # transcript PDF/image and extracts {code, term, grade}.
+│   └── transcript.py               # /parse-transcript: reads a transcript PDF/image.
 │
 ├── data/                        # Static data checked into the repo — see data/README.md
 │   ├── course_catalog.json        # Every scraped course: title, description, ratings.
