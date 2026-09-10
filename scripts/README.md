@@ -1,6 +1,6 @@
 # scripts/
 
-The scrapers and pipelines that feed `data/`. All safe to re-run.
+The scrapers and pipelines that feed `../data/` — one script per data source, all safe to re-run.
 
 **Active**
 - **`fetch_extra_subjects.py`** — Adds a new subject on demand
