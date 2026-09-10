@@ -1,4 +1,4 @@
-"""API-level tests using FastAPI TestClient. External calls (Gemini, Supabase) are mocked."""
+"""API-level tests using FastAPI TestClient: response shapes, rate limits, no leaked errors. External calls (Gemini, Supabase) are mocked."""
 import json
 import pytest
 from unittest.mock import MagicMock, patch
