@@ -472,27 +472,23 @@ header {
 }
 .term-col:not(:hover) .card-rm { display:none; }
 
-/* Elements that slide in/out */
-.card-name, .card-stats, .card-warn, .card-soft-warn,
-.card-hint, .card-retake-btn, .card-done-row {
+/* Elements that slide in/out — purely decorative details only. Warnings and
+   the retake button are actionable, so they always stay visible/clickable
+   rather than depending on a hover state that can shift or scroll them out
+   from under the cursor right as you try to click. */
+.card-name, .card-stats, .card-hint, .card-done-row {
   overflow:hidden;
   transition:max-height .2s ease, opacity .18s, margin-top .18s;
 }
 .term-col:not(:hover) .card-name,
 .term-col:not(:hover) .card-stats,
-.term-col:not(:hover) .card-warn,
-.term-col:not(:hover) .card-soft-warn,
 .term-col:not(:hover) .card-hint,
-.term-col:not(:hover) .card-retake-btn,
 .term-col:not(:hover) .card-done-row {
   max-height:0; opacity:0; margin-top:0 !important;
 }
 .term-col:hover .card-name        { max-height:32px;  opacity:1; }
 .term-col:hover .card-stats       { max-height:24px;  opacity:1; }
-.term-col:hover .card-warn        { max-height:48px;  opacity:1; }
-.term-col:hover .card-soft-warn   { max-height:48px;  opacity:1; }
 .term-col:hover .card-hint        { max-height:20px;  opacity:1; }
-.term-col:hover .card-retake-btn  { max-height:28px;  opacity:1; }
 .term-col:hover .card-done-row    { max-height:28px;  opacity:1; }
 
 /* ── Column highlight on hover ── */
