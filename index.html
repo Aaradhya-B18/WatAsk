@@ -620,13 +620,18 @@ header {
     <div class="modal-step active" id="step1">
       <h2>Welcome to WatAsk</h2>
       <p class="sub">Plan your UW degree, term by term. Let's set you up in 3 steps.</p>
+      <label class="field-label">Degree type</label>
+      <div style="display:flex;gap:8px;margin-bottom:16px" id="degreeTypeToggle">
+        <button type="button" class="seq-btn active" onclick="setDegreeType(false, this)">Single Degree</button>
+        <button type="button" class="seq-btn" onclick="setDegreeType(true, this)">Double Degree (BBA + Waterloo)</button>
+      </div>
       <label class="field-label">Your program</label>
       <div class="prog-search-wrap">
         <input type="text" id="obProgramSearch" class="ob-search-input"
           placeholder="Choose your program…" autocomplete="off"
           value=""
-          oninput="progFilter('obProgramSearch','obProgramDrop','obProgram',this.value)"
-          onfocus="progOpen('obProgramSearch','obProgramDrop','obProgram')"
+          oninput="obProgFilter(this.value)"
+          onfocus="obProgOpen()"
           onblur="setTimeout(()=>{ progClose('obProgramDrop'); document.getElementById('obProgramSearch').value=progLabel(document.getElementById('obProgram').value); },160)">
         <input type="hidden" id="obProgram" value="">
         <div class="prog-dropdown" id="obProgramDrop"></div>
@@ -643,6 +648,8 @@ header {
         <option value="3B">3B</option>
         <option value="4A">4A</option>
         <option value="4B">4B</option>
+        <option value="5A" class="ob-dd-term" hidden>5A (double degree)</option>
+        <option value="5B" class="ob-dd-term" hidden>5B (double degree)</option>
       </select>
       <div id="obStep1Warn" style="display:none;color:var(--red);font-size:11px;margin-top:8px"></div>
       <div class="modal-footer">
@@ -655,6 +662,13 @@ header {
       <h2>Study system</h2>
       <p class="sub">Choose your co-op sequence — this sets the term order in your planner.</p>
 
+      <div id="ddSeqNotice" style="display:none;padding:12px 14px;background:var(--gold-muted);border:1px solid var(--gold-border);border-radius:8px;font-size:12px;color:var(--text);line-height:1.6;margin-bottom:16px">
+        Double degree programs are <strong>co-op only</strong>, using <strong>SEQ 5DD</strong> — 5 years,
+        10 study terms (1A–5B), 5 work terms. UW's official chart lists 3 minor variants of how the last
+        two years' work terms are arranged; WatAsk currently plans against the most common one.
+      </div>
+
+      <div id="regularSeqSection">
       <label class="field-label">Co-op or Regular?</label>
       <div style="display:flex;gap:8px;margin-bottom:16px" id="coopToggle">
         <button class="seq-btn active" onclick="selectCoop('coop', this)">Co-op</button>
@@ -677,6 +691,7 @@ header {
             SEQ 4<div style="font-size:10px;font-weight:400;margin-top:3px;color:var(--muted)">2A in Spring of 1st year<br>WT1 Fall of 2nd year</div>
           </button>
         </div>
+      </div>
       </div>
 
       <div style="margin-top:18px;padding:12px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--muted);line-height:1.7" id="seqPreview"></div>
@@ -889,7 +904,11 @@ const PROGRAM_LIST = [
   { v:"math-phys",    l:"Mathematical Physics" },
   { v:"farm",         l:"Financial Analysis & Risk Mgmt" },
   { v:"math-studies", l:"Mathematical Studies" },
+  { v:"bba-bcs",       l:"BBA (Laurier) + Computer Science Double Degree", doubleDegree:true },
+  { v:"bba-bmath",     l:"BBA (Laurier) + Mathematics Double Degree", doubleDegree:true },
 ];
+const DOUBLE_DEGREE_PROGRAMS = PROGRAM_LIST.filter(p => p.doubleDegree);
+const SINGLE_DEGREE_PROGRAMS = PROGRAM_LIST.filter(p => !p.doubleDegree);
 
 function progLabel(v) {
   return (PROGRAM_LIST.find(p => p.v === v) || {}).l || v;
@@ -1795,6 +1814,87 @@ const PROGRAMS = {
       },
     ],
   },
+
+  // ── Double Degree programs (Waterloo + Wilfrid Laurier University) ──
+  // Co-op only, 5 years / 10 study terms. Real sequence structure and Waterloo
+  // course placement confirmed from official current sources:
+  //   - Sequence chart: uwaterloo.ca/new-math-students/co-op/sequence-charts (SEQ 5DD)
+  //   - BCS-side course samples: cs.uwaterloo.ca/bbabcs-courses (Sample A) - HIGH confidence
+  //   - BMath-side: only 1st year is published in detail; upper years extrapolated
+  //     from the standalone Honours Math core - MEDIUM confidence beyond 1B
+  // SEQ 5DD actually has 3 official work-term-arrangement options; only the
+  // first (most common) is implemented here as the default "seq5ddTerms".
+  // Laurier's own BU-prefix business core (BU111, BU121, BU252, etc.) isn't
+  // tracked - we have zero catalog/prereq data for Laurier's own course
+  // system, so those terms will look lighter than the student's real course
+  // load. The Laurier ECON120W/140W/250W courses ARE tracked since they were
+  // already present in our catalog under the ECON subject.
+  "bba-bcs": {
+    name:"BBA (Laurier) + Computer Science Double Degree",
+    terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
+    seq5ddTerms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B","5A","5B"],
+    groups:[
+      {
+        name:"Core CS",
+        // Per cs.uwaterloo.ca/bbabcs-courses "Sample A" schedule
+        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246","CS 251","CS 341","CS 350"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 246":"2A","CS 241":"2B","CS 251":"2B","CS 240":"3A","CS 245":"3A","CS 350":"3B","CS 341":"4A" },
+      },
+      {
+        name:"Core Math",
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 138":"1B","MATH 136":"1B","MATH 239":"3B" },
+      },
+      {
+        name:"Statistics & Optimization",
+        // CO 250 + STAT 231 must complete before the "BUS 3A block" per the
+        // official course guide - both placed no later than 2B
+        courses:["STAT 230","STAT 231","CO 250"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","CO 250":"2B" },
+      },
+      {
+        name:"Laurier Economics",
+        // ECON 120W/140W are the Laurier EC120/EC140 first-year courses;
+        // ECON 250W is the "ECON 250 or 260" upper pick (defaulting to 250W)
+        courses:["ECON 120W","ECON 140W","ECON 250W"],
+        typical:{ "ECON 120W":"1A","ECON 140W":"1B","ECON 250W":"4A" },
+      },
+    ],
+  },
+
+  "bba-bmath": {
+    name:"BBA (Laurier) + Mathematics Double Degree",
+    terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
+    seq5ddTerms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
+    regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B","5A","5B"],
+    groups:[
+      {
+        name:"Core Math",
+        // 1st year confirmed from uwaterloo.ca/math/future-undergraduates/programs/
+        // business-administration-and-mathematics-double-degree; upper years use
+        // the standalone Honours Math core (no published BMath-side course guide
+        // exists like the BCS one) - MEDIUM confidence beyond 1B
+        courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
+        typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
+      },
+      {
+        name:"CS Requirement",
+        courses:["CS 115","CS 116"],
+        typical:{ "CS 115":"1A","CS 116":"1B" },
+      },
+      {
+        name:"Statistics & Optimization",
+        courses:["STAT 230","STAT 231","CO 250"],
+        typical:{ "STAT 230":"2A","STAT 231":"2B","CO 250":"2B" },
+      },
+      {
+        name:"Laurier Economics",
+        courses:["ECON 120W","ECON 140W","ECON 250W"],
+        typical:{ "ECON 120W":"1A","ECON 140W":"1B","ECON 250W":"4A" },
+      },
+    ],
+  },
 };
 
 // ══════════════════════════════════════════════════════
@@ -1999,9 +2099,40 @@ function markRetakeFromCard(code) {
 // ══════════════════════════════════════════════════════
 let _obCoop = "coop";
 let _obSeq = "1";
+let _obDoubleDegree = false;
+let _obProgramPool = SINGLE_DEGREE_PROGRAMS;
 
 function showStep(n) {
   document.querySelectorAll(".modal-step").forEach((el,i) => el.classList.toggle("active", i+1===n));
+}
+
+// Onboarding-only program search — scoped to single vs double degree pool.
+// The in-app header program switcher keeps using the full progFilter/progOpen
+// (all programs, always) since it isn't tied to this onboarding toggle.
+function obProgFilter(q) {
+  const drop = document.getElementById("obProgramDrop");
+  const matches = q.trim()
+    ? _obProgramPool.filter(p => p.l.toLowerCase().includes(q.toLowerCase()))
+    : _obProgramPool;
+  drop.innerHTML = matches.map(p =>
+    `<div class="prog-dropdown-item" onmousedown="progPick('obProgramSearch','obProgramDrop','obProgram','${p.v}',event)">${p.l}</div>`
+  ).join("");
+  drop.style.display = matches.length ? "block" : "none";
+}
+function obProgOpen() {
+  document.getElementById("obProgramSearch").select();
+  obProgFilter("");
+}
+
+function setDegreeType(isDouble, btn) {
+  _obDoubleDegree = isDouble;
+  btn.closest("#degreeTypeToggle").querySelectorAll(".seq-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  _obProgramPool = isDouble ? DOUBLE_DEGREE_PROGRAMS : SINGLE_DEGREE_PROGRAMS;
+  document.getElementById("obProgram").value = "";
+  document.getElementById("obProgramSearch").value = "";
+  document.getElementById("obProgramSearch").placeholder = isDouble ? "Choose BBA + Math or CS…" : "Choose your program…";
+  document.querySelectorAll("#obTerm .ob-dd-term").forEach(o => o.hidden = !isDouble);
 }
 
 function selectCoop(type, btn) {
@@ -2040,6 +2171,7 @@ function resolveTerms(prog, coop, seq) {
   if (seq === "2") return prog.seq2Terms || prog.terms;
   if (seq === "3") return prog.seq3Terms || prog.terms;
   if (seq === "4") return prog.seq4Terms || prog.terms;
+  if (seq === "5dd") return prog.seq5ddTerms || prog.terms;
   return prog.terms;
 }
 
@@ -2059,10 +2191,16 @@ function obStep2() {
   }
   warn.style.display = "none";
   _obCoop = "coop";
-  _obSeq = "1";
-  document.querySelectorAll("#coopToggle .seq-btn").forEach((b,i) => b.classList.toggle("active", i===0));
-  document.querySelectorAll("#seqToggle .seq-btn").forEach((b,i) => b.classList.toggle("active", i===0));
-  document.getElementById("seqSection").style.display = "";
+  document.getElementById("ddSeqNotice").style.display = _obDoubleDegree ? "block" : "none";
+  document.getElementById("regularSeqSection").style.display = _obDoubleDegree ? "none" : "";
+  if (_obDoubleDegree) {
+    _obSeq = "5dd";
+  } else {
+    _obSeq = "1";
+    document.querySelectorAll("#coopToggle .seq-btn").forEach((b,i) => b.classList.toggle("active", i===0));
+    document.querySelectorAll("#seqToggle .seq-btn").forEach((b,i) => b.classList.toggle("active", i===0));
+    document.getElementById("seqSection").style.display = "";
+  }
   updateSeqPreview();
   showStep(2);
 }
