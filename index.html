@@ -1879,12 +1879,15 @@ const PROGRAMS = {
     groups:[
       {
         name:"Core CS",
-        // Per cs.uwaterloo.ca/bbabcs-courses "Sample A" schedule, rebalanced
-        // slightly (CS 251/245 shifted a term later) to make room for the
-        // real fixed Laurier BU courses in the same terms without breaking
-        // the "CO 250 + STAT 231 before 3A" constraint below
-        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246","CS 251","CS 341","CS 350"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 246":"2A","CS 241":"2B","CS 251":"3A","CS 240":"3A","CS 245":"3B","CS 350":"3B","CS 341":"4A" },
+        // Per the official UW Undergraduate Calendar entry for this exact
+        // double-degree program (Business Administration and Computer
+        // Science Double Degree) - HIGH confidence, confirms CS 490 and
+        // CS 492 are hard requirements that the earlier cs.uwaterloo.ca/
+        // bbabcs-courses sample schedule didn't call out explicitly.
+        // CS 490/CS 492 real constraint: must be taken in a Winter or
+        // Spring term, hence the "B"-term typical placement.
+        courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246","CS 251","CS 341","CS 350","CS 490","CS 492"],
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 246":"2A","CS 241":"2B","CS 251":"3A","CS 240":"3A","CS 245":"3B","CS 350":"3B","CS 341":"4A","CS 492":"3B","CS 490":"4B" },
       },
       {
         name:"Core Math",
