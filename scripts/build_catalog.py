@@ -1,5 +1,4 @@
 """
-Legacy — predates Supabase pgvector.
 Convert uwflow_ratings.json into text blobs for embedding.
 Filters low-rating courses, writes data_generated.py to project root.
 Run after scrape_uwflow.py.

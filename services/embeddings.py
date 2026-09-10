@@ -1,4 +1,3 @@
-"""Shared Gemini client, used for both query and course embeddings."""
 import os
 from google import genai
 

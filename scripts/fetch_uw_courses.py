@@ -1,5 +1,4 @@
 """
-Legacy — superseded by fetch_extra_subjects.py.
 Fetch MATH, CS, and STAT courses from UW Open Data API.
 Writes waterloo_data.json to the project root.
 Requires UW_API_KEY in .env.

@@ -1,5 +1,5 @@
 """
-One-time script. Scrape program requirements from the UW Academic Calendar Kuali API.
+Scrape program requirements from the UW Academic Calendar Kuali API.
 No auth required — uses the same public endpoint the SPA calls.
 
 Outputs: scripts/program_requirements.json
