@@ -155,39 +155,39 @@ $$;
 
 ```
 WatAsk/
-├── server.py                    # FastAPI routes only; delegates all logic to services/.
-├── index.html                    # Whole frontend: onboarding, term grid, sidebar, chat UI.
+├── server.py                    # Thin router, delegates all the real thinking
+├── index.html                    # The whole app, one big honest file
 │
-├── services/                    # Backend business logic — see services/README.md
-│   ├── rag.py                    # /ask: retrieve UWFlow reviews, generate a grounded answer.
-│   ├── planner.py                 # /plan: the 3-phase greedy course scheduler.
-│   ├── embeddings.py               # Shared Gemini client + embedding helper.
-│   └── transcript.py               # /parse-transcript: reads a transcript PDF/image.
+├── services/                    # Where the actual brains live — see services/README.md
+│   ├── rag.py                    # Answers questions using real course reviews
+│   ├── planner.py                 # Untangles prereqs into a real schedule
+│   ├── embeddings.py               # One shared Gemini client, nothing fancy
+│   └── transcript.py               # Reads your transcript so you don't have to
 │
-├── data/                        # Static data checked into the repo — see data/README.md
-│   ├── course_catalog.json        # Every scraped course: title, description, ratings.
-│   ├── prereqs.json                # Parsed prerequisite chains, keyed by course code.
-│   └── ratings_raw.json             # Raw liked/easy/useful percentages from UWFlow.
+├── data/                        # The receipts — see data/README.md
+│   ├── course_catalog.json        # Every course we could get our hands on
+│   ├── prereqs.json                # The rulebook: what unlocks what
+│   └── ratings_raw.json             # Raw UWFlow opinions, pre-merge
 │
-├── scripts/                     # Re-runnable data pipeline — see scripts/README.md
-│   ├── fetch_extra_subjects.py     # Active: pull a new subject from UWFlow's GraphQL API.
-│   ├── fetch_wlu_courses.py         # Active: scrape Laurier's academic calendar (BU courses).
-│   ├── fetch_ratings.py              # Active: liked/easy/useful % + prereq text from UWFlow.
-│   ├── parse_prereqs.py               # Active: Gemini parses raw text → structured prereqs.json.
-│   ├── index_courses.py                # Active: embed each course's review text into Supabase.
-│   ├── scrape_uw_programs.py            # One-time: fetch official program requirements.
-│   ├── program_requirements.json         # Snapshot written by the script above.
-│   ├── fetch_uw_courses.py                # Legacy: superseded by fetch_extra_subjects.py.
-│   ├── clean_planner.py                    # Legacy: downstream of fetch_uw_courses.py.
-│   ├── build_catalog.py                     # Legacy: predates Supabase pgvector.
-│   └── load_data.py                          # Legacy: superseded by index_courses.py.
+├── scripts/                     # The scrapers that feed data/ — see scripts/README.md
+│   ├── fetch_extra_subjects.py     # Adds a new subject on demand
+│   ├── fetch_wlu_courses.py         # Sneaks into Laurier's course catalog
+│   ├── fetch_ratings.py              # Steals opinions from UWFlow
+│   ├── parse_prereqs.py               # Gemini untangles prereq legalese
+│   ├── index_courses.py                # Feeds Supabase for the RAG search
+│   ├── scrape_uw_programs.py            # One-shot pull of official requirements
+│   ├── program_requirements.json         # What the script above left behind
+│   ├── fetch_uw_courses.py                # Retired, needed a key nobody has
+│   ├── clean_planner.py                    # Retired sidekick to the script above
+│   ├── build_catalog.py                     # Fossil from before Supabase existed
+│   └── load_data.py                          # Retired, index_courses.py does it better
 │
-├── tests/                       # pytest suite (37 tests) — see tests/README.md
-│   ├── test_planner.py            # Scheduler correctness: prereqs, retakes, capacity.
-│   ├── test_api.py                 # FastAPI endpoint behavior (rate limits, shapes).
-│   └── test_helpers.py              # Shared fixtures.
+├── tests/                       # 37 tests keeping this honest — see tests/README.md
+│   ├── test_planner.py            # Makes sure the scheduler doesn't lie
+│   ├── test_api.py                 # Pokes the API, checks it behaves
+│   └── test_helpers.py              # Boring fixtures, doing quiet work
 │
-├── requirements.txt              # Runtime dependencies (pinned).
-├── requirements-dev.txt           # + pytest/httpx for running the test suite locally.
-└── runtime.txt                    # Python version pin Render reads on deploy.
+├── requirements.txt              # What it takes to run this thing
+├── requirements-dev.txt           # + pytest, for keeping it honest
+└── runtime.txt                    # Tells Render which Python to use
 ```

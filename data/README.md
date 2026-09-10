@@ -1,7 +1,7 @@
 # data/
 
-Static data, rebuilt by scripts in `../scripts/`.
+The receipts. Rebuilt by `../scripts/`, not hand-edited.
 
-- **`course_catalog.json`** — 1,600+ courses across 25 subjects: title, description, ratings, raw prereq text.
-- **`prereqs.json`** — ~980 parsed prerequisite chains, keyed by course code. `[[a,b],[c]]` = (a OR b) AND c; `"X:60"` = min grade 60%.
-- **`ratings_raw.json`** — Unmerged UWFlow ratings scrape, folded into `course_catalog.json` by `fetch_ratings.py`.
+- **`course_catalog.json`** — Every course we could get our hands on
+- **`prereqs.json`** — The rulebook: what unlocks what
+- **`ratings_raw.json`** — Raw UWFlow opinions, pre-merge

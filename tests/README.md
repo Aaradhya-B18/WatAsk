@@ -1,7 +1,7 @@
 # tests/
 
-37-test pytest suite: `python -m pytest tests/ -q`
+37 tests keeping this honest: `python -m pytest tests/ -q`
 
-- **`test_planner.py`** — Scheduler correctness: prereqs, retakes, term capacity.
-- **`test_api.py`** — FastAPI endpoints: response shapes, rate limits, no leaked errors.
-- **`test_helpers.py`** — Shared fixtures used by the other two files.
+- **`test_planner.py`** — Makes sure the scheduler doesn't lie
+- **`test_api.py`** — Pokes the API, checks it behaves
+- **`test_helpers.py`** — Boring fixtures, doing quiet work
