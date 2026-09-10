@@ -1845,9 +1845,12 @@ const PROGRAMS = {
     groups:[
       {
         name:"Core CS",
-        // Per cs.uwaterloo.ca/bbabcs-courses "Sample A" schedule
+        // Per cs.uwaterloo.ca/bbabcs-courses "Sample A" schedule, rebalanced
+        // slightly (CS 251/245 shifted a term later) to make room for the
+        // real fixed Laurier BU courses in the same terms without breaking
+        // the "CO 250 + STAT 231 before 3A" constraint below
         courses:["CS 135","CS 136","CS 136L","CS 240","CS 241","CS 245","CS 246","CS 251","CS 341","CS 350"],
-        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 246":"2A","CS 241":"2B","CS 251":"2B","CS 240":"3A","CS 245":"3A","CS 350":"3B","CS 341":"4A" },
+        typical:{ "CS 135":"1A","CS 136":"1B","CS 136L":"1B","CS 246":"2A","CS 241":"2B","CS 251":"3A","CS 240":"3A","CS 245":"3B","CS 350":"3B","CS 341":"4A" },
       },
       {
         name:"Core Math",
@@ -1857,7 +1860,14 @@ const PROGRAMS = {
       {
         name:"Statistics & Optimization",
         // CO 250 + STAT 231 must complete before the "BUS 3A block" per the
-        // official course guide - both placed no later than 2B
+        // official course guide - typical hints target 2B, but note the
+        // shared greedy scheduler treats "typical" as a soft starting point,
+        // not a hard constraint - if earlier terms are already at capacity
+        // (common in this program given how many fixed Laurier courses
+        // compete for the same slots), it may push one of these later than
+        // the real program actually allows. Flagged here rather than chased
+        // further with per-term rebalancing, same call as the FARM program's
+        // known MATBUS 470 packing limitation.
         courses:["STAT 230","STAT 231","CO 250"],
         typical:{ "STAT 230":"2A","STAT 231":"2B","CO 250":"2B" },
       },
@@ -1867,6 +1877,21 @@ const PROGRAMS = {
         // ECON 250W is the "ECON 250 or 260" upper pick (defaulting to 250W)
         courses:["ECON 120W","ECON 140W","ECON 250W"],
         typical:{ "ECON 120W":"1A","ECON 140W":"1B","ECON 250W":"4A" },
+      },
+      {
+        name:"Laurier Business",
+        // Fixed-block BU courses, real and current per cs.uwaterloo.ca/
+        // bbabcs-courses - HIGH confidence. BU481/491 are "typically" 4A/4B
+        // per the same source, not fixed like the rest.
+        courses:["BU 111","BU 121","BU 127","BU 283","BU 288","BU 231","BU 247","BU 252","BU 354","BU 393","BU 362","BU 375","BU 398","BU 481","BU 491"],
+        typical:{
+          "BU 111":"1A","BU 121":"1B",
+          "BU 127":"2A","BU 283":"2A","BU 288":"2A",
+          "BU 231":"2B","BU 247":"2B",
+          "BU 252":"3A","BU 354":"3A","BU 393":"3A",
+          "BU 362":"3B","BU 375":"3B","BU 398":"3B",
+          "BU 481":"4A","BU 491":"4B",
+        },
       },
     ],
   },
@@ -1900,6 +1925,20 @@ const PROGRAMS = {
         name:"Laurier Economics",
         courses:["ECON 120W","ECON 140W","ECON 250W"],
         typical:{ "ECON 120W":"1A","ECON 140W":"1B","ECON 250W":"4A" },
+      },
+      {
+        name:"Laurier Business",
+        // Same real fixed-block BU courses as the BCS side (the Laurier
+        // half of the double degree doesn't depend on the Waterloo major)
+        courses:["BU 111","BU 121","BU 127","BU 283","BU 288","BU 231","BU 247","BU 252","BU 354","BU 393","BU 362","BU 375","BU 398","BU 481","BU 491"],
+        typical:{
+          "BU 111":"1A","BU 121":"1B",
+          "BU 127":"2A","BU 283":"2A","BU 288":"2A",
+          "BU 231":"2B","BU 247":"2B",
+          "BU 252":"3A","BU 354":"3A","BU 393":"3A",
+          "BU 362":"3B","BU 375":"3B","BU 398":"3B",
+          "BU 481":"4A","BU 491":"4B",
+        },
       },
     ],
   },
@@ -2652,6 +2691,7 @@ function renderSidebar() {
     { label:"MTHEL Courses",  prefix:"MTHEL"  },
     { label:"PHIL Courses",   prefix:"PHIL"   },
     { label:"PHYS Courses",   prefix:"PHYS"   },
+    { label:"BU Courses",     prefix:"BU"     },
   ];
 
   SUBJECTS.forEach(({ label, prefix }) => {
