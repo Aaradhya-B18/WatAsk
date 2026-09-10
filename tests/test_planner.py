@@ -1,4 +1,4 @@
-"""Integration tests for the plan generator — no external API calls needed."""
+"""Tests for the scheduler: prereqs, retakes, term capacity. No external API calls needed."""
 import json
 import pytest
 from services.planner import generate_plan
