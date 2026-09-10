@@ -662,10 +662,24 @@ header {
       <h2>Study system</h2>
       <p class="sub">Choose your co-op sequence — this sets the term order in your planner.</p>
 
-      <div id="ddSeqNotice" style="display:none;padding:12px 14px;background:var(--gold-muted);border:1px solid var(--gold-border);border-radius:8px;font-size:12px;color:var(--text);line-height:1.6;margin-bottom:16px">
-        Double degree programs are <strong>co-op only</strong>, using <strong>SEQ 5DD</strong> — 5 years,
-        10 study terms (1A–5B), 5 work terms. UW's official chart lists 3 minor variants of how the last
-        two years' work terms are arranged; WatAsk currently plans against the most common one.
+      <div id="ddSeqNotice" style="display:none">
+        <div style="padding:12px 14px;background:var(--gold-muted);border:1px solid var(--gold-border);border-radius:8px;font-size:12px;color:var(--text);line-height:1.6;margin-bottom:14px">
+          Double degree programs are <strong>co-op only</strong>, using <strong>SEQ 5DD</strong> — 5 years,
+          10 study terms (1A–5B). UW's official chart lists 3 variants of how the last two years' work
+          terms are arranged — pick yours below.
+        </div>
+        <label class="field-label">SEQ 5DD Variant</label>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px" id="ddSeqToggle">
+          <button class="seq-btn active" onclick="selectDDSeq('1', this)">
+            Option 1<div style="font-size:10px;font-weight:400;margin-top:3px;color:var(--muted)">5 work terms — WT5 falls between 4B and 5A</div>
+          </button>
+          <button class="seq-btn" onclick="selectDDSeq('2', this)">
+            Option 2<div style="font-size:10px;font-weight:400;margin-top:3px;color:var(--muted)">Only 4 work terms — 4A and 4B run back-to-back</div>
+          </button>
+          <button class="seq-btn" onclick="selectDDSeq('3', this)">
+            Option 3<div style="font-size:10px;font-weight:400;margin-top:3px;color:var(--muted)">5 work terms — extra work term falls before 4A instead</div>
+          </button>
+        </div>
       </div>
 
       <div id="regularSeqSection">
@@ -1830,8 +1844,9 @@ const PROGRAMS = {
   //   - BCS-side course samples: cs.uwaterloo.ca/bbabcs-courses (Sample A) - HIGH confidence
   //   - BMath-side: only 1st year is published in detail; upper years extrapolated
   //     from the standalone Honours Math core - MEDIUM confidence beyond 1B
-  // SEQ 5DD actually has 3 official work-term-arrangement options; only the
-  // first (most common) is implemented here as the default "seq5ddTerms".
+  // SEQ 5DD has 3 official work-term-arrangement variants (seq5ddTerms /
+  // seq5dd2Terms / seq5dd3Terms below), selectable in onboarding step 2 -
+  // Option 1 (seq5ddTerms) is the default.
   // Laurier's own BU-prefix business core (BU111, BU121, BU252, etc.) isn't
   // tracked - we have zero catalog/prereq data for Laurier's own course
   // system, so those terms will look lighter than the student's real course
@@ -1841,6 +1856,8 @@ const PROGRAMS = {
     name:"BBA (Laurier) + Computer Science Double Degree",
     terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
     seq5ddTerms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
+    seq5dd2Terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","4B","COOP","5A","5B"],
+    seq5dd3Terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","COOP","4A","4B","COOP","5A","5B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B","5A","5B"],
     groups:[
       {
@@ -1900,6 +1917,8 @@ const PROGRAMS = {
     name:"BBA (Laurier) + Mathematics Double Degree",
     terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
     seq5ddTerms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
+    seq5dd2Terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","4B","COOP","5A","5B"],
+    seq5dd3Terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","COOP","4A","4B","COOP","5A","5B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B","5A","5B"],
     groups:[
       {
@@ -2198,6 +2217,13 @@ function selectSeq(num, btn) {
   updateSeqPreview();
 }
 
+function selectDDSeq(num, btn) {
+  _obSeq = "5dd" + num;
+  btn.closest("#ddSeqToggle").querySelectorAll(".seq-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  updateSeqPreview();
+}
+
 function updateSeqPreview() {
   const prog = PROGRAMS[document.getElementById("obProgram").value];
   const terms = resolveTerms(prog, _obCoop, _obSeq);
@@ -2218,7 +2244,9 @@ function resolveTerms(prog, coop, seq) {
   if (seq === "2") return prog.seq2Terms || prog.terms;
   if (seq === "3") return prog.seq3Terms || prog.terms;
   if (seq === "4") return prog.seq4Terms || prog.terms;
-  if (seq === "5dd") return prog.seq5ddTerms || prog.terms;
+  if (seq === "5dd" || seq === "5dd1") return prog.seq5ddTerms || prog.terms;
+  if (seq === "5dd2") return prog.seq5dd2Terms || prog.terms;
+  if (seq === "5dd3") return prog.seq5dd3Terms || prog.terms;
   return prog.terms;
 }
 
@@ -2241,7 +2269,8 @@ function obStep2() {
   document.getElementById("ddSeqNotice").style.display = _obDoubleDegree ? "block" : "none";
   document.getElementById("regularSeqSection").style.display = _obDoubleDegree ? "none" : "";
   if (_obDoubleDegree) {
-    _obSeq = "5dd";
+    _obSeq = "5dd1";
+    document.querySelectorAll("#ddSeqToggle .seq-btn").forEach((b,i) => b.classList.toggle("active", i===0));
   } else {
     _obSeq = "1";
     document.querySelectorAll("#coopToggle .seq-btn").forEach((b,i) => b.classList.toggle("active", i===0));
