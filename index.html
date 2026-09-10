@@ -159,6 +159,12 @@ body { font-family: system-ui,-apple-system,sans-serif; background:var(--bg); co
   font-family:inherit; cursor:pointer; text-align:center;
 }
 .ob-picker-action:hover { opacity:.85; }
+.ob-transcript-btn {
+  background:var(--surface-2); border:1px solid var(--gold-border); color:var(--gold);
+  font-size:13px; padding:11px 14px;
+}
+.ob-transcript-btn:hover { background:var(--gold-muted); border-color:var(--gold); opacity:1; }
+.ob-transcript-btn:disabled { opacity:.5; cursor:default; }
 .ob-picker-cancel {
   width:100%; margin-top:6px;
   background:none; border:1px solid var(--border); color:var(--text);
@@ -729,7 +735,7 @@ header {
       <p class="sub">Search for courses you've already finished and pick the term. Skip if you're starting fresh.</p>
 
       <input type="file" id="obTranscriptFile" accept=".pdf,image/png,image/jpeg,image/webp" style="display:none" onchange="obUploadTranscript(this.files[0])">
-      <button type="button" class="ob-picker-action" id="obTranscriptBtn" onclick="document.getElementById('obTranscriptFile').click()" style="width:100%;margin-bottom:10px">📄 Upload transcript (auto-fill from PDF)</button>
+      <button type="button" class="ob-picker-action ob-transcript-btn" id="obTranscriptBtn" onclick="document.getElementById('obTranscriptFile').click()" style="width:100%;margin-bottom:10px">📄 Upload transcript (auto-fill from PDF)</button>
       <div id="obTranscriptStatus" style="font-size:11px;color:var(--muted);margin-bottom:10px;display:none"></div>
       <div id="obTranscriptReview" style="display:none;margin-bottom:16px"></div>
 
