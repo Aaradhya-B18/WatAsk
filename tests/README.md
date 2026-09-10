@@ -1,6 +1,6 @@
 # tests/
 
-37 tests keeping this honest: `python -m pytest tests/ -q`
+37 tests covering the scheduler and API: `python -m pytest tests/ -q`
 
 - **`test_planner.py`** — Makes sure the scheduler doesn't lie
 - **`test_api.py`** — Pokes the API, checks it behaves
