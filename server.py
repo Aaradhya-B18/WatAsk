@@ -61,6 +61,7 @@ class PlanRequest(BaseModel):
     current_term: Optional[str] = None
     specialization: Optional[List[str]] = None
     overload: Optional[bool] = False
+    max_per_term: Optional[int] = None
     retaking: Optional[List[str]] = []
     taken_terms: Optional[dict] = {}
     taken_grades: Optional[dict] = {}
@@ -113,7 +114,7 @@ def suggest_plan(request: Request, req: PlanRequest):
         prereqs=PREREQS,
         specialization=req.specialization,
         current_term=req.current_term,
-        max_per_term=6 if req.overload else 5,
+        max_per_term=(req.max_per_term or 5) + (1 if req.overload else 0),
         extra_slots=len(req.retaking or []) if req.overload else 0,
         retaking=req.retaking or [],
         taken_grades={k: float(v) for k, v in (req.taken_grades or {}).items()},

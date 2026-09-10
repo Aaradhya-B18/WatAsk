@@ -1871,6 +1871,12 @@ const PROGRAMS = {
   // already present in our catalog under the ECON subject.
   "bba-bcs": {
     name:"BBA (Laurier) + Computer Science Double Degree",
+    // 26.0 total units (12.25 Waterloo math/CS + 12.0 Laurier business + 1.75
+    // elective) over 10 study terms is a heavier load than a single degree's
+    // 20.0 units over 8 - real students routinely take 6 courses in a term
+    // (e.g. 1B alone has 6 required: BU121, ECON140W, CS136, CS136L, MATH136,
+    // MATH138), so this program's default cap is 6/term, not 5.
+    maxPerTerm:6,
     terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
     seq5ddTerms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
     seq5dd2Terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","4B","COOP","5A","5B"],
@@ -1935,6 +1941,9 @@ const PROGRAMS = {
 
   "bba-bmath": {
     name:"BBA (Laurier) + Mathematics Double Degree",
+    // Same heavier-load reasoning as bba-bcs above - real students in this
+    // double degree routinely take 6 courses in a term.
+    maxPerTerm:6,
     terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
     seq5ddTerms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
     seq5dd2Terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","4B","COOP","5A","5B"],
@@ -3366,6 +3375,8 @@ async function regenWithPref(prefKey) {
         placed: {},
         current_term: S.currentTerm,
         specialization: courses.length ? courses : null,
+        overload: S.overload || false,
+        max_per_term: prog.maxPerTerm || null,
         retaking: S.retaking || [],
         taken_grades: S.takenGrades || {},
         taken_terms: S.takenTerms || {},
@@ -3524,6 +3535,7 @@ async function doGeneratePlan(btn, thread) {
         current_term: S.currentTerm,
         specialization: specCourses,
         overload: S.overload || false,
+        max_per_term: prog.maxPerTerm || null,
         retaking: S.retaking || [],
         taken_grades: S.takenGrades || {},
         taken_terms: S.takenTerms || {},
@@ -3532,7 +3544,9 @@ async function doGeneratePlan(btn, thread) {
     const data = await res.json();
     const specNote = specLabel ? `<span style="color:var(--gold)">${esc(specLabel)} focus</span> · ` : "";
     const overloadNote = S.overload ? ` · <span style="color:#e08a3c">↻ overload allowed</span>` : "";
-    el.innerHTML = `<div class="lbl">✦ Generated Plan</div><div style="font-size:11px;color:var(--muted);margin-bottom:8px">${specNote}Prereq-aware · ${S.overload ? 'up to 6' : '5'} courses/term${overloadNote}.</div>${parsePlanToTable(data.answer)}`;
+    const baseCap = prog.maxPerTerm || 5;
+    const capLabel = S.overload ? `up to ${baseCap + 1}` : `${baseCap}`;
+    el.innerHTML = `<div class="lbl">✦ Generated Plan</div><div style="font-size:11px;color:var(--muted);margin-bottom:8px">${specNote}Prereq-aware · ${capLabel} courses/term${overloadNote}.</div>${parsePlanToTable(data.answer)}`;
   } catch(err) {
     el.innerHTML = `<div class="lbl">✦ Generated Plan</div><em style="color:var(--red)">Error: ${err.message}</em>`;
   } finally {
