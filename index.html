@@ -120,7 +120,7 @@ body { font-family: system-ui,-apple-system,sans-serif; background:var(--bg); co
 }
 .modal select {
   width:100%; background:var(--surface-2); border:1px solid var(--border);
-  border-radius:8px; color:var(--text); font-family:inherit; font-size:14px; padding:10px 14px;
+  border-radius:8px; color:var(--text); font-family:inherit; font-size:14px; font-weight:700; padding:10px 14px;
   margin-bottom:20px; appearance:none; cursor:pointer;
 }
 .modal select:focus { outline:none; border-color:var(--gold); }
@@ -2208,7 +2208,7 @@ function setDegreeType(isDouble, btn) {
   _obProgramPool = isDouble ? DOUBLE_DEGREE_PROGRAMS : SINGLE_DEGREE_PROGRAMS;
   document.getElementById("obProgram").value = "";
   document.getElementById("obProgramSearch").value = "";
-  document.getElementById("obProgramSearch").placeholder = isDouble ? "Choose BBA + Math or CS…" : "Choose your program…";
+  document.getElementById("obProgramSearch").placeholder = "Choose your program…";
   document.querySelectorAll("#obTerm .ob-dd-term").forEach(o => o.hidden = !isDouble);
 }
 
