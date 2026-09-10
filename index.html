@@ -429,6 +429,15 @@ header {
   font-size:8.5px; letter-spacing:.6px; padding:7px 2px;
   color:rgba(255,213,74,0.6); border-bottom-color:rgba(255,213,74,0.3);
 }
+.term-col.off {
+  flex:0 0 68px;
+  background:rgba(255,255,255,0.02);
+  border-right:1px solid rgba(255,255,255,0.09);
+}
+.term-col.off .term-lbl {
+  font-size:8.5px; letter-spacing:.6px; padding:7px 2px;
+  color:var(--muted); border-bottom-color:var(--border);
+}
 .term-drop {
   flex:1; min-height:0; border:1.5px dashed transparent; border-radius:8px;
   padding:5px; transition:border-color .15s, background .15s;
@@ -932,6 +941,12 @@ const PROGRAM_LIST = [
 const DOUBLE_DEGREE_PROGRAMS = PROGRAM_LIST.filter(p => p.doubleDegree);
 const SINGLE_DEGREE_PROGRAMS = PROGRAM_LIST.filter(p => !p.doubleDegree);
 
+// "COOP" = a real co-op work term. "OFF" = SEQ 3's off-term (no job, no
+// study) — distinct in UW's own terminology, so it must never be counted or
+// labeled as a work term even though it's just as much a non-study term.
+const NON_STUDY_TERMS = new Set(["COOP", "OFF"]);
+function isStudyTerm(t) { return !NON_STUDY_TERMS.has(t); }
+
 function progLabel(v) {
   return (PROGRAM_LIST.find(p => p.v === v) || {}).l || v;
 }
@@ -1084,7 +1099,7 @@ const PROGRAMS = {
     name:"Computer Science (BCS Honours)",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1119,7 +1134,7 @@ const PROGRAMS = {
     name:"Honours Mathematics",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1155,7 +1170,7 @@ const PROGRAMS = {
     name:"CS & Math",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1196,7 +1211,7 @@ const PROGRAMS = {
     name:"Statistics",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1234,7 +1249,7 @@ const PROGRAMS = {
     name:"Biostatistics",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1279,7 +1294,7 @@ const PROGRAMS = {
     name:"Data Science (BMath)",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1328,7 +1343,7 @@ const PROGRAMS = {
     name:"Computational Mathematics",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1373,7 +1388,7 @@ const PROGRAMS = {
     name:"Pure Mathematics",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1413,7 +1428,7 @@ const PROGRAMS = {
     name:"Mathematical Finance",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1490,7 +1505,7 @@ const PROGRAMS = {
     name:"Applied Mathematics",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1526,7 +1541,7 @@ const PROGRAMS = {
     name:"Applied Mathematics — Scientific ML",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1571,7 +1586,7 @@ const PROGRAMS = {
     name:"Actuarial Science",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1628,7 +1643,7 @@ const PROGRAMS = {
     name:"Combinatorics & Optimization",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1669,7 +1684,7 @@ const PROGRAMS = {
     name:"Mathematical Physics",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1723,7 +1738,7 @@ const PROGRAMS = {
     name:"Financial Analysis & Risk Management",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -1803,7 +1818,7 @@ const PROGRAMS = {
     name:"Mathematical Studies",
     terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","4B"],
     seq2Terms:["1A","1B","COOP","2A","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
-    seq3Terms:["1A","1B","COOP","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
+    seq3Terms:["1A","1B","OFF","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     seq4Terms:["1A","1B","2A","COOP","2B","COOP","3A","COOP","3B","COOP","4A","COOP","COOP","4B"],
     regularTerms:["1A","1B","2A","2B","3A","3B","4A","4B"],
     groups:[
@@ -2109,7 +2124,7 @@ function quickAddCourse(code, e) {
     pop.style.display = "none"; _qaCode = null; return;
   }
   _qaCode = code;
-  const studyTerms = getTerms().filter(t => t !== "COOP");
+  const studyTerms = getTerms().filter(isStudyTerm);
   pop.innerHTML = studyTerms.map(t => {
     const inTerm = (S.plan[t] || []).includes(code);
     return `<button class="qa-btn${inTerm ? " planned" : ""}" onclick="doQuickAdd('${esc(code)}','${t}')">${t}${inTerm ? " ✓" : ""}</button>`;
@@ -2229,18 +2244,21 @@ function updateSeqPreview() {
   const terms = resolveTerms(prog, _obCoop, _obSeq);
   const preview = document.getElementById("seqPreview");
   if (!preview) return;
-  const studyTerms = terms.filter(t => t !== "COOP");
+  const studyTerms = terms.filter(isStudyTerm);
   const coopCount = terms.filter(t => t === "COOP").length;
+  const offCount = terms.filter(t => t === "OFF").length;
   preview.innerHTML = terms.map(t =>
     t === "COOP"
       ? `<span style="color:var(--gold);opacity:.6">${t}</span>`
+      : t === "OFF"
+      ? `<span style="color:var(--muted)">${t}</span>`
       : `<span style="color:var(--text)">${t}</span>`
   ).join(" → ") +
-  `<div style="margin-top:8px">${studyTerms.length} study terms · ${coopCount} work term${coopCount!==1?"s":""}</div>`;
+  `<div style="margin-top:8px">${studyTerms.length} study terms · ${coopCount} work term${coopCount!==1?"s":""}${offCount ? ` · ${offCount} off term${offCount!==1?"s":""}` : ""}</div>`;
 }
 
 function resolveTerms(prog, coop, seq) {
-  if (coop === "regular") return prog.regularTerms || prog.terms.filter(t => t !== "COOP");
+  if (coop === "regular") return prog.regularTerms || prog.terms.filter(isStudyTerm);
   if (seq === "2") return prog.seq2Terms || prog.terms;
   if (seq === "3") return prog.seq3Terms || prog.terms;
   if (seq === "4") return prog.seq4Terms || prog.terms;
@@ -2459,7 +2477,7 @@ function obPickTerm(code) {
   document.getElementById("obCourseSearch").value = "";
   document.getElementById("obSearchDropdown").style.display = "none";
   const prog = document.getElementById("obProgram").value;
-  const studyTerms = resolveTerms(PROGRAMS[prog], _obCoop, _obSeq).filter(t => t !== "COOP");
+  const studyTerms = resolveTerms(PROGRAMS[prog], _obCoop, _obSeq).filter(isStudyTerm);
   document.getElementById("obTermPickerBtns").innerHTML =
     studyTerms.map(t => `<button class="seq-btn" onclick="obSelectTerm('${t}')">${t}</button>`).join("");
   document.getElementById("obGradeRow").style.display = "none";
@@ -2626,7 +2644,7 @@ function coursesBefore(termId) {
   // Exclude retaking courses — they haven't been passed yet
   const done = new Set(S.taken.filter(c => !S.retaking?.includes(c)));
   terms.forEach((t, i) => {
-    if (i < idx && t !== "COOP") (S.plan[t] || []).forEach(c => done.add(c));
+    if (i < idx && isStudyTerm(t)) (S.plan[t] || []).forEach(c => done.add(c));
   });
   return done;
 }
@@ -2910,12 +2928,12 @@ function groupByYear(terms) {
   // Resolve which academic year each term belongs to.
   // Co-ops look ahead to the next study term to inherit its year.
   const yearOf = terms.map((t, i) => {
-    if (t !== "COOP") return parseInt(t[0]) || 4;
+    if (isStudyTerm(t)) return parseInt(t[0]) || 4;
     for (let j = i + 1; j < terms.length; j++) {
-      if (terms[j] !== "COOP") return parseInt(terms[j][0]) || 4;
+      if (isStudyTerm(terms[j])) return parseInt(terms[j][0]) || 4;
     }
     for (let j = i - 1; j >= 0; j--) {
-      if (terms[j] !== "COOP") return parseInt(terms[j][0]) || 4;
+      if (isStudyTerm(terms[j])) return parseInt(terms[j][0]) || 4;
     }
     return 4;
   });
@@ -2940,12 +2958,15 @@ function renderGrid() {
     html += `<div class="term-row">`;
     rowTerms.forEach(termId => {
       const isCoop = termId === "COOP";
+      const isOff = termId === "OFF";
       if (isCoop) coopN++;
-      const label = isCoop ? `Co-op ${coopN}` : termId;
-      html += `<div class="term-col${isCoop ? " coop" : ""}">
+      const label = isCoop ? `Co-op ${coopN}` : isOff ? "Off" : termId;
+      html += `<div class="term-col${isCoop ? " coop" : isOff ? " off" : ""}">
         <div class="term-lbl">${label}</div>`;
       if (isCoop) {
         html += `<div class="coop-body"><div class="coop-icon">💼</div><div>Work</div></div>`;
+      } else if (isOff) {
+        html += `<div class="coop-body"><div class="coop-icon">🌴</div><div>Off</div></div>`;
       } else {
         const takenInTerm = Object.entries(S.takenTerms || {})
           .filter(([, t]) => t === termId).map(([c]) => c);
@@ -3007,7 +3028,7 @@ function cardStatus(code, termId) {
   const typical = typicalTermFor(cleanCode);
   if (!typical) return { cls: "card-green", softWarn: null };
 
-  const studyTerms = getTerms().filter(t => t !== "COOP");
+  const studyTerms = getTerms().filter(isStudyTerm);
   const typIdx = studyTerms.indexOf(typical);
   const curIdx = studyTerms.indexOf(termId);
   if (typIdx === -1 || curIdx === -1) return { cls: "card-green", softWarn: null };
@@ -3281,7 +3302,7 @@ function prefCourses(pref) {
 }
 
 function applyPlanToGrid(planText) {
-  const studyTerms = new Set(getTerms().filter(t => t !== "COOP"));
+  const studyTerms = new Set(getTerms().filter(isStudyTerm));
   const newPlan = {};
   for (const line of planText.split("\n")) {
     const m = line.match(/^([^:]+):\s*(.+)/);
@@ -3314,7 +3335,7 @@ async function regenWithPref(prefKey) {
   thread.appendChild(el);
   thread.scrollTop = thread.scrollHeight;
 
-  const studyTerms = getTerms().filter(t => t !== "COOP");
+  const studyTerms = getTerms().filter(isStudyTerm);
 
   function dedupeGroup(cs) {
     const seen = new Set();
@@ -3452,7 +3473,7 @@ async function buildPlan() {
 // ── Core plan generation ──────────────────────────────────────────────
 async function doGeneratePlan(btn, thread) {
   const prog = PROGRAMS[S.program];
-  const studyTerms = getTerms().filter(t => t !== "COOP");
+  const studyTerms = getTerms().filter(isStudyTerm);
 
   const el = document.createElement("div");
   el.className = "chat-msg b";

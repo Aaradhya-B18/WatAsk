@@ -71,7 +71,7 @@ def generate_plan(
     # Retaking courses must be re-scheduled even though they appear in taken
     to_schedule = [c for c in all_required if c not in already_done or c in retaking_set]
 
-    study_terms = [t for t in terms if t != "COOP"]
+    study_terms = [t for t in terms if t not in ("COOP", "OFF")]
     if not study_terms:
         return "No study terms found."
 
