@@ -1,4 +1,5 @@
 """
+Legacy — superseded by fetch_extra_subjects.py.
 Clean waterloo_data.json into planner_courses.json.
 Deduplicates by course code and collects terms offered.
 Run after fetch_uw_courses.py.
