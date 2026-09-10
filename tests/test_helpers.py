@@ -1,4 +1,4 @@
-"""Unit tests for query-parsing helpers in services/rag.py."""
+"""Unit tests for the small query-parsing helpers used by services/rag.py."""
 import pytest
 from services.rag import is_greeting, normalize_query, find_codes, looks_like_course_question
 
