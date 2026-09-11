@@ -2,7 +2,7 @@
 
 [![demo](https://img.shields.io/badge/demo-live-brightgreen)](https://watask.onrender.com) [![python](https://img.shields.io/badge/python-3.12%2B-blue)](runtime.txt) [![fastapi](https://img.shields.io/badge/FastAPI-0.128-009688)](requirements.txt) [![license](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
-> AI course planner and advisor for University of Waterloo students. Covers all 18 undergrad Math/CS programs, including the BBA double-degree plans.
+A full-stack academic planning tool for University of Waterloo students. It combines a RAG-powered AI advisor with an interactive drag-and-drop course scheduler, covering all 18 undergrad Math/CS programs: every BMath major, the BCS program, and the BBA (Laurier) + Waterloo double-degree plans.
 
 **Live at [watask.onrender.com](https://watask.onrender.com)**
 
@@ -10,12 +10,15 @@
 
 ## Features
 
-- **AI Course Advisor** — ask about any course's difficulty, workload, or prereqs, answered by RAG over real UWFlow reviews
-- **Smart Plan Generator** — one click builds a full schedule that resolves prereq chains, co-op sequencing, and elective budgets
-- **Grade-Aware Prereqs** — flags when a low grade in one course blocks a specific downstream course, per program
-- **Retake Scheduling** — mark a course for retake and drag it into any future term
-- **Transcript Upload** — upload a photo/PDF of a transcript, Gemini extracts completed courses, terms, and grades
-- **Single/Double Degree** — 16 BMath/BCS programs plus BBA (Laurier) + Math/CS double degrees, with UW's real SEQ 5DD co-op sequence
+- **AI Course Advisor** — ask anything about a course (difficulty, workload, comparisons, prereqs) and get an answer grounded in real UWFlow review text via RAG, not a static FAQ
+- **Interactive Course Planner** — drag-and-drop grid for up to 10 study terms (double-degree plans run 5 years). Tracks prerequisites live and won't let you schedule something you're not eligible for yet
+- **Smart Plan Generator** — one click builds a full schedule that resolves prereq chains across multiple passes, respects co-op sequencing, and budgets non-math electives per term
+- **Grade-Aware Prereqs** — enter your grades and the planner flags when a low one silently blocks a specific downstream course; this is program-specific (e.g. MATH 136 at 56% warns BMath students about MATH 235, but not BCS students, since BCS doesn't require it)
+- **Retake Scheduling** — mark a course for retake and it becomes a draggable card you can slot into any future term
+- **Transcript Upload** — upload a photo or PDF of an unofficial transcript and Gemini's multimodal API extracts completed courses, terms, and grades into an editable list before anything is added
+- **Single/Double Degree Support** — 16 single-degree BMath/BCS programs plus BBA (Laurier) + Math/CS double degrees, using UW's real SEQ 5DD co-op sequence (all 3 official work-term variants)
+
+Programs covered: Statistics, Computer Science (BCS), Applied Math, Pure Math, Combinatorics & Optimization, Actuarial Science, Computational Math, Math/Finance, Math/Physics, Data Science, and the BBA+CS / BBA+Math double degrees, among others.
 
 ---
 
