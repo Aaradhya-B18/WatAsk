@@ -1,21 +1,21 @@
-# WatAsk — UW Course Planner & Advisor
+# WatAsk
 
-A full-stack academic planning tool for University of Waterloo students. Combines a RAG-powered AI advisor with an interactive course scheduler covering 18 programs — every BMath major, the BCS program, and the BBA (Laurier) + Waterloo double-degree plans.
+[![demo](https://img.shields.io/badge/demo-live-brightgreen)](https://watask.onrender.com) [![python](https://img.shields.io/badge/python-3.12%2B-blue)](runtime.txt) [![fastapi](https://img.shields.io/badge/FastAPI-0.128-009688)](requirements.txt) [![license](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
-**Live:** [watask.onrender.com](https://watask.onrender.com)
+> AI course planner and advisor for University of Waterloo students. Covers all 18 undergrad Math/CS programs, including the BBA double-degree plans.
+
+**Live at [watask.onrender.com](https://watask.onrender.com)**
 
 ---
 
 ## Features
 
-- **AI Course Advisor** — Ask anything about UW courses (difficulty, workload, prereqs, comparisons). Powered by Gemini + semantic search over UWFlow reviews.
-- **Interactive Course Planner** — Drag-and-drop grid for up to 10 study terms (double-degree plans run 5 years). Tracks prerequisites, detects conflicts, and color-codes course readiness.
-- **Smart Plan Generator** — One-click plan generation that respects prereq chains, co-op sequences, and non-math elective budgets.
-- **Grade-Aware Prereqs** — Enter your grades; the planner warns if a low grade blocks a downstream course (program-specific — e.g. MATH 136 at 56% warns BMath students about MATH 235 but not BCS students).
-- **Retake Scheduling** — Mark a course for retake; it appears as a draggable card you can slot into any future term.
-- **Transcript Upload** — Upload a PDF/image of your unofficial transcript and Gemini extracts your completed courses, terms, and grades into an editable review list before anything is added.
-- **Single/Double Degree Support** — 16 single-degree BMath/BCS programs plus the BBA (Wilfrid Laurier) + Math or CS double-degree plans, with UW's real SEQ 5DD co-op sequence (all 3 official work-term variants).
-- **18 Programs** — Statistics, CS (BCS), Applied Math, Pure Math, CO, Actuarial Science, Computational Math, Math Finance, Math Physics, Data Science, BBA+CS/BBA+Math double degree, and more.
+- **AI Course Advisor** — ask about any course's difficulty, workload, or prereqs, answered by RAG over real UWFlow reviews
+- **Smart Plan Generator** — one click builds a full schedule that resolves prereq chains, co-op sequencing, and elective budgets
+- **Grade-Aware Prereqs** — flags when a low grade in one course blocks a specific downstream course, per program
+- **Retake Scheduling** — mark a course for retake and drag it into any future term
+- **Transcript Upload** — upload a photo/PDF of a transcript, Gemini extracts completed courses, terms, and grades
+- **Single/Double Degree** — 16 BMath/BCS programs plus BBA (Laurier) + Math/CS double degrees, with UW's real SEQ 5DD co-op sequence
 
 ---
 
@@ -155,39 +155,39 @@ $$;
 
 ```
 WatAsk/
-├── server.py                    # Thin router, delegates all the real thinking
-├── index.html                    # The whole app, one big honest file
+├── server.py                    # FastAPI routes
+├── index.html                   # Frontend (single page, vanilla JS)
 │
-├── services/                    # Where the actual brains live
-│   ├── rag.py                    # Answers questions using real course reviews
-│   ├── planner.py                 # Untangles prereqs into a real schedule
-│   ├── embeddings.py               # One shared Gemini client, nothing fancy
-│   └── transcript.py               # Reads your transcript so you don't have to
+├── services/
+│   ├── rag.py                   # /ask pipeline
+│   ├── planner.py                # /plan scheduler
+│   ├── embeddings.py              # Gemini client
+│   └── transcript.py               # /parse-transcript OCR
 │
-├── data/                        # The receipts
-│   ├── course_catalog.json        # Every course we could get our hands on
-│   ├── prereqs.json                # The rulebook: what unlocks what
-│   └── ratings_raw.json             # Raw UWFlow opinions, pre-merge
+├── data/
+│   ├── course_catalog.json      # Full course catalog
+│   ├── prereqs.json              # Prerequisite chains
+│   └── ratings_raw.json           # UWFlow ratings
 │
-├── scripts/                     # The scrapers that feed data/
-│   ├── fetch_extra_subjects.py     # Adds a new subject on demand
-│   ├── fetch_wlu_courses.py         # Sneaks into Laurier's course catalog
-│   ├── fetch_ratings.py              # Steals opinions from UWFlow
-│   ├── parse_prereqs.py               # Gemini untangles prereq legalese
-│   ├── index_courses.py                # Feeds Supabase for the RAG search
-│   ├── scrape_uw_programs.py            # One-shot pull of official requirements
-│   ├── program_requirements.json         # What the script above left behind
-│   ├── fetch_uw_courses.py                # Retired, needed a key nobody has
-│   ├── clean_planner.py                    # Retired sidekick to the script above
-│   ├── build_catalog.py                     # Fossil from before Supabase existed
-│   └── load_data.py                          # Retired, index_courses.py does it better
+├── scripts/                     # Data collection/build scripts
+│   ├── fetch_extra_subjects.py
+│   ├── fetch_wlu_courses.py
+│   ├── fetch_ratings.py
+│   ├── parse_prereqs.py
+│   ├── index_courses.py
+│   ├── scrape_uw_programs.py
+│   ├── program_requirements.json
+│   ├── fetch_uw_courses.py       # unused (needs an API key that's no longer available)
+│   ├── clean_planner.py          # unused (paired with fetch_uw_courses.py)
+│   ├── build_catalog.py          # unused (predates the current Supabase pipeline)
+│   └── load_data.py              # unused (superseded by index_courses.py)
 │
-├── tests/                       # 37 tests keeping this honest
-│   ├── test_planner.py            # Makes sure the scheduler doesn't lie
-│   ├── test_api.py                 # Pokes the API, checks it behaves
-│   └── test_helpers.py              # Boring fixtures, doing quiet work
+├── tests/                       # 37 tests
+│   ├── test_planner.py
+│   ├── test_api.py
+│   └── test_helpers.py
 │
-├── requirements.txt              # What it takes to run this thing
-├── requirements-dev.txt           # + pytest, for keeping it honest
-└── runtime.txt                    # Tells Render which Python to use
+├── requirements.txt
+├── requirements-dev.txt
+└── runtime.txt
 ```
