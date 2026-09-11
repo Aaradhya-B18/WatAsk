@@ -204,9 +204,26 @@ def generate_plan(
     # first year - and never hand one to 1A/1B at all if any later term is
     # available. This replaces naively giving it to whichever terms happen
     # to come first in the schedule.
+    # Also spread multiple bonus terms apart rather than stacking them
+    # back-to-back - two consecutive overloaded terms with no lighter term
+    # in between is its own bad pattern, even if both are "late enough."
     first_year_terms = set(study_terms[:2])
     eligible_for_extra = [t for t in study_terms if t not in first_year_terms] or list(study_terms)
-    bonus_terms = set(sorted(eligible_for_extra, key=lambda t: -term_index[t])[:extra_slots])
+    eligible_sorted = sorted(eligible_for_extra, key=lambda t: -term_index[t])
+    bonus_terms = set()
+    for t in eligible_sorted:
+        if len(bonus_terms) >= extra_slots:
+            break
+        if any(abs(term_index[t] - term_index[b]) <= 1 for b in bonus_terms):
+            continue
+        bonus_terms.add(t)
+    if len(bonus_terms) < extra_slots:
+        # Not enough non-adjacent terms to go around - fall back to allowing
+        # adjacency rather than leaving genuinely-needed slots unplaced.
+        for t in eligible_sorted:
+            if len(bonus_terms) >= extra_slots:
+                break
+            bonus_terms.add(t)
 
     lines = []
     for idx, term in enumerate(study_terms):
