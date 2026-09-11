@@ -1876,7 +1876,13 @@ const PROGRAMS = {
     // 20.0 units over 8 - real students routinely take 6 courses in a term
     // (e.g. 1B alone has 6 required: BU121, ECON140W, CS136, CS136L, MATH136,
     // MATH138), so this program's default cap is 6/term, not 5.
+    // 26.0 units / 0.5 per course = 52 total courses over 10 terms; this
+    // program's 38 specifically-named required courses + the normal 5/term
+    // elective fill only reach 51, so extraSlots:1 gives one more term the
+    // extra elective slot it needs to land on the real "2 six-course terms,
+    // 8 five-course terms = 52" split instead of 1-and-9.
     maxPerTerm:6,
+    extraSlots:1,
     terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
     seq5ddTerms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
     seq5dd2Terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","4B","COOP","5A","5B"],
@@ -1943,7 +1949,12 @@ const PROGRAMS = {
     name:"BBA (Laurier) + Mathematics Double Degree",
     // Same heavier-load reasoning as bba-bcs above - real students in this
     // double degree routinely take 6 courses in a term.
+    // 26.0 units / 0.5 = 52 total courses over 10 terms; this program's 35
+    // required courses + normal 5/term filler only reach 50, so
+    // extraSlots:2 gives two terms the extra slot needed to land on the
+    // real "2 six-course terms, 8 five-course terms = 52" split.
     maxPerTerm:6,
+    extraSlots:2,
     terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
     seq5ddTerms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","COOP","4B","COOP","5A","5B"],
     seq5dd2Terms:["1A","1B","COOP","2A","COOP","2B","3A","COOP","3B","4A","4B","COOP","5A","5B"],
@@ -3389,6 +3400,7 @@ async function regenWithPref(prefKey) {
         specialization: courses.length ? courses : null,
         overload: S.overload || false,
         max_per_term: prog.maxPerTerm || null,
+        extra_slots: prog.extraSlots || 0,
         retaking: S.retaking || [],
         taken_grades: S.takenGrades || {},
         taken_terms: S.takenTerms || {},
@@ -3548,6 +3560,7 @@ async function doGeneratePlan(btn, thread) {
         specialization: specCourses,
         overload: S.overload || false,
         max_per_term: prog.maxPerTerm || null,
+        extra_slots: prog.extraSlots || 0,
         retaking: S.retaking || [],
         taken_grades: S.takenGrades || {},
         taken_terms: S.takenTerms || {},
