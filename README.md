@@ -158,18 +158,18 @@ WatAsk/
 ├── server.py                    # Thin router, delegates all the real thinking
 ├── index.html                    # The whole app, one big honest file
 │
-├── services/                    # Where the actual brains live — see services/README.md
+├── services/                    # Where the actual brains live
 │   ├── rag.py                    # Answers questions using real course reviews
 │   ├── planner.py                 # Untangles prereqs into a real schedule
 │   ├── embeddings.py               # One shared Gemini client, nothing fancy
 │   └── transcript.py               # Reads your transcript so you don't have to
 │
-├── data/                        # The receipts — see data/README.md
+├── data/                        # The receipts
 │   ├── course_catalog.json        # Every course we could get our hands on
 │   ├── prereqs.json                # The rulebook: what unlocks what
 │   └── ratings_raw.json             # Raw UWFlow opinions, pre-merge
 │
-├── scripts/                     # The scrapers that feed data/ — see scripts/README.md
+├── scripts/                     # The scrapers that feed data/
 │   ├── fetch_extra_subjects.py     # Adds a new subject on demand
 │   ├── fetch_wlu_courses.py         # Sneaks into Laurier's course catalog
 │   ├── fetch_ratings.py              # Steals opinions from UWFlow
@@ -182,7 +182,7 @@ WatAsk/
 │   ├── build_catalog.py                     # Fossil from before Supabase existed
 │   └── load_data.py                          # Retired, index_courses.py does it better
 │
-├── tests/                       # 37 tests keeping this honest — see tests/README.md
+├── tests/                       # 37 tests keeping this honest
 │   ├── test_planner.py            # Makes sure the scheduler doesn't lie
 │   ├── test_api.py                 # Pokes the API, checks it behaves
 │   └── test_helpers.py              # Boring fixtures, doing quiet work

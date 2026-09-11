@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "server.py": {
-      "includeFiles": ["data/**", "index.html"]
-    }
-  }
-}
