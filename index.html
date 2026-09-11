@@ -1952,10 +1952,14 @@ const PROGRAMS = {
     groups:[
       {
         name:"Core Math",
-        // 1st year confirmed from uwaterloo.ca/math/future-undergraduates/programs/
-        // business-administration-and-mathematics-double-degree; upper years use
-        // the standalone Honours Math core (no published BMath-side course guide
-        // exists like the BCS one) - MEDIUM confidence beyond 1B
+        // Per the official UW Undergraduate Calendar entry for "Business
+        // Administration and Mathematics Double Degree" (2023-2024 archive -
+        // most current version found; structural requirements like this
+        // rarely change year to year) - HIGH confidence. The calendar
+        // references first-year "Table 1/Table 2" math requirements without
+        // quoting them inline, so this first-year sequence is carried over
+        // from the standard Honours Math core used everywhere else in this
+        // project rather than lifted verbatim from that table.
         courses:["MATH 135","MATH 136","MATH 137","MATH 138","MATH 235","MATH 237","MATH 239"],
         typical:{ "MATH 135":"1A","MATH 137":"1A","MATH 136":"1B","MATH 138":"1B","MATH 235":"2A","MATH 237":"2A","MATH 239":"2B" },
       },
@@ -1968,6 +1972,14 @@ const PROGRAMS = {
         name:"Statistics & Optimization",
         courses:["STAT 230","STAT 231","CO 250"],
         typical:{ "STAT 230":"2A","STAT 231":"2B","CO 250":"2B" },
+      },
+      {
+        name:"Applied & Business Math Requirements",
+        // Real, specifically-named requirements from the official calendar -
+        // previously missing entirely from this program's data (it had only
+        // ever included the generic Math core + CO 250/255 pick).
+        courses:["ACTSC 231","CO 370","CS 330","STAT 371","STAT 372"],
+        typical:{ "ACTSC 231":"2B","CS 330":"2A","CO 370":"3A","STAT 371":"3A","STAT 372":"3A" },
       },
       {
         name:"Laurier Economics",
