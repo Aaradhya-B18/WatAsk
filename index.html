@@ -44,6 +44,11 @@ body { font-family: system-ui,-apple-system,sans-serif; background:var(--bg); co
   border-radius:8px; font-size:12px; font-weight:600; padding:7px 14px; cursor:pointer; transition:all .15s;
 }
 .btn-ghost:hover { border-color:var(--muted); color:var(--text); }
+.btn-reset {
+  background:var(--red-muted); color:var(--red); border:1px solid rgba(248,113,113,0.35);
+  border-radius:8px; font-size:12px; font-weight:700; padding:7px 16px; cursor:pointer; transition:all .15s;
+}
+.btn-reset:hover { background:var(--red); color:#0c0c0f; border-color:var(--red); }
 
 /* ════════════════════════════════════════
    WELCOME SPLASH
@@ -815,7 +820,7 @@ header {
       <div class="units-lbl" id="unitsLbl">0.0 / 20.0 units</div>
     </div>
     <button class="btn-suggest" id="suggestBtn" onclick="suggestPlan()">✦ Generate plan</button>
-    <button class="btn-ghost" onclick="resetApp()">Reset</button>
+    <button class="btn-reset" onclick="resetApp()">Reset</button>
   </header>
 
   <div class="layout">
