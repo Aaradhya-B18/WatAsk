@@ -197,7 +197,17 @@ def generate_plan(
     non_math_start_idx = term_index.get(NON_MATH_ELECTIVE_START, 0)
     math_elective_label = "CS Elective" if program == "cs" else "Math Elective"
 
-    extra_needed = extra_slots  # one extra elective slot per retake, spread across terms
+    # Decide which terms absorb the "extra" slots (from retakes and/or a
+    # heavier-than-normal program like a double degree). Prefer later terms
+    # over earlier ones - a student is better equipped to handle a heavier
+    # term after a few years of practice than while still adjusting in
+    # first year - and never hand one to 1A/1B at all if any later term is
+    # available. This replaces naively giving it to whichever terms happen
+    # to come first in the schedule.
+    first_year_terms = set(study_terms[:2])
+    eligible_for_extra = [t for t in study_terms if t not in first_year_terms] or list(study_terms)
+    bonus_terms = set(sorted(eligible_for_extra, key=lambda t: -term_index[t])[:extra_slots])
+
     lines = []
     for idx, term in enumerate(study_terms):
         if idx < current_term_idx:
@@ -206,10 +216,8 @@ def generate_plan(
         parts = list(all_in_term)
         half_credits = sum(1 for c in all_in_term if c.replace("[suggested]", "").strip() in HALF_CREDIT_COURSES)
         fill_max = 5 + half_credits
-        # Give exactly one extra slot to each term until the credit deficit is covered
-        if extra_needed > 0:
+        if term in bonus_terms:
             fill_max += 1
-            extra_needed -= 1
         open_slots = max(0, fill_max - len(all_in_term))
         non_math_this_term = 0
         # 1st year: up to 2 non-math per term; 2nd year+: max 1 non-math per term
